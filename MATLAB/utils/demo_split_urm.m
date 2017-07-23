@@ -10,7 +10,7 @@ urm = readtable(input_rating_file);
 %load urm_ML20m.mat
 
          k = 10  ;
-split_type = 'item';
+split_type = 'rating';
 
 pop_thrList =  [0 0.001 0.005 0.01 0.05 0.1 0.2];
 
