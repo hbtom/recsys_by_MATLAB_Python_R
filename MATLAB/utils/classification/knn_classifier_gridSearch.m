@@ -30,7 +30,7 @@ function [validationAccuracy,best_validationAccuracy] = knn_classifier_gridSearc
 % best_validationAccuracy = 
 %
 %  struct with fields:
-%                       value: 0.5028
+%                       value: 0.9028
 %                       knnParam_dist: 'Cosine'
 %                       knnParam_Exp: []
 %                       knnParam_distWeight: 'Equal'
