@@ -1,7 +1,7 @@
 function [validationAccuracy,best_validationAccuracy] = tree_classifier_gridSearch(inputTable,printFlag)
 
 % This function fits a classification decision tree for binary classification. 
-% The function applies a Leave-One-Out (LOV) (25%) as for the evaluation which
+% The function applies a Hold-Out (75%-25%) as for the evaluation which
 % is suited for large datasets.
 %
 % It is worthwhile to note that the function performs a grid-based
