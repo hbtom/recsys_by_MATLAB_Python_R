@@ -8,14 +8,16 @@
 clear
 clc
 close all
+rng(1234);
 
-load('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\utils\classification\clf_data_test.mat');
+
+load('clf_data_test.mat');
 
 % Generate Inputs 
          y = randi([0 1],14073,1);
 inputTable = array2table([testIVs' y]);
 
-printFlag = 1 ;
-[validationAccuracy1,best_validationAccuracy_1] = tree_classifier_gridSearch(inputTable,printFlag)       ;
-[validationAccuracy2,best_validationAccuracy_2] = knn_classifier_gridSearch(inputTable,printFlag)       ;
+printFlag = 0 ;
+validationMetrics1 = tree_classifier_gridSearch(inputTable,[],[],printFlag)      ;
+validationMetrics2 = knn_classifier_gridSearch(inputTable,[],[],printFlag)       ;
 

@@ -1,4 +1,4 @@
-function [validationAccuracy,best_validationAccuracy] = tree_classifier_gridSearch(inputTable,printFlag)
+function validationMetrics = tree_classifier_gridSearch(inputTable,train_index,test_index,printFlag)
 
 % This function fits a classification decision tree for binary classification. 
 % The function applies a Hold-Out (75%-25%) as for the evaluation which
@@ -37,17 +37,31 @@ function [validationAccuracy,best_validationAccuracy] = tree_classifier_gridSear
      
 rng(1234);
 
+    
+    
 predictorNames = inputTable.Properties.VariableNames(1:end-1) ; 
     predictors = inputTable(:, predictorNames)                ;
       response = table2array(inputTable(:,end))               ;
 
-    validationAccuracy = [];
+     validationAccuracy = [] ;
+    validationPrecision = [] ;
+       validationRecall = [] ;
+      validationFallout = [] ;
+           validationF1 = [] ;
+           validationF2 = [] ;
+          validationMCC = [] ;
 isCategoricalPredictor = false(size(predictorNames));     
 
 % Set up holdout validation
-cvp = cvpartition(response, 'Holdout', 0.25);
-trainingPredictors = predictors(cvp.training, :);
-trainingResponse = response(cvp.training, :);
+if isempty(train_index) && isempty(test_index) 
+    cvp = cvpartition(response, 'Holdout', 0.25);
+    train_index = cvp.training ;
+     test_index = cvp.test     ;
+end
+
+
+trainingPredictors = predictors(train_index, :);
+trainingResponse = response(train_index, :);
 trainingIsCategoricalPredictor = isCategoricalPredictor;
 
 treeParam.maxSplit = {4,10,20,50,100,200,400,...
@@ -79,32 +93,100 @@ for param = 1 : length(treeParam.maxSplit)
     % Create the result struct with predict function
     treePredictFcn = @(x) predict(classificationTree, x);
     validationPredictFcn = @(x) treePredictFcn(x);
+    
 
    % Compute validation predictions
-   validationPredictors = predictors(cvp.test, :);
-   validationResponse = response(cvp.test, :);
+   validationPredictors = predictors(test_index, :);
+   validationResponse = response(test_index, :);
    [validationPredictions, validationScores] = validationPredictFcn(validationPredictors);
 
    % Compute validation accuracy
    correctPredictions = (validationPredictions == validationResponse);
-   isMissing = isnan(validationResponse);
+            isMissing = isnan(validationResponse);
    correctPredictions = correctPredictions(~isMissing);
-   validationAccuracy = [validationAccuracy sum(correctPredictions)/length(correctPredictions)];
+%    validationAccuracy = [validationAccuracy sum(correctPredictions)/length(correctPredictions)];
+%   
+%                                  Res_true_ind = find(validationResponse == 1);
+%                          Pred_at_Res_true_ind = validationPredictions(Res_true_ind);
+%                     Pred_true_at_Res_true_ind = find(Pred_at_Res_true_ind == 1);
+%                              validationRecall = [validationRecall length(Pred_true_at_Res_true_ind)/length(Res_true_ind)];
+%                       
+%                                    Pred_true  = find(validationPredictions==1); 
+%                           validationPrecision = [validationPrecision length(Pred_true_at_Res_true_ind)/length(Pred_true)];
+% 
+%                                 Res_false_ind = find(validationResponse == 0);
+%                         Pred_at_Res_false_ind = validationPredictions(Res_false_ind);
+%                    Pred_true_at_Res_false_ind = find(Pred_at_Res_false_ind == 1);
+%                             validationFallout = [validationFallout length(Pred_true_at_Res_false_ind)/length(Res_false_ind)];
+
+   indP = find(validationResponse == 1) ;
+   indN = find(validationResponse == 0) ;
    
+       pred_at_indP = validationPredictions(indP)   ;
+                 TP = length(find(pred_at_indP==1)) ;
+                 FN = length(find(pred_at_indP==0)) ;
+                 
+        pred_at_indN = validationPredictions(indN)   ;
+                  TN = length(find(pred_at_indN==0)) ;
+                  FP = length(find(pred_at_indN==1)) ;
+                 
+
+                  accr = (TP+TN)/(TP+TN+FP+FN);
+                  recall = TP/(TP+FN);
+                  precision = TP/(TP+FP);
+                  fallout = FP/(FP+TN);
+                  f1 = 2*(precision*recall)/(precision+recall);
+                  f2 = 5*(precision*recall)/(4*precision+recall);
+                  MCC = (TP*TN-FP*FN)/sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN));
+                  
+                  validationAccuracy = [validationAccuracy accr];
+                  validationRecall = [validationRecall recall];
+                  validationPrecision = [validationPrecision precision];
+                  validationFallout = [validationFallout fallout];
+                  validationF1 = [validationF1 f1];
+                  validationF2 = [validationF2 f2];
+                  validationMCC = [validationMCC MCC];                          
+
    if (printFlag == 1)
        fprintf('Case %d: \n',param)
        fprintf('Split Criterion: %s \n',treeParam.splitCri{param});
        fprintf('Max number of Split: %d \n',treeParam.maxSplit{param});
        fprintf('Accuracy : %g \n',validationAccuracy(end));
+       fprintf('Recall : %g \n',validationRecall(end));
+       fprintf('Precision  : %g \n',validationPrecision(end));
+       fprintf('Fall-out  : %g \n',validationFallout(end));
+       fprintf('F1 : %g \n',validationF1(end));
+       fprintf('F2 : %g \n',validationF2(end));
+       fprintf('MCC  : %g \n',validationMCC(end));
        fprintf('------------------------ \n')
    end
 
 end
 
 
-[value,ind] = max(validationAccuracy);
-best_validationAccuracy.value = value;
-best_validationAccuracy.splitCrit =  treeParam.splitCri{ind}  ;
- best_validationAccuracy.maxSplit =  treeParam.maxSplit{ind}   ;
+validationMetrics.validationAccuracy = validationAccuracy;
+validationMetrics.validationRecall   = validationRecall;
+validationMetrics.validationPrecision = validationPrecision ;
+validationMetrics.validationFallout = validationFallout ;
+ validationMetrics.validationF1 = validationF1  ;
+ validationMetrics.validationF2 = validationF2  ;
+ validationMetrics.validationMCC = validationMCC ;
 
 
+validationMetrics.max_validationAccuracy = max(validationAccuracy);
+validationMetrics.max_validationRecall   = max(validationRecall);
+validationMetrics.max_validationPrecision = max(validationPrecision) ;
+validationMetrics.max_validationFallout = min(validationFallout) ;
+ validationMetrics.max_validationF1 = max(validationF1)  ;
+ validationMetrics.max_validationF2 = max(validationF2)  ;
+ validationMetrics.max_validationMCC = max(validationMCC) ;
+
+
+ fprintf('MAX Accuracy : %g \n',max(validationAccuracy));
+ fprintf('MAX Recall : %g \n',max(validationRecall));
+ fprintf('MAX Precision  : %g \n',max(validationPrecision));
+ fprintf('MIN Fall-out  : %g \n',min(validationFallout) );
+ fprintf('MAX F1 : %g \n',max(validationF1));
+ fprintf('MAX F2 : %g \n',max(validationF2));
+ fprintf('MAX MCC  : %g \n',max(validationMCC));
+ fprintf('------------------------ \n')
