@@ -30,6 +30,15 @@ fprintf('Number of unique items: %g \n',n_i)
 fprintf('Number of ratings: %d \n',n_r)
 fprintf('Density of URM: %g \n',den)
 
+fileID = fopen('info.txt','a');
+fprintf(fileID,'******************************* \n');
+fprintf(fileID,'*** Original URM statistics *** \n');
+fprintf(fileID,'******************************* \n');
+fprintf(fileID,'Number of unique users: %g \n',n_u);
+fprintf(fileID,'Number of unique items: %g \n',n_i);
+fprintf(fileID,'Number of ratings: %d \n',n_r);
+fprintf(fileID,'Density of URM: %g \n',den);
+
 if pop_thr>0
     n_pop = floor(pop_thr * n_i);
     unique_itemIds = unique(itemIds)     ;
@@ -53,17 +62,32 @@ if pop_thr>0
     
     fprintf('\n');
     fprintf('****************************************************** \n');
-    fprintf('*** URM statistics after %g%% popular-item removal *** \n',100*pop_thr)
+    fprintf('*** URM statistics after %g%% popular-item removal *** \n',100*pop_thr);
     fprintf('****************************************************** \n');
-    fprintf('Number of unique users: %g \n',n_u)
-    fprintf('Number of unique items: %g \n',n_i)
-    fprintf('Number of ratings: %d \n',n_r)
-    fprintf('Density of URM: %g \n',den)
+    fprintf('Number of unique users: %g \n',n_u);
+    fprintf('Number of unique items: %g \n',n_i);
+    fprintf('Number of ratings: %d \n',n_r);
+    fprintf('Density of URM: %g \n',den);
+    
+    
+    fprintf(fileID,'\n');
+    fprintf(fileID,'****************************************************** \n');
+    fprintf(fileID,'*** URM statistics after %g%% popular-item removal *** \n',100*pop_thr);
+    fprintf(fileID,'****************************************************** \n');
+    fprintf(fileID,'Number of unique users: %g \n',n_u);
+    fprintf(fileID,'Number of unique items: %g \n',n_i);
+    fprintf(fileID,'Number of ratings: %d \n',n_r);
+    fprintf(fileID,'Density of URM: %g \n',den);
 end
 
 fprintf('\n');
-fprintf('Split type: %s \n', split_type)
+fprintf('Split type: %s \n', split_type);
 fprintf('k-fold CV k=%g \n', k)
+
+fprintf(fileID,'\n');
+fprintf(fileID,'Split type: %s \n', split_type);
+fprintf(fileID,'k-fold CV k=%g \n', k);
+fclose(fileID);
 
 if strcmp(split_type,'rating')
     
@@ -72,7 +96,7 @@ if strcmp(split_type,'rating')
     
     for fld = 1 : k
         test_indices_urmRows = rating_indices((fld-1)*fold_size+1:fld*fold_size);
-        train_indices_urmRows = setdiff(rating_indices, test_indices_urmRows)       ;
+        train_indices_urmRows = setdiff(rating_indices, test_indices_urmRows)   ;
         urm_train = urm(train_indices_urmRows,:) ;
         urm_test = urm(test_indices_urmRows,:)  ;
         

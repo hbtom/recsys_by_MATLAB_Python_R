@@ -17,7 +17,8 @@ load('clf_data_test.mat');
          y = randi([0 1],14073,1);
 inputTable = array2table([testIVs' y]);
 
-printFlag = 0 ;
-validationMetrics1 = tree_classifier_gridSearch(inputTable,[],[],printFlag)      ;
-validationMetrics2 = knn_classifier_gridSearch(inputTable,[],[],printFlag)       ;
+printFlag = 1 ;
+% validationMetrics1 = tree_classifier_gridSearch(inputTable,[],[],printFlag)      ;
+% validationMetrics2 = knn_classifier_gridSearch(inputTable,[],[],printFlag)       ;
 
+validationMetrics3 = random_classifier(inputTable,[],[],printFlag)      ;
