@@ -1,4 +1,4 @@
-function validationMetrics = random_classifier_all1(inputTable,train_index,test_index)
+function validationMetrics = random_classifier_all1(inputTable,train_index,test_index,printFlag)
 
 % This function fits a classification decision tree for binary classification. 
 % The function applies a Hold-Out (75%-25%) as for the evaluation which
@@ -66,9 +66,7 @@ trainingResponse = response(train_index, :);
 trainingIsCategoricalPredictor = isCategoricalPredictor;
 
 
-fprintf('***********************************************************  \n');
-fprintf('               RANDOM Classifier Majority ONE                \n');
-fprintf('***********************************************************  \n');
+
 
 
 %    Compute validation predictions
@@ -124,9 +122,10 @@ validationMetrics.max_validationPrecision = max(validationPrecision(:)) ;
         validationMetrics.max_validationG = max(validationG(:)) ;
     validationMetrics.max_validationKappa = max(validationKappa(:));
 
-
- fprintf('***********************************************************  \n');
-
+if printFlag == 1
+fprintf('***********************************************************  \n');
+fprintf('               RANDOM Classifier Majority ONE                \n');
+fprintf('***********************************************************  \n');
  fprintf('MAX Accuracy : %g \n',validationMetrics.max_validationAccuracy);
  fprintf('MAX Recall : %g \n',validationMetrics.max_validationRecall);
  fprintf('MAX Precision  : %g \n',validationMetrics.max_validationPrecision);
@@ -141,5 +140,5 @@ validationMetrics.max_validationPrecision = max(validationPrecision(:)) ;
  
  fprintf('***********************************************************  \n');
 
-  
+end
   

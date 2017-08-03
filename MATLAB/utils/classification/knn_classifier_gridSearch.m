@@ -1,4 +1,4 @@
-function validationMetrics = knn_classifier_gridSearch(inputTable,train_index,test_index)
+function validationMetrics = knn_classifier_gridSearch(inputTable,train_index,test_index, printFlag)
 
 
 % This function fits a classification decision tree for binary classification. 
@@ -79,9 +79,6 @@ knnParam.standarize = {0,1};
      
  n_search = n_dist*n_nn*n_distWeight*n_stand;
 
-fprintf('*************************************************************************************************************  \n');
-fprintf('  Grid Search Over KNN - CLF hyper-parameters  (n_dist x n_nn X n_distWeight x n_stand=%dx%dx%dX%d=%d cases): \n',n_dist,n_nn,n_distWeight,n_stand,n_search);
-fprintf('*************************************************************************************************************  \n');
 
 
 for n1 = 1 : n_dist
@@ -178,21 +175,24 @@ validationMetrics.max_validationPrecision = max(validationPrecision(:)) ;
         validationMetrics.max_validationG = max(validationG(:)) ;
     validationMetrics.max_validationKappa = max(validationKappa(:));
 
- fprintf('***********************************************************  \n');
+    if printFlag == 1
 
- fprintf('MAX Accuracy : %g \n',validationMetrics.max_validationAccuracy);
- fprintf('MAX Recall : %g \n',validationMetrics.max_validationRecall);
- fprintf('MAX Precision  : %g \n',validationMetrics.max_validationPrecision);
- fprintf('MIN Fall-out  : %g \n',validationMetrics.min_validationFallout );
- fprintf('MAX Specificity : %g \n',validationMetrics.max_validationSpec );
- fprintf('MAX F1 : %g \n',validationMetrics.max_validationF1);
- fprintf('MAX F2 : %g \n',validationMetrics.max_validationF2);
- fprintf('MAX MCC  : %g \n',validationMetrics.max_validationMCC);
- fprintf('MAX G  : %g \n',validationMetrics.max_validationG);
- fprintf('MAX Kappa  : %g \n',validationMetrics.max_validationKappa );
- fprintf('------------------------ \n');
-  fprintf('***********************************************************  \n');
-
+fprintf('*************************************************************************************************************  \n');
+fprintf('  Grid Search Over KNN - CLF hyper-parameters  (n_dist x n_nn X n_distWeight x n_stand=%dx%dx%dX%d=%d cases): \n',n_dist,n_nn,n_distWeight,n_stand,n_search);
+fprintf('*************************************************************************************************************  \n');        
+        fprintf('MAX Accuracy : %g \n',validationMetrics.max_validationAccuracy);
+        fprintf('MAX Recall : %g \n',validationMetrics.max_validationRecall);
+        fprintf('MAX Precision  : %g \n',validationMetrics.max_validationPrecision);
+        fprintf('MIN Fall-out  : %g \n',validationMetrics.min_validationFallout );
+        fprintf('MAX Specificity : %g \n',validationMetrics.max_validationSpec );
+        fprintf('MAX F1 : %g \n',validationMetrics.max_validationF1);
+        fprintf('MAX F2 : %g \n',validationMetrics.max_validationF2);
+        fprintf('MAX MCC  : %g \n',validationMetrics.max_validationMCC);
+        fprintf('MAX G  : %g \n',validationMetrics.max_validationG);
+        fprintf('MAX Kappa  : %g \n',validationMetrics.max_validationKappa );
+        fprintf('------------------------ \n');
+        fprintf('***********************************************************  \n');
+    end
 
 % 
 % 

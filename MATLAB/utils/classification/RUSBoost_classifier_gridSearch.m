@@ -1,4 +1,4 @@
-function validationMetrics = RUSBoost_classifier_gridSearch(inputTable,train_index,test_index)
+function validationMetrics = RUSBoost_classifier_gridSearch(inputTable,train_index,test_index,printFlag)
 
 % This function fits a classification decision tree for binary classification. 
 % The function applies a Hold-Out (75%-25%) as for the evaluation which
@@ -68,9 +68,9 @@ trainingPredictors = predictors(train_index, :);
 trainingResponse = response(train_index, :);
 trainingIsCategoricalPredictor = isCategoricalPredictor;
 
-treeParam.maxSplit = {4,32,128,256,512,1024,2048,4096};
- treeParam.minLeaf = {1,3,10,50,100,200,400};
-treeParam.splitCri = {'gdi','deviance'};
+treeParam.maxSplit = {4,32,128,512,1024,2048};
+ treeParam.minLeaf = {1,3,10,20,50};
+treeParam.splitCri = {'gdi','deviance','twoing'};
 
 
  n_maxSplit = length(treeParam.maxSplit);
@@ -78,11 +78,9 @@ treeParam.splitCri = {'gdi','deviance'};
  n_splitCri = length(treeParam.splitCri);
  n_search = n_maxSplit*n_minLeaf*n_splitCri;
 
-fprintf('**************************************************************************************************  \n');
-fprintf('  Grid Search Over RUSBoost TREE - CLF hyper-parameters  (n_maxSplit x n_minLeaf x n_splitCri=%dx%dx%d=%d cases): \n',n_maxSplit,n_minLeaf,n_splitCri,n_search);
-fprintf('**************************************************************************************************  \n');
 
-for n1 = 1 : n_maxSplit
+
+parfor n1 = 1 : n_maxSplit
     for n2 = 1 : n_minLeaf
         for n3 = 1:n_splitCri
             
@@ -197,24 +195,25 @@ validationMetrics.max_validationPrecision = max(validationPrecision(:)) ;
       validationMetrics.max_validationMCC = max(validationMCC(:)) ;
         validationMetrics.max_validationG = max(validationG(:)) ;
     validationMetrics.max_validationKappa = max(validationKappa(:));
-
-
- fprintf('***********************************************************  \n');
-
- fprintf('MAX Accuracy : %g \n',validationMetrics.max_validationAccuracy);
- fprintf('MAX Recall : %g \n',validationMetrics.max_validationRecall);
- fprintf('MAX Precision  : %g \n',validationMetrics.max_validationPrecision);
- fprintf('MIN Fall-out  : %g \n',validationMetrics.min_validationFallout );
- fprintf('MAX Specificity : %g \n',validationMetrics.max_validationSpec );
- fprintf('MAX F1 : %g \n',validationMetrics.max_validationF1);
- fprintf('MAX F2 : %g \n',validationMetrics.max_validationF2);
- fprintf('MAX MCC  : %g \n',validationMetrics.max_validationMCC);
- fprintf('MAX G  : %g \n',validationMetrics.max_validationG);
- fprintf('MAX Kappa  : %g \n',validationMetrics.max_validationKappa );
- fprintf('------------------------ \n');
- 
-  fprintf('***********************************************************  \n');
-
-
+    if printFlag == 1
+        
+        fprintf('**************************************************************************************************  \n');
+        fprintf('  Grid Search Over RUSBoost TREE - CLF hyper-parameters  (n_maxSplit x n_minLeaf x n_splitCri=%dx%dx%d=%d cases): \n',n_maxSplit,n_minLeaf,n_splitCri,n_search);
+        fprintf('**************************************************************************************************  \n');
+        fprintf('MAX Accuracy : %g \n',validationMetrics.max_validationAccuracy);
+        fprintf('MAX Recall : %g \n',validationMetrics.max_validationRecall);
+        fprintf('MAX Precision  : %g \n',validationMetrics.max_validationPrecision);
+        fprintf('MIN Fall-out  : %g \n',validationMetrics.min_validationFallout );
+        fprintf('MAX Specificity : %g \n',validationMetrics.max_validationSpec );
+        fprintf('MAX F1 : %g \n',validationMetrics.max_validationF1);
+        fprintf('MAX F2 : %g \n',validationMetrics.max_validationF2);
+        fprintf('MAX MCC  : %g \n',validationMetrics.max_validationMCC);
+        fprintf('MAX G  : %g \n',validationMetrics.max_validationG);
+        fprintf('MAX Kappa  : %g \n',validationMetrics.max_validationKappa );
+        fprintf('------------------------ \n');
+        
+        fprintf('***********************************************************  \n');
+        
+    end
 
 

@@ -1,4 +1,4 @@
-function validationMetrics = random_classifier_all0(inputTable,train_index,test_index)
+function validationMetrics = random_classifier_all0(inputTable,train_index,test_index,printFlag)
 
 % This function fits a classification decision tree for binary classification. 
 % The function applies a Hold-Out (75%-25%) as for the evaluation which
@@ -66,9 +66,6 @@ trainingResponse = response(train_index, :);
 trainingIsCategoricalPredictor = isCategoricalPredictor;
 
 
-fprintf('***********************************************************  \n');
-fprintf('               RANDOM Classifier Majority ZERO               \n');
-fprintf('***********************************************************  \n');
 
 
 %    Compute validation predictions
@@ -124,19 +121,22 @@ validationMetrics.max_validationPrecision = max(validationPrecision(:)) ;
         validationMetrics.max_validationG = max(validationG(:)) ;
     validationMetrics.max_validationKappa = max(validationKappa(:));
 
+    if printFlag == 1
 
- fprintf('***********************************************************  \n');
-
- fprintf('MAX Accuracy : %g \n',validationMetrics.max_validationAccuracy);
- fprintf('MAX Recall : %g \n',validationMetrics.max_validationRecall);
- fprintf('MAX Precision  : %g \n',validationMetrics.max_validationPrecision);
- fprintf('MIN Fall-out  : %g \n',validationMetrics.min_validationFallout );
- fprintf('MAX Specificity : %g \n',validationMetrics.max_validationSpec );
- fprintf('MAX F1 : %g \n',validationMetrics.max_validationF1);
- fprintf('MAX F2 : %g \n',validationMetrics.max_validationF2);
- fprintf('MAX MCC  : %g \n',validationMetrics.max_validationMCC);
- fprintf('MAX G  : %g \n',validationMetrics.max_validationG);
- fprintf('MAX Kappa  : %g \n',validationMetrics.max_validationKappa );
- fprintf('------------------------ \n');
- 
-  fprintf('***********************************************************  \n');
+fprintf('***********************************************************  \n');
+fprintf('               RANDOM Classifier Majority ZERO               \n');
+fprintf('***********************************************************  \n');        
+        fprintf('MAX Accuracy : %g \n',validationMetrics.max_validationAccuracy);
+        fprintf('MAX Recall : %g \n',validationMetrics.max_validationRecall);
+        fprintf('MAX Precision  : %g \n',validationMetrics.max_validationPrecision);
+        fprintf('MIN Fall-out  : %g \n',validationMetrics.min_validationFallout );
+        fprintf('MAX Specificity : %g \n',validationMetrics.max_validationSpec );
+        fprintf('MAX F1 : %g \n',validationMetrics.max_validationF1);
+        fprintf('MAX F2 : %g \n',validationMetrics.max_validationF2);
+        fprintf('MAX MCC  : %g \n',validationMetrics.max_validationMCC);
+        fprintf('MAX G  : %g \n',validationMetrics.max_validationG);
+        fprintf('MAX Kappa  : %g \n',validationMetrics.max_validationKappa );
+        fprintf('------------------------ \n');
+        
+        fprintf('***********************************************************  \n');
+    end
