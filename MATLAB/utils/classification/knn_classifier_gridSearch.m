@@ -38,7 +38,6 @@ function validationMetrics = knn_classifier_gridSearch(inputTable,train_index,te
 % Yashar Deldjoo
 % June 24th, 2017
 
-rng(1234)
 predictorNames = inputTable.Properties.VariableNames(1:end-1) ; 
     predictors = inputTable(:, predictorNames)                ;
       response = table2array(inputTable(:,end))               ;
@@ -57,6 +56,7 @@ isCategoricalPredictor = false(size(predictorNames));
 
 % Set up holdout validation
 if isempty(train_index) && isempty(test_index) 
+    rng(1234)
     cvp = cvpartition(response, 'Holdout', 0.25);
     train_index = cvp.training ;
      test_index = cvp.test     ;
