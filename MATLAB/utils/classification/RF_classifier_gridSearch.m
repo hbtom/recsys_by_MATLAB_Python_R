@@ -68,9 +68,11 @@ trainingPredictors = predictors(train_index, :);
 trainingResponse = response(train_index, :);
 trainingIsCategoricalPredictor = isCategoricalPredictor;
 
-treeParam.maxSplit = {4,32,128,512,1024,2048};
- treeParam.minLeaf = {1,3,10,20,50};
-treeParam.splitCri = {'gdi','deviance','twoing'};
+treeParam.maxSplit = {32,512,1024};
+ treeParam.minLeaf = {3,10,50};
+treeParam.splitCri = {'gdi','deviance'};
+
+
 
 
  n_maxSplit = length(treeParam.maxSplit);
@@ -108,7 +110,7 @@ parfor n1 = 1 : n_maxSplit
                 'Method', 'Bag', ...
                 'NumLearningCycles', 30, ...
                 'Learners', template, ...
-                'ClassNames', [single(0); single(1)]);
+                'ClassNames', [0; 1]);
             
             treePredictFcn = @(x) predict(classificationEnsemble, x);
             validationPredictFcn = @(x) treePredictFcn(x);

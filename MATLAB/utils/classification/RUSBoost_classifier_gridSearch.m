@@ -68,9 +68,9 @@ trainingPredictors = predictors(train_index, :);
 trainingResponse = response(train_index, :);
 trainingIsCategoricalPredictor = isCategoricalPredictor;
 
-treeParam.maxSplit = {4,32,128,512,1024,2048};
- treeParam.minLeaf = {1,3,10,20,50};
-treeParam.splitCri = {'gdi','deviance','twoing'};
+treeParam.maxSplit = {32,512,1024};
+ treeParam.minLeaf = {3,10,50};
+treeParam.splitCri = {'gdi','deviance'};
 
 
  n_maxSplit = length(treeParam.maxSplit);

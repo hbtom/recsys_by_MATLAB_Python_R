@@ -68,7 +68,7 @@ trainingIsCategoricalPredictor = isCategoricalPredictor;
 
 
 knnParam.dist = {'Euclidean','Cosine','Minkowski'}; 
-knnParam.nn   = {1,3,5,10,20,25,50,100,200,300};
+knnParam.nn   = {1,3,5,10,20,50,100};
 knnParam.distWeight = {'Equal','Inverse','SquaredInverse'};
 knnParam.standarize = {0,1};
 
