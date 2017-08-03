@@ -85,10 +85,10 @@ fprintf('***********************************************************************
 
 
 for n1 = 1 : n_dist
-    for n2 = 1 : n_nn
-        for n3 = 1:n_distWeight
-            for n4 = 1:n_stand
-            
+    for n3 = 1:n_distWeight
+        for n4 = 1:n_stand
+            parfor n2 = 1 : n_nn
+                    
             % This code specifies all the classifier options and trains the classifier.
             
             classificationKNN = fitcknn(...

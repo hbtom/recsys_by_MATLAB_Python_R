@@ -81,10 +81,10 @@ fprintf('***********************************************************************
 fprintf('  Grid Search Over TREE - CLF hyper-parameters  (n_maxSplit x n_minLeaf x n_splitCri=%dx%dx%d=%d cases): \n',n_maxSplit,n_minLeaf,n_splitCri,n_search);
 fprintf('**************************************************************************************************  \n');
 
-for n1 = 1 : n_maxSplit
-    for n2 = 1 : n_minLeaf
-        for n3 = 1:n_splitCri
-            
+for n2 = 1 : n_minLeaf
+    for n3 = 1:n_splitCri
+        parfor n1 = 1 : n_maxSplit
+
             % This code specifies all the classifier options and trains the classifier.
             
             classificationTree = fitctree(...
