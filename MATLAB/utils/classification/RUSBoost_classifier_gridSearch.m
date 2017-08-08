@@ -185,16 +185,60 @@ validationMetrics.validationSpec    = validationSpec ;
  validationMetrics.validationKappa = validationKappa    ;
 
  
- validationMetrics.max_validationAccuracy = max(validationAccuracy(:));
- validationMetrics.max_validationRecall   = max(validationRecall(:));
-validationMetrics.max_validationPrecision = max(validationPrecision(:)) ;
-  validationMetrics.min_validationFallout = min(validationFallout(:)) ;
-     validationMetrics.max_validationSpec = max(validationSpec(:));
-       validationMetrics.max_validationF1 = max(validationF1(:))  ;
-       validationMetrics.max_validationF2 = max(validationF2(:))  ;
-      validationMetrics.max_validationMCC = max(validationMCC(:)) ;
-        validationMetrics.max_validationG = max(validationG(:)) ;
-    validationMetrics.max_validationKappa = max(validationKappa(:));
+ [m1,ind1] = max(validationAccuracy(:));
+  [m2,ind2] = max(validationRecall(:));
+  [m3,ind3] = max(validationPrecision(:)) ;
+  [m4,ind4] = min(validationFallout(:)) ;
+  [m5,ind5] = max(validationSpec(:));
+  [m6,ind6] = max(validationF1(:))  ;
+  [m7,ind7] = max(validationF2(:))  ;
+  [m8,ind8] = max(validationMCC(:)) ;
+  [m9,ind9] = max(validationG(:)) ;
+  [m10,ind10] = max(validationKappa(:));
+
+ 
+ validationMetrics.max_validationAccuracy = m1;
+ validationMetrics.max_validationRecall   = m2;
+validationMetrics.max_validationPrecision = m3;
+  validationMetrics.min_validationFallout = m4;
+     validationMetrics.max_validationSpec = m5;
+       validationMetrics.max_validationF1 = m6;
+       validationMetrics.max_validationF2 = m7;
+      validationMetrics.max_validationMCC = m8;
+        validationMetrics.max_validationG = m9;
+    validationMetrics.max_validationKappa = m10;
+    
+
+    siz = [n_maxSplit,n_minLeaf,n_splitCri];
+    [dim1,dim2,dim3] = ind2sub(siz,ind1);
+    validationMetrics.max_validationAccuracy_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind2);
+    validationMetrics.max_validationRecall_param   = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind3);
+    validationMetrics.max_validationPrecision_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind4);
+    validationMetrics.min_validationFallout_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind5);
+    validationMetrics.max_validationSpec_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind6);
+    validationMetrics.max_validationF1_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind7);
+    validationMetrics.max_validationF2_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind8);
+    validationMetrics.max_validationMCC_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind9);
+    validationMetrics.max_validationG_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
+    
+    [dim1,dim2,dim3] = ind2sub(siz,ind10);
+    validationMetrics.max_validationKappa_param = {treeParam.maxSplit{dim1} treeParam.minLeaf{dim2} treeParam.splitCri{dim3}};
     if printFlag == 1
         
         fprintf('**************************************************************************************************  \n');

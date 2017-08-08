@@ -109,33 +109,32 @@ validationResponse = response(test_index, :);
                           validationG = G        ;      
                       validationKappa = Kappa    ;
 
-
- validationMetrics.max_validationAccuracy = max(validationAccuracy(:));
- validationMetrics.max_validationRecall   = max(validationRecall(:));
-validationMetrics.max_validationPrecision = max(validationPrecision(:)) ;
-  validationMetrics.min_validationFallout = min(validationFallout(:)) ;
-     validationMetrics.max_validationSpec = max(validationSpec(:));
-       validationMetrics.max_validationF1 = max(validationF1(:))  ;
-       validationMetrics.max_validationF2 = max(validationF2(:))  ;
-      validationMetrics.max_validationMCC = max(validationMCC(:)) ;
-        validationMetrics.max_validationG = max(validationG(:)) ;
-    validationMetrics.max_validationKappa = max(validationKappa(:));
+ validationMetrics.validationAccuracy = max(validationAccuracy(:));
+ validationMetrics.validationRecall   = max(validationRecall(:));
+validationMetrics.validationPrecision = max(validationPrecision(:)) ;
+  validationMetrics.validationFallout = min(validationFallout(:)) ;
+     validationMetrics.validationSpec = max(validationSpec(:));
+       validationMetrics.validationF1 = max(validationF1(:))  ;
+       validationMetrics.validationF2 = max(validationF2(:))  ;
+      validationMetrics.validationMCC = max(validationMCC(:)) ;
+        validationMetrics.validationG = max(validationG(:)) ;
+    validationMetrics.validationKappa = max(validationKappa(:));
 
     if printFlag == 1
 
 fprintf('***********************************************************  \n');
 fprintf('               RANDOM Classifier Majority ZERO               \n');
 fprintf('***********************************************************  \n');        
-        fprintf('MAX Accuracy : %g \n',validationMetrics.max_validationAccuracy);
-        fprintf('MAX Recall : %g \n',validationMetrics.max_validationRecall);
-        fprintf('MAX Precision  : %g \n',validationMetrics.max_validationPrecision);
-        fprintf('MIN Fall-out  : %g \n',validationMetrics.min_validationFallout );
-        fprintf('MAX Specificity : %g \n',validationMetrics.max_validationSpec );
-        fprintf('MAX F1 : %g \n',validationMetrics.max_validationF1);
-        fprintf('MAX F2 : %g \n',validationMetrics.max_validationF2);
-        fprintf('MAX MCC  : %g \n',validationMetrics.max_validationMCC);
-        fprintf('MAX G  : %g \n',validationMetrics.max_validationG);
-        fprintf('MAX Kappa  : %g \n',validationMetrics.max_validationKappa );
+        fprintf('MAX Accuracy : %g \n',validationMetrics.validationAccuracy);
+        fprintf('MAX Recall : %g \n',validationMetrics.validationRecall);
+        fprintf('MAX Precision  : %g \n',validationMetrics.validationPrecision);
+        fprintf('MIN Fall-out  : %g \n',validationMetrics.validationFallout );
+        fprintf('MAX Specificity : %g \n',validationMetrics.validationSpec );
+        fprintf('MAX F1 : %g \n',validationMetrics.validationF1);
+        fprintf('MAX F2 : %g \n',validationMetrics.validationF2);
+        fprintf('MAX MCC  : %g \n',validationMetrics.validationMCC);
+        fprintf('MAX G  : %g \n',validationMetrics.validationG);
+        fprintf('MAX Kappa  : %g \n',validationMetrics.validationKappa );
         fprintf('------------------------ \n');
         
         fprintf('***********************************************************  \n');
