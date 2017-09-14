@@ -21,7 +21,7 @@ function output = precision_at_k(ranked_list,pos_items_ids,k)
           olap = length(intersect(ranked_list,pos_items_ids));
 precision_at_k = olap/k ;
 
-
+assert((0<=precision_at_k) && (precision_at_k<=1),'The condition 0<=precision_at_k<=1 did NOT hold!');
 
 output = precision_at_k ;
 

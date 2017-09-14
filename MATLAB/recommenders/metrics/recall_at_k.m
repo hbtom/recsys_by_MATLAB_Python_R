@@ -21,6 +21,7 @@ function output = recall_at_k(ranked_list,pos_items_ids,k)
    recall_at_k = olap/length(pos_items_ids) ;
 
 
+assert((0<=recall_at_k) && (recall_at_k<=1),'The condition 0<=recall_at_k<=1 did NOT hold!');
 
 output = recall_at_k ;
 
