@@ -4,6 +4,8 @@ close all
 
 import matlab.unittest.TestCase
 import matlab.unittest.constraints.IsEqualTo
+import matlab.unittest.constraints.AbsoluteTolerance
+
 testCase = TestCase.forInteractiveUse;
 
 % This is the script for testing recommender systems evluation metrics. 
@@ -44,3 +46,17 @@ testCase = TestCase.forInteractiveUse;
  end
 
 
+ %%
+ fprintf('\n')
+ fprintf('............................................. \n')
+ fprintf('\n')
+
+ fprintf('Testing MAP ... \n')
+ testCase.verifyThat(MAP_at_k(ranked_list_1,pos_items_ids,3),IsEqualTo(7/18,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(MAP_at_k(ranked_list_1,pos_items_ids,5),IsEqualTo(163/240,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(MAP_at_k(ranked_list_2,pos_items_ids,3),IsEqualTo(1/9,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(MAP_at_k(ranked_list_2,pos_items_ids,5),IsEqualTo(43/120,'Within', AbsoluteTolerance(1e-10)))
+
+ 
+ 
+ 
