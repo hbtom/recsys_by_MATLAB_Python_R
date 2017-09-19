@@ -1,4 +1,4 @@
-function output = NDCG(ranked_list,pos_items_ids,pos_rel_scores,gain_factor)
+function output = NDCG(ranked_list,pos_items_ids,pos_rel_scores,k,gain_factor)
 
 % The function computes Recall metric at particular cut_off value k.
 %  Inputs: 
@@ -21,6 +21,8 @@ function output = NDCG(ranked_list,pos_items_ids,pos_rel_scores,gain_factor)
 % Yashar Deldjoo
 % Sep 14, 2017 
 % Politecnico di Milano, Italy
+
+ranked_list = ranked_list(1:k);
 
 IDCG = 0 ;
 

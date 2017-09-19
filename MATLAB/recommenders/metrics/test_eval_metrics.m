@@ -112,20 +112,26 @@ DCG1 = 5/log2(3)+5/log2(4)+4/log2(5)+4/log2(6);  % rating gain
 DCG2 = 4/log2(3)+4/log2(4)+5/log2(5)+5/log2(6);  % rating gain
 DCG3 = 4/log2(4)+5/log2(5)+5/log2(6);            % rating gain
 
-testCase.verifyThat(NDCG(ranked_list_1,pos_items_ids,pos_relevance_scores,'rating'),IsEqualTo((DCG1/IDCG),'Within', AbsoluteTolerance(1e-10)))
-testCase.verifyThat(NDCG(ranked_list_2,pos_items_ids,pos_relevance_scores,'rating'),IsEqualTo((DCG2/IDCG),'Within', AbsoluteTolerance(1e-10)))
-testCase.verifyThat(NDCG(ranked_list_3,pos_items_ids,pos_relevance_scores,'rating'),IsEqualTo((DCG3/IDCG),'Within', AbsoluteTolerance(1e-10)))
+testCase.verifyThat(NDCG(ranked_list_1,pos_items_ids,pos_relevance_scores,5,'rating'),IsEqualTo((DCG1/IDCG),'Within', AbsoluteTolerance(1e-10)))
+testCase.verifyThat(NDCG(ranked_list_2,pos_items_ids,pos_relevance_scores,5,'rating'),IsEqualTo((DCG2/IDCG),'Within', AbsoluteTolerance(1e-10)))
+testCase.verifyThat(NDCG(ranked_list_3,pos_items_ids,pos_relevance_scores,5,'rating'),IsEqualTo((DCG3/IDCG),'Within', AbsoluteTolerance(1e-10)))
 
 IDCG = (2^5-1)/log2(2)+(2^5-1)/log2(3)+(2^4-1)/log2(4)+(2^4-1)/log2(5);  % exp gain
 DCG1 = (2^5-1)/log2(3)+(2^5-1)/log2(4)+(2^4-1)/log2(5)+(2^4-1)/log2(6);  % exp gain
 DCG2 = (2^4-1)/log2(3)+(2^4-1)/log2(4)+(2^5-1)/log2(5)+(2^5-1)/log2(6);  % exp gain
-DCG3 = (2^4-1)/log2(4)+(2^5-1)/log2(5)+(2^5-1)/log2(6);            % exp gain
+DCG3 = (2^4-1)/log2(4)+(2^5-1)/log2(5)+(2^5-1)/log2(6);                  % exp gain
 
-testCase.verifyThat(NDCG(ranked_list_1,pos_items_ids,pos_relevance_scores,'exp'),IsEqualTo((DCG1/IDCG),'Within', AbsoluteTolerance(1e-10)))
-testCase.verifyThat(NDCG(ranked_list_2,pos_items_ids,pos_relevance_scores,'exp'),IsEqualTo((DCG2/IDCG),'Within', AbsoluteTolerance(1e-10)))
-testCase.verifyThat(NDCG(ranked_list_3,pos_items_ids,pos_relevance_scores,'exp'),IsEqualTo((DCG3/IDCG),'Within', AbsoluteTolerance(1e-10)))
+testCase.verifyThat(NDCG(ranked_list_1,pos_items_ids,pos_relevance_scores,5,'exp'),IsEqualTo((DCG1/IDCG),'Within', AbsoluteTolerance(1e-10)))
+testCase.verifyThat(NDCG(ranked_list_2,pos_items_ids,pos_relevance_scores,5,'exp'),IsEqualTo((DCG2/IDCG),'Within', AbsoluteTolerance(1e-10)))
+testCase.verifyThat(NDCG(ranked_list_3,pos_items_ids,pos_relevance_scores,5,'exp'),IsEqualTo((DCG3/IDCG),'Within', AbsoluteTolerance(1e-10)))
 
+IDCG = 5/log2(2)+5/log2(3)+4/log2(4)+4/log2(5);  % rating gain
 
+expVals = [0 4/log2(3) 4/log2(3)+4/log2(4) 4/log2(3)+4/log2(4)+5/log2(5) 4/log2(3)+4/log2(4)+5/log2(5)+5/log2(6)]./IDCG;
+for k = 1 : 5
+    testCase.verifyThat(NDCG(ranked_list_2,pos_items_ids,pos_relevance_scores,k,'rating'),IsEqualTo((expVals(k)),'Within', AbsoluteTolerance(1e-10)))
+end
+ 
 
  
  
