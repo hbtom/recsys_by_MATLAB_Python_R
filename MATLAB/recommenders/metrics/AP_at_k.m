@@ -1,4 +1,4 @@
-function output = MAP_at_k(ranked_list,pos_items_ids,k)
+function output = AP_at_k(ranked_list,pos_items_ids,k)
 
 % The function computes Average Precision metric at particular cut_off 
 % value k.

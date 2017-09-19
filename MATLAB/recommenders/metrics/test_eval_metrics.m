@@ -66,12 +66,27 @@ testCase = TestCase.forInteractiveUse;
  ranked_list_6 = [1, 3, 12, 13, 14, 15, 11,  10,8, 16];
        
 
- testCase.verifyThat(MAP_at_k(ranked_list_1,pos_items_ids,5),IsEqualTo((1/1 + 2/2 + 3/3) / 4,'Within', AbsoluteTolerance(1e-10)))
- testCase.verifyThat(MAP_at_k(ranked_list_2,pos_items_ids,5),IsEqualTo((1/1 + 2/2 + 3/5) / 4,'Within', AbsoluteTolerance(1e-10)))
- testCase.verifyThat(MAP_at_k(ranked_list_3,pos_items_ids,5),IsEqualTo((1/3 + 2/4 + 3/5) / 4,'Within', AbsoluteTolerance(1e-10)))
- testCase.verifyThat(MAP_at_k(ranked_list_4,pos_items_ids,10),IsEqualTo((1/7 + 2/8 + 3/9 + 4/10)/ 4,'Within', AbsoluteTolerance(1e-10)))
- testCase.verifyThat(MAP_at_k(ranked_list_5,pos_items_ids,10),IsEqualTo((1/1 + 2/8 + 3/9)/ 4,'Within', AbsoluteTolerance(1e-10)))
- testCase.verifyThat(MAP_at_k(ranked_list_6,pos_items_ids,10),IsEqualTo((1/1 + 2/2 + 3/8)/ 4,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(AP_at_k(ranked_list_1,pos_items_ids,5),IsEqualTo((1/1 + 2/2 + 3/3) / 4,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(AP_at_k(ranked_list_2,pos_items_ids,5),IsEqualTo((1/1 + 2/2 + 3/5) / 4,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(AP_at_k(ranked_list_3,pos_items_ids,5),IsEqualTo((1/3 + 2/4 + 3/5) / 4,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(AP_at_k(ranked_list_4,pos_items_ids,10),IsEqualTo((1/7 + 2/8 + 3/9 + 4/10)/ 4,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(AP_at_k(ranked_list_5,pos_items_ids,10),IsEqualTo((1/1 + 2/8 + 3/9)/ 4,'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(AP_at_k(ranked_list_6,pos_items_ids,10),IsEqualTo((1/1 + 2/2 + 3/8)/ 4,'Within', AbsoluteTolerance(1e-10)))
+
+ pos_items_ids = [1 5 4 3];
+ ranked_list_1 = [2 5 1 4 3];
+ ranked_list_2 = [10 8 3 5 1];
+ ranked_list_3 = [10 7 8 3 2]; 
+
+
+ testCase.verifyThat(RR_at_k(ranked_list_1,pos_items_ids,3),IsEqualTo((1/2),'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(RR_at_k(ranked_list_1,pos_items_ids,5),IsEqualTo((1/2),'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(RR_at_k(ranked_list_2,pos_items_ids,3),IsEqualTo((1/3),'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(RR_at_k(ranked_list_2,pos_items_ids,5),IsEqualTo((1/3),'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(RR_at_k(ranked_list_3,pos_items_ids,3),IsEqualTo((0),'Within', AbsoluteTolerance(1e-10)))
+ testCase.verifyThat(RR_at_k(ranked_list_3,pos_items_ids,5),IsEqualTo((1/4),'Within', AbsoluteTolerance(1e-10)))
+
+
 
 
  
