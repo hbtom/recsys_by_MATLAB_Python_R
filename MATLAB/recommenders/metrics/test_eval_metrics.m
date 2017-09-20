@@ -1,11 +1,11 @@
-% This script for testing recommender systems evaluation metrics. The 
+% This script is for testing recommender systems evaluation metrics. The 
 % following metrics are implemented:
 %
 %   + Decision-support Metrics: Precision, Recall
 %   + Rank-aware Metrics: MAP, MRR, NDCG
 %
 % Yashar Deldjoo
-% September 2017 
+% September 14-21, 2017 
 % Politecnico di Milano, Italy
 % Johannes Kepler University, Linz, Austria
 
@@ -18,7 +18,6 @@ import matlab.unittest.constraints.IsEqualTo
 import matlab.unittest.constraints.AbsoluteTolerance
 
 testCase = TestCase.forInteractiveUse;
-
 
  ranked_list_1 = [2 5 1 4 3] ;
  ranked_list_2 = [10 8 3 5 1]; 
