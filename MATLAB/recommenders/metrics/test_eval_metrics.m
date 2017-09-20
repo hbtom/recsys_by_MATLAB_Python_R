@@ -1,4 +1,9 @@
-% This is the script for testing recommender systems evluation metrics. 
+% This script for testing recommender systems evaluation metrics. The 
+% following metrics are implemented:
+%
+%   + Decision-support Metrics: Precision, Recall
+%   + Rank-aware Metrics: MAP, MRR, NDCG
+%
 % Yashar Deldjoo
 % September 2017 
 % Politecnico di Milano, Italy
