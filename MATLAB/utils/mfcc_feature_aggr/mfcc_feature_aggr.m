@@ -1,4 +1,4 @@
-function aggr_feat = mfcc_feature_aggr(mfcc_feat_cell, printFlag)
+function mfcc_feature_aggr_struct = mfcc_feature_aggr(mfcc_feat_cell, printFlag)
 
 % This function accept as the input the MFCC features which is of 
 % dimensionality [nc,nf] and reports as the output different feature
@@ -64,8 +64,9 @@ for file = 1 : length(mfcc_feat_cell)
                 mean_vec_mix = mean_vec(mixture,:);
                 covMat_mix = covMat(:,:,mixture);
                 
-                cov_mix = nonzeros(triu(covMat_mix))';  % note this also include the variance, so no need to use the variance
-                
+                tmp_ind = ones(size(covMat_mix));
+                cov_mix = covMat_mix(logical(triu(tmp_ind)));
+                               
                 mean_vec_mix_all = [mean_vec_mix_all;mean_vec_mix(:)];
                 varcov_vec_mix_all = [varcov_vec_mix_all;cov_mix(:)]   ;
                 
@@ -73,46 +74,64 @@ for file = 1 : length(mfcc_feat_cell)
             
             if n_gauss == 1
                 mfcc_descr_gmm1(file).mean_vec = mean_vec_mix_all;
-                mfcc_descr_gmm1(file).carcov_vec = varcov_vec_mix_all;
+                mfcc_descr_gmm1(file).varcov_vec = varcov_vec_mix_all;
                 mfcc_descr_gmm1(file).weights = GMM_Model.ComponentProportion;
                 
                 
             elseif n_gauss == 2
                 mfcc_descr_gmm2(file).mean_vec = mean_vec_mix_all;
-                mfcc_descr_gmm2(file).carcov_vec = varcov_vec_mix_all;
+                mfcc_descr_gmm2(file).varcov_vec = varcov_vec_mix_all;
                 mfcc_descr_gmm2(file).weights = GMM_Model.ComponentProportion;
                 
             elseif n_gauss == 3
                 mfcc_descr_gmm3(file).mean_vec = mean_vec_mix_all;
-                mfcc_descr_gmm3(file).carcov_vec = varcov_vec_mix_all;
+                mfcc_descr_gmm3(file).varcov_vec = varcov_vec_mix_all;
                 mfcc_descr_gmm3(file).weights = GMM_Model.ComponentProportion;
                 
             elseif n_gauss == 4
                 mfcc_descr_gmm4(file).mean_vec = mean_vec_mix_all;
-                mfcc_descr_gmm4(file).carcov_vec = varcov_vec_mix_all;
+                mfcc_descr_gmm4(file).varcov_vec = varcov_vec_mix_all;
                 mfcc_descr_gmm4(file).weights = GMM_Model.ComponentProportion;
                 
             elseif n_gauss == 5
                 mfcc_descr_gmm5(file).mean_vec = mean_vec_mix_all;
-                mfcc_descr_gmm5(file).carcov_vec = varcov_vec_mix_all;
+                mfcc_descr_gmm5(file).varcov_vec = varcov_vec_mix_all;
                 mfcc_descr_gmm5(file).weights = GMM_Model.ComponentProportion;
             elseif n_gauss == 8
                 mfcc_descr_gmm8(file).mean_vec = mean_vec_mix_all;
-                mfcc_descr_gmm8(file).carcov_vec = varcov_vec_mix_all;
+                mfcc_descr_gmm8(file).varcov_vec = varcov_vec_mix_all;
                 mfcc_descr_gmm8(file).weights = GMM_Model.ComponentProportion;
             elseif n_gauss == 16
                 mfcc_descr_gmm16(file).mean_vec = mean_vec_mix_all;
-                mfcc_descr_gmm16(file).carcov_vec = varcov_vec_mix_all;
+                mfcc_descr_gmm16(file).varcov_vec = varcov_vec_mix_all;
                 mfcc_descr_gmm16(file).weights = GMM_Model.ComponentProportion;
             elseif n_gauss == 32
                 mfcc_descr_gmm32(file).mean_vec = mean_vec_mix_all;
-                mfcc_descr_gmm32(file).carcov_vec = varcov_vec_mix_all;
+                mfcc_descr_gmm32(file).varcov_vec = varcov_vec_mix_all;
                 mfcc_descr_gmm32(file).weights = GMM_Model.ComponentProportion;
             end
             
      end
      
 end
+
+
+mfcc_feature_aggr_struct.mfcc_descr_statsum_mean_varcov = mfcc_descr_statsum_mean_varcov;
+       mfcc_feature_aggr_struct.mfcc_descr_statsum_mean = mfcc_descr_statsum_mean ;
+       mfcc_feature_aggr_struct.mfcc_descr_gmm1 = mfcc_descr_gmm1;
+       mfcc_feature_aggr_struct.mfcc_descr_gmm2 = mfcc_descr_gmm2;
+       mfcc_feature_aggr_struct.mfcc_descr_gmm3 = mfcc_descr_gmm3;
+       mfcc_feature_aggr_struct.mfcc_descr_gmm4 = mfcc_descr_gmm4;
+       mfcc_feature_aggr_struct.mfcc_descr_gmm5 = mfcc_descr_gmm5;
+       mfcc_feature_aggr_struct.mfcc_descr_gmm8 = mfcc_descr_gmm8;
+       mfcc_feature_aggr_struct.mfcc_descr_gmm16 = mfcc_descr_gmm16;
+       mfcc_feature_aggr_struct.mfcc_descr_gmm32 = mfcc_descr_gmm32;
+
+
+
+
+
+
 
 
 
