@@ -1,0 +1,150 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>demo_prepare_distance_3tuple</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-09-23"><meta name="DC.source" content="demo_prepare_distance_3tuple.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% This is the script for running the function 'prepare_distance_3tuple.m'</span>
+<span class="comment">% which prepares a distance array [item_i,item_j,sim_score] for an input</span>
+<span class="comment">% item-content table.</span>
+<span class="comment">% Inputs:</span>
+<span class="comment">%        feature_table : the input feature table  [n_i*nf+1]</span>
+<span class="comment">%             sim_type : similarity type</span>
+<span class="comment">%            col1_name : the title of column 1 (containing ids)</span>
+<span class="comment">% Outputs:</span>
+<span class="comment">%             simArray : the output similarity array [n_i*3]</span>
+
+<span class="comment">%</span>
+<span class="comment">% Yashar Deldjoo</span>
+<span class="comment">% Sep 23, 2017</span>
+<span class="comment">% Politecnico di Milano, Italy</span>
+<span class="comment">% Johannes Kepler University Linz, Austria</span>
+
+
+clear
+clc
+close <span class="string">all</span>
+
+load <span class="string">ICM.mat</span>
+
+ICM
+simArray = prepare_distance_3tuple(ICM,<span class="string">'Euclidean'</span>,<span class="string">'movieId'</span>)
+</pre><pre class="codeoutput">
+ICM =
+
+  4&times;11 table
+
+    movieId      ivec1       ivec2        ivec3        ivec4        ivec5        ivec6       ivec7       ivec8       ivec9      ivec10 
+    _______    _________    ________    _________    _________    _________    _________    ________    _______    _________    _______
+
+    89         -0.070245     0.46138      0.48428      0.21553      0.53901      -0.1203     0.44358    0.24378     0.008407    0.32256
+    93          -0.40497    0.088903    -0.071341      0.28309      0.44824    -0.021499      0.3829    0.21611    -0.023754     0.1812
+    94           -0.6789    0.099756     -0.21347     0.031497      0.43244     0.081817    0.085401    0.32555     -0.18152    0.26573
+    95          -0.13137     0.21554     0.015128    -0.095731    -0.029746     -0.05443     0.25257    0.38388      0.19179    0.39506
+
+
+simArray =
+
+  6&times;3 table
+
+    item_i    item_j    Euclidean_dist_score
+    ______    ______    ____________________
+
+    89        93        0.77944             
+    89        94         1.1173             
+    89        95        0.89665             
+    93        94        0.54963             
+    93        95        0.78023             
+    94        95        0.89513             
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% This is the script for running the function 'prepare_distance_3tuple.m' 
+% which prepares a distance array [item_i,item_j,sim_score] for an input
+% item-content table.
+% Inputs:
+%        feature_table : the input feature table  [n_i*nf+1]
+%             sim_type : similarity type
+%            col1_name : the title of column 1 (containing ids)
+% Outputs:
+%             simArray : the output similarity array [n_i*3]  
+
+%
+% Yashar Deldjoo
+% Sep 23, 2017 
+% Politecnico di Milano, Italy
+% Johannes Kepler University Linz, Austria
+
+
+clear
+clc
+close all
+
+load ICM.mat
+
+ICM
+simArray = prepare_distance_3tuple(ICM,'Euclidean','movieId')
+##### SOURCE END #####
+--></body></html>
