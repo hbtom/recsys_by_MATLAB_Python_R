@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>demo_prepare_distance_3tuple</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-09-23"><meta name="DC.source" content="demo_prepare_distance_3tuple.m"><style type="text/css">
+      --><title>demo_prepare_distance_3tuple</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-09-24"><meta name="DC.source" content="demo_prepare_distance_3tuple.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -90,7 +90,7 @@ close <span class="string">all</span>
 load <span class="string">ICM.mat</span>
 
 ICM
-simArray = prepare_distance_3tuple(ICM,<span class="string">'Euclidean'</span>,<span class="string">'movieId'</span>)
+[simArray,dist_score] = prepare_distance_3tuple(ICM,<span class="string">'cosine'</span>,<span class="string">'movieId'</span>)
 </pre><pre class="codeoutput">
 ICM =
 
@@ -109,15 +109,20 @@ simArray =
 
   6&times;3 table
 
-    item_i    item_j    Euclidean_dist_score
-    ______    ______    ____________________
+    item_i    item_j    cosine_dist_score
+    ______    ______    _________________
 
-    89        93        0.77944             
-    89        94         1.1173             
-    89        95        0.89665             
-    93        94        0.54963             
-    93        95        0.78023             
-    94        95        0.89513             
+    89        93         0.3048          
+    89        94        0.59416          
+    89        95        0.43798          
+    93        94        0.17791          
+    93        95         0.5145          
+    94        95        0.54521          
+
+
+dist_score =
+
+    0.3048    0.5942    0.4380    0.1779    0.5145    0.5452
 
 </pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -145,6 +150,6 @@ close all
 load ICM.mat
 
 ICM
-simArray = prepare_distance_3tuple(ICM,'Euclidean','movieId')
+[simArray,dist_score] = prepare_distance_3tuple(ICM,'cosine','movieId')
 ##### SOURCE END #####
 --></body></html>

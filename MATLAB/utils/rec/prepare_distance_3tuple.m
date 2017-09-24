@@ -1,4 +1,4 @@
-function simArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
+function [simArray,dist_score] = prepare_distance_3tuple(feature_table,sim_type,col1_name)
 
 % The function prepares a similarity array [item_i,item_j,sim_score] which
 % contains the pairwise similarity between each pair of items. The first
@@ -21,16 +21,16 @@ eval(['itemIds = feature_table.' col1_name ';']);
 
 ICM = table2array(feature_table(:,2:end));
 
-n_i = size(ICM,1);
+dist_score = pdist(ICM,sim_type);
 
-dist_score = squareform(pdist(ICM,sim_type));
 
-simArray= [];
-for i = 1 : n_i
-    for j = i+1: n_i
-        simArray = [simArray;[itemIds(i) itemIds(j) dist_score(i,j)]];
-    end
-end
+tmp = ones(size(ICM,1));
+tmp = tril(tmp,-1); %# creates a matrix that has 1's below the diagonal
+
+[rowIdx,colIdx ] = find(tmp);
+
+%# create the output
+simArray = [itemIds(colIdx),itemIds(rowIdx),dist_score'];
 
 simArray = array2table(simArray);
 simArray.Properties.VariableNames = {'item_i','item_j',[sim_type '_dist_score']};

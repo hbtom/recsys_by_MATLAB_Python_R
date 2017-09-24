@@ -22,4 +22,4 @@ close all
 load ICM.mat
 
 ICM
-simArray = prepare_distance_3tuple(ICM,'Euclidean','movieId')
+[simArray,dist_score] = prepare_distance_3tuple(ICM,'cosine','movieId')
