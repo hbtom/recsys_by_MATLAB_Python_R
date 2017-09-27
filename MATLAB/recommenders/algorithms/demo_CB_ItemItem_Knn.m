@@ -55,11 +55,10 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 
         % distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
           distArray = prepare_distance_3tuple(ICM,'cosine','movieId');
-       
-       
 
+  % 
+%
 % Note 1:
-% user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
 % The "userIds" in both 'user_Id2idx_tr' and 'user_Id2idx_te' are the same.
 % The same applies for "itemIds" in both 'item_Id2idx_tr' and 'item_Id2idx_tr'.
 % These Ids can be used for finding similar items and users in both dataset.
@@ -67,11 +66,9 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 % Note 2:
 % The row and column indices in "urmTrain_New" after applying the function
 % "prepare_ratingMat_Id2ind" are similar to 'new_userIds' and 'new_itemIds'
-% in 'user_Id2idx_tr' and 'item_Id2idx_tr'.
-%
-% In a similar manner, the row and column indices in "urmTrain_New"
-% match with 'new_userIds' and 'new_itemIds' in 'user_Id2idx_te' and
-% 'item_Id2idx_te.'
+% in 'user_Id2idx_tr' and 'item_Id2idx_tr'. In a similar manner, the row
+% and column indices in "urmTest_New" match with 'new_userIds' and 
+% 'new_itemIds' in 'user_Id2idx_te' and 'item_Id2idx_te.'
 
 %%
 
