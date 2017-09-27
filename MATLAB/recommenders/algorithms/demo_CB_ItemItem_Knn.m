@@ -5,8 +5,8 @@
 % Inputs:
 %         trainRatings : the input 3-tuple (userId, movieId, rating) 'train' rating table [n_i*3] 
 %          testRatings : the input 3-tuple (userId, movieId, rating) 'test' rating table [n_i*3] 
-%                  ICM :
-%             sim_type : similarity type (e.g., cosine)
+%                  ICM : the input item-content table [n_i*n_f]
+%             sim_type : similarity type (e.g., 'cosine')
 %            col1_name : the title of column 1 (containing ids)
 % Outputs:
 %             simArray : the output similarity array [n_i*3]  
@@ -56,8 +56,9 @@ trainRatings_New_tr = output_tr.inputRating_New ;
         % distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
           distArray = prepare_distance_3tuple(ICM,'cosine','movieId');
 
-  % 
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          
+% user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
+% 
 % Note 1:
 % The "userIds" in both 'user_Id2idx_tr' and 'user_Id2idx_te' are the same.
 % The same applies for "itemIds" in both 'item_Id2idx_tr' and 'item_Id2idx_tr'.
@@ -69,6 +70,8 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 % in 'user_Id2idx_tr' and 'item_Id2idx_tr'. In a similar manner, the row
 % and column indices in "urmTest_New" match with 'new_userIds' and 
 % 'new_itemIds' in 'user_Id2idx_te' and 'item_Id2idx_te.'
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          
 
 %%
 
