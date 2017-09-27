@@ -5,6 +5,7 @@
 % Inputs:
 %         trainRatings : the input 3-tuple (userId, movieId, rating) 'train' rating table [n_i*3] 
 %          testRatings : the input 3-tuple (userId, movieId, rating) 'test' rating table [n_i*3] 
+%                  ICM :
 %             sim_type : similarity type (e.g., cosine)
 %            col1_name : the title of column 1 (containing ids)
 % Outputs:
@@ -58,6 +59,7 @@ trainRatings_New_tr = output_tr.inputRating_New ;
        
 
 % Note 1:
+% user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
 % The "userIds" in both 'user_Id2idx_tr' and 'user_Id2idx_te' are the same.
 % The same applies for "itemIds" in both 'item_Id2idx_tr' and 'item_Id2idx_tr'.
 % These Ids can be used for finding similar items and users in both dataset.
