@@ -47,12 +47,13 @@ trainRatings_New_tr = output_tr.inputRating_New ;
     load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_16_tvDim_10.mat']))
                 ICM = IVecTable_with_genre_label(:,1:11);
 
-% The function prepares a similarity array [item_i,item_j,sim_score] which
-% contains the pairwise similarity between each pair of items. The first
-% column of the matrix is assumed to contain item ids.
+% The function 'prepare_distance_3tuple' prepares a similarity array of form 
+% [item_i,item_j,sim_score] which contains the pairwise similarity between
+% each pair of items. The first column of the matrix is assumed to contain
+% item ids.
 
-     % distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
-       distArray = prepare_distance_3tuple(ICM,'cosine','movieId');
+        % distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
+          distArray = prepare_distance_3tuple(ICM,'cosine','movieId');
        
        
 
