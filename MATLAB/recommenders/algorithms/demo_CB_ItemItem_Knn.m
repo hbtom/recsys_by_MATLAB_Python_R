@@ -1,7 +1,5 @@
-% This is the script for running the class 'CBF_ItemItem_Knn.m' which 
-% is a content-based recommender based on KNN item-item similarity using
-% different aggregation functions. Please refer to the class definition for
-% more information.
+% This is the script for running the class 'CBF_ItemItem_Knn.m' which is a content-based recommender based on KNN item-item 
+% similarity using different aggregation functions. Please refer to the class definition for more information.
 % Inputs:
 %         trainRatings : the input 3-tuple (userId, movieId, rating) 'train' rating table [n_i*3] 
 %          testRatings : the input 3-tuple (userId, movieId, rating) 'test' rating table [n_i*3] 
@@ -17,7 +15,7 @@
 % Politecnico di Milano, Italy
 % Johannes Kepler University Linz, Austria
 
-clearskype
+clear
 clc
 close all
 
