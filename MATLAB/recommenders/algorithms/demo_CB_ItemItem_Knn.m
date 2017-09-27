@@ -3,7 +3,8 @@
 % different aggregation functions. Please refer to the class definition for
 % more information.
 % Inputs:
-%         trainRatings : the input 3-tuple (userId, movieId, rating) rating table [n_i*3] 
+%         trainRatings : the input 3-tuple (userId, movieId, rating) 'train' rating table [n_i*3] 
+%          testRatings : the input 3-tuple (userId, movieId, rating) 'test' rating table [n_i*3] 
 %             sim_type : similarity type (e.g., cosine)
 %            col1_name : the title of column 1 (containing ids)
 % Outputs:
@@ -34,20 +35,26 @@ trainRatings_New_tr = output_tr.inputRating_New ;
       urmTrain_New  = sparse(trainRatings_New_tr.new_userId,trainRatings_New_tr.new_movieId,trainRatings_New_tr.rating);  % urmTrain = [n_u1,n_i1]
                       stats_about_URm(trainRatings_New_tr,'trainRatings','new_userId','new_movieId','rating');
 
-testRatings = readtable(fullfile(rootAddr,'urms',['urm_test_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
-output_te = prepare_ratingMat_Id2ind(testRatings,'userId','movieId','rating');
+        testRatings = readtable(fullfile(rootAddr,'urms',['urm_test_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
+          output_te = prepare_ratingMat_Id2ind(testRatings,'userId','movieId','rating');
 
-inputRating_New_te = output_te.inputRating_New ;
-user_Id2idx_te = output_te.user_Id2idx     ;
-item_Id2idx_te = output_te.item_Id2Idx     ;
-urmTest_New  = sparse(inputRating_New_te.new_userId,inputRating_New_te.new_movieId,inputRating_New_te.rating);  % urmTrain = [n_u2,n_i2]
-stats_about_URm(inputRating_New_te,'testRatings','new_userId','new_movieId','rating');
+ inputRating_New_te = output_te.inputRating_New ;
+     user_Id2idx_te = output_te.user_Id2idx     ;
+     item_Id2idx_te = output_te.item_Id2Idx     ;
+       urmTest_New  = sparse(inputRating_New_te.new_userId,inputRating_New_te.new_movieId,inputRating_New_te.rating);  % urmTest = [n_u2,n_i2]
+                      stats_about_URm(inputRating_New_te,'testRatings','new_userId','new_movieId','rating');
 
-load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_16_tvDim_10.mat']))
-ICM = IVecTable_with_genre_label(:,1:11);
+    load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_16_tvDim_10.mat']))
+                ICM = IVecTable_with_genre_label(:,1:11);
 
-% distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
-distArray = prepare_distance_3tuple(ICM,'cosine','movieId');
+% The function prepares a similarity array [item_i,item_j,sim_score] which
+% contains the pairwise similarity between each pair of items. The first
+% column of the matrix is assumed to contain item ids.
+
+     % distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
+       distArray = prepare_distance_3tuple(ICM,'cosine','movieId');
+       
+       
 
 % Note 1:
 % The "userIds" in both 'user_Id2idx_tr' and 'user_Id2idx_te' are the same.
