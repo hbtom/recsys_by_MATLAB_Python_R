@@ -1,17 +1,17 @@
-% This is the script for running the class 'CBF_ItemItem_Knn.m' which is a content-based recommender based on KNN item-item 
-% similarity using different aggregation functions. Please refer to the class definition for more information.
+% This is the script for running the class 'CBF_ItemItem_Knn.m' which is a content-based recommender based on KNN 
+% item-item similarity using different aggregation functions. Please refer to the class definition for more info.
 % Inputs:
 %         trainRatings : the input 3-tuple (userId, movieId, rating) 'train' rating table [n_i*3] 
 %          testRatings : the input 3-tuple (userId, movieId, rating) 'test' rating table [n_i*3] 
 %                  ICM : the input item-content table [n_i*n_f]
 %             sim_type : similarity type (e.g., 'cosine')
-%            col1_name : the title of column 1 (containing ids)
+%            coli_name : the title of column Ids
 % Outputs:
 %             simArray : the output similarity array [n_i*3]  
 
 %
 % Yashar Deldjoo
-% Sep 27, 2017 
+% Septmeber 2017 
 % Politecnico di Milano, Italy
 % Johannes Kepler University Linz, Austria
 
@@ -19,40 +19,48 @@ clear
 clc
 close all
 
+%% PATHs 
+
 addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/rec');
 rootAddr = '/Users/yashar/OneDrive - Politecnico di Milano/data/';
 
-fold_no = 1;
 %% LOAD URMs and ICMs
+
+% Global Variables
+  fold_no = 1 ;
+col1_name = 'userId' ; 
+col2_name = 'movieId';
+col3_name = 'rating' ;
+sim_type  = 'cosine' ;
 
 trainRatings = readtable(fullfile(rootAddr,'urms',['urm_train_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
 
-          output_tr = prepare_ratingMat_Id2ind(trainRatings,'userId','movieId','rating');
+          output_tr = prepare_ratingMat_Id2ind(trainRatings,col1_name,col2_name,col3_name);
 trainRatings_New_tr = output_tr.inputRating_New ;
      user_Id2idx_tr = output_tr.user_Id2idx     ;
      item_Id2idx_tr = output_tr.item_Id2Idx     ;
       urmTrain_New  = sparse(trainRatings_New_tr.new_userId,trainRatings_New_tr.new_movieId,trainRatings_New_tr.rating);  % urmTrain = [n_u1,n_i1]
-                      stats_about_URm(trainRatings_New_tr,'trainRatings','new_userId','new_movieId','rating');
+                      stats_about_URm(trainRatings_New_tr,'trainRatings',['new_' col1_name],['new_ ' col2_name],col3_name);
 
         testRatings = readtable(fullfile(rootAddr,'urms',['urm_test_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
-          output_te = prepare_ratingMat_Id2ind(testRatings,'userId','movieId','rating');
+          output_te = prepare_ratingMat_Id2ind(testRatings,col1_name,col2_name,col3_name);
 
  inputRating_New_te = output_te.inputRating_New ;
      user_Id2idx_te = output_te.user_Id2idx     ;
      item_Id2idx_te = output_te.item_Id2Idx     ;
        urmTest_New  = sparse(inputRating_New_te.new_userId,inputRating_New_te.new_movieId,inputRating_New_te.rating);  % urmTest = [n_u2,n_i2]
-                      stats_about_URm(inputRating_New_te,'testRatings','new_userId','new_movieId','rating');
+                      stats_about_URm(inputRating_New_te,'testRatings',['new_' col1_name],['new_ ' col2_name],col3_name);
 
     load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_16_tvDim_10.mat']))
                 ICM = IVecTable_with_genre_label(:,1:11);
 
 % The function 'prepare_distance_3tuple' prepares a similarity array of form 
-% [item_i,item_j,sim_score] which contains the pairwise similarity between
-% each pair of items. The first column of the matrix is assumed to contain
-% item ids.
+% [item_i,item_j,sim_score] which contains the pairwise similarities between
+% each pair of items for item in ICM. The first column of the matrix is 
+% assumed to contain item ids.
 
         % distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
-          distArray = prepare_distance_3tuple(ICM,'cosine','movieId');
+          distArray = prepare_distance_3tuple(ICM,sim_type,col2_name);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          
 % user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
