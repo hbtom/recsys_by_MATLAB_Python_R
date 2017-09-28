@@ -7,7 +7,7 @@
 %             sim_type : similarity type (e.g., 'cosine')
 %            coli_name : the title of column Ids
 % Outputs:
-%             simArray : the output similarity array [n_i*3]  
+%               output : the output strcuture containg predicted urms 
 
 %
 % Yashar Deldjoo

@@ -1,3 +1,14 @@
+% This is a class for building a content-based recommender based on KNN item-item similarity approach
+% using various aggregation functions for rating prediction:
+%   - simple average
+%   - weighted average (the weights are the similarities)
+%   - wighted average with a shrinkage factor (lambda = 0.001, 0.01, 0.1)
+%
+% Yashar Deldjoo
+% Septmeber 2017 
+% Politecnico di Milano, Italy
+% Johannes Kepler University Linz, Austria
+            
 classdef CBF_ItemItem_Knn
     
     properties
@@ -14,12 +25,6 @@ classdef CBF_ItemItem_Knn
     
     methods
          function output = predictRating(obj,userIds_te,itemId_te)
-
-            % This function builds a content-based recommender based on KNN item-item similarity approach 
-            % using various aggregation functions for rating prediction:
-            % - simple average
-            % - weighted average (the weights are the similarities)
-            % - wighted average with a shrinkage factor (lambda = 0.001, 0.01, 0.1)
 
             % Since this module heavily depends on finding similar items, we scan the ratings in the test,
             % item-wise. That is, for each item in test, we do rating prediction for all users who have
