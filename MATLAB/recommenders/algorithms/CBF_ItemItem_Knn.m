@@ -15,14 +15,16 @@ classdef CBF_ItemItem_Knn
     methods
          function output = predictRating(obj,userIds_te,itemId_te)
 
-            % This function builds a content-based recommender based on KNN
-            % item-item similarity approach using various aggregation functions.
-            
-            % Since this module heavily depends on finding similar items, 
-            % we scan the ratings in the test, item-wise. That is, for each
-            % item in test, we do rating prediction for all users who have
-            % rating in test. This would speed up the item similaity search
-            % process since it is down once for each item. 
+            % This function builds a content-based recommender based on KNN item-item similarity approach 
+            % using various aggregation functions for rating prediction:
+            % - simple average
+            % - weighted average (the weights are the similarities)
+            % - wighted average with a shrinkage factor (lambda = 0.001, 0.01, 0.1)
+
+            % Since this module heavily depends on finding similar items, we scan the ratings in the test,
+            % item-wise. That is, for each item in test, we do rating prediction for all users who have
+            % rating in test. This would speed up the item similaity searchprocess since it is done once
+            % for each item. 
             
             user_Id2idx_tr_ob = table2array(obj.user_Id2idx_tr) ;
             item_Id2idx_tr_ob = table2array(obj.item_Id2idx_tr) ;

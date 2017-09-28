@@ -40,7 +40,7 @@ trainRatings_New_tr = output_tr.inputRating_New ;
      user_Id2idx_tr = output_tr.user_Id2idx     ;
      item_Id2idx_tr = output_tr.item_Id2Idx     ;
       urmTrain_New  = sparse(trainRatings_New_tr.new_userId,trainRatings_New_tr.new_movieId,trainRatings_New_tr.rating);  % urmTrain = [n_u1,n_i1]
-                      stats_about_URm(trainRatings_New_tr,'trainRatings',['new_' col1_name],['new_ ' col2_name],col3_name);
+                      stats_about_URm(trainRatings_New_tr,'trainRatings',['new_' col1_name],['new_' col2_name],col3_name);
 
         testRatings = readtable(fullfile(rootAddr,'urms',['urm_test_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
           output_te = prepare_ratingMat_Id2ind(testRatings,col1_name,col2_name,col3_name);
@@ -49,15 +49,14 @@ trainRatings_New_tr = output_tr.inputRating_New ;
      user_Id2idx_te = output_te.user_Id2idx     ;
      item_Id2idx_te = output_te.item_Id2Idx     ;
        urmTest_New  = sparse(inputRating_New_te.new_userId,inputRating_New_te.new_movieId,inputRating_New_te.rating);  % urmTest = [n_u2,n_i2]
-                      stats_about_URm(inputRating_New_te,'testRatings',['new_' col1_name],['new_ ' col2_name],col3_name);
+                      stats_about_URm(inputRating_New_te,'testRatings',['new_' col1_name],['new_' col2_name],col3_name);
 
     load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_16_tvDim_10.mat']))
                 ICM = IVecTable_with_genre_label(:,1:11);
 
-% The function 'prepare_distance_3tuple' prepares a similarity array of form 
-% [item_i,item_j,sim_score] which contains the pairwise similarities between
-% each pair of items for item in ICM. The first column of the matrix is 
-% assumed to contain item ids.
+% The function 'prepare_distance_3tuple' prepares a similarity array of form [item_i,item_j,sim_score] which contains the
+% pairwise similarities between each pair of items for item in ICM. The first column of the matrix is assumed to contain
+% item ids.
 
         % distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
           distArray = prepare_distance_3tuple(ICM,sim_type,col2_name);
@@ -66,55 +65,57 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 % user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
 % 
 % Note 1:
-% The "userIds" in both 'user_Id2idx_tr' and 'user_Id2idx_te' are the same.
-% The same applies for "itemIds" in both 'item_Id2idx_tr' and 'item_Id2idx_tr'.
-% These Ids can be used for finding similar items and users in both dataset.
+% The "userIds" in both 'user_Id2idx_tr' and 'user_Id2idx_te' are the same. The same applies for "itemIds" in both 
+% 'item_Id2idx_tr' and 'item_Id2idx_tr'. These Ids can be used for finding similar items and users in both dataset.
 
 % Note 2:
-% The row and column indices in "urmTrain_New" after applying the function
-% "prepare_ratingMat_Id2ind" are similar to 'new_userIds' and 'new_itemIds'
-% in 'user_Id2idx_tr' and 'item_Id2idx_tr'. In a similar manner, the row
-% and column indices in "urmTest_New" match with 'new_userIds' and 
-% 'new_itemIds' in 'user_Id2idx_te' and 'item_Id2idx_te.'
+% The row and column indices in 'urmTrain_New' after applying the function "prepare_ratingMat_Id2ind" are similar to 
+% 'new_userIds' and 'new_itemIds' in 'user_Id2idx_tr' and 'item_Id2idx_tr'. In a similar manner, the row and column 
+% indices in "urmTest_New" match with 'new_userIds' and 'new_itemIds' in 'user_Id2idx_te' and 'item_Id2idx_te.'
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          
 
 %%
 
-[test_useridx,test_itemidx] = find(urmTest_New ~=0);
+                   [test_useridx,test_itemidx] = find(urmTest_New ~=0);
 
-urmPredict = sparse(size(urmTest_New));
+             % Inititate the class properties and object
+             recommender_Object                = CBF_ItemItem_Knn  ;
+             recommender_Object.urmTrain_New   = urmTrain_New      ;
+             recommender_Object.distArray      = distArray         ;
+             recommender_Object.user_Id2idx_tr = user_Id2idx_tr    ;
+             recommender_Object.item_Id2idx_tr = item_Id2idx_tr    ;
+             recommender_Object.nn             = 10                ;
 
-recommender_Object = CBF_ItemItem_Knn ;
-recommender_Object.urmTrain_New = urmTrain_New     ;
-recommender_Object.distArray = distArray        ;
-recommender_Object.user_Id2idx_tr = user_Id2idx_tr   ;
-recommender_Object.item_Id2idx_tr = item_Id2idx_tr   ;
-recommender_Object.nn             = 10               ;
-for item_no = 3: 3 %size(urmTest_New,1)
-    int_ind = (test_itemidx == item_no) ;
+% Since the module is an item-wise operation (i.e., item-item KNN), for "computaional efficieny" we do the processing of
+% rating prediction "item-wise".
+
+for item_no = 1 : size(urmTest_New,2)
     
-    % "test_useridx" and "test_itemidx" contain internal indices of
-    % 'urmTest_New' which is equivalent to 'new_userIds' and 'new_itemIds'
-    % which can be found in 'user_Id2idx_te' and 'item_Id2idx_te.'
+       int_ind = (test_itemidx == item_no) ;
     
-    % We need to use the true 'userIds' and 'itemIds' which are the same
-    % in both train and test datasets.
+    % Note 3:
+    % 'test_useridx' and 'test_itemidx' contain internal indices of 'urmTest_New' which is equivalent to 'new_userIds' and 
+    % 'new_itemIds' which can be found in 'user_Id2idx_te' and 'item_Id2idx_te.'
     
-    % Whenver 'new' is not mentioned, it mean true user and item Ids.
-    % "userId_te" and "itemId_te" are both true user and item Ids.
+    % For us, we need to use the true 'userIds' and 'itemIds' which are the same in both train and test datasets. Whenver 'new'
+    % is not mentioned, it mean they refer to "true" user and item Ids. In addition, 'userId_te' and 'itemId_te' contains both 
+    % true user and item Ids.
     
-    % user_Id2idx_te = [userId, new_userId], item_Id2idx_te = [itemId,new_itemId]
+    % user_Id2idx_te = [userId, new_userId], item_Id2idx_te = [itemId, new_itemId]
     
-    itemId_te = item_Id2idx_te(item_Id2idx_te.new_movieId == item_no,1);
-    userIds_te = user_Id2idx_te(ismember(user_Id2idx_te.new_userId,test_useridx(int_ind)),1);
-    % For efficiency, for each item we are providing a list of items.
-    tic
-    output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te));
-    toc
-    if length(table2array(userIds_te)) ~= length(output.rating_pred_avg)
-        disp('Opps!')
-    end
+       
+        % Find the true userIds and itemIds to path it to the recommender
+         itemId_te = item_Id2idx_te(table2array(item_Id2idx_te(:,2)) == item_no,1);
+        userIds_te = user_Id2idx_te(ismember(table2array(user_Id2idx_te(:,2)),test_useridx(int_ind)),1);
+   
+         tic
+         output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te));
+         toc
+         
+%     if length(table2array(userIds_te)) ~= length(output.rating_pred_avg)
+%         disp('Opps!')
+%     end
 end
 
 
