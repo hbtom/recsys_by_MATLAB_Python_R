@@ -71,11 +71,11 @@ classdef CBF_ItemItem_Knn
                       % The closest neighbors are here. Since we use a distance function, we find the NN based on those
                       % having the minimum similarity score.
                       [sim_score,sim_idx] = sort(dist_corated_itemIds(:,3),'ascend');
-                      nn_idx  = sim_idx(1:nn_ob); % the NNs
-                      nn_sim_score = sim_score(1:nn_ob);
-                        nn_itemIds = corated_itemIds(nn_idx);
+                           nn_idx  = sim_idx(1:nn_ob)        ; % the NNs
+                      nn_sim_score = sim_score(1:nn_ob)      ;
+                        nn_itemIds = corated_itemIds(nn_idx) ;
                         nn_itemIdx = item_Id2idx_tr_ob(ismember(item_Id2idx_tr_ob(:,1),nn_itemIds),2);
-                        nn_ratings = full(urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx));
+                        nn_ratings = full(urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx))            ;
                         
                         output.rating_pred_avg(u,:) = [mean(nn_ratings) new_userIds_tr(u,1)];
                         output.rating_pred_weavg(u,:) = [(nn_sim_score(:)'*nn_ratings(:))/(sum(nn_sim_score)) new_userIds_tr(u,1)];
@@ -86,10 +86,9 @@ classdef CBF_ItemItem_Knn
                         
                   elseif size(dist_corated_itemIds,1) >0 && size(dist_corated_itemIds,1)<= nn_ob 
                       nn_sim_score = dist_corated_itemIds(:,3);
-                      nn_dist = dist_corated_itemIds(:,1:3);
-                      nn_itemIds = corated_itemIds;
-                      nn_itemIdx = item_Id2idx_tr_ob(ismember(item_Id2idx_tr_ob(:,1),nn_itemIds),2);
-                      nn_ratings = urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx);
+                        nn_itemIds = corated_itemIds;
+                        nn_itemIdx = item_Id2idx_tr_ob(ismember(item_Id2idx_tr_ob(:,1),nn_itemIds),2);
+                        nn_ratings = urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx);
                       output.rating_pred_avg(u,:) = [mean(nn_ratings) new_userIds_tr(u,1)];
                       output.rating_pred_weavg(u,:) = [(nn_sim_score(:)'*nn_ratings(:))/(sum(nn_sim_score)) new_userIds_tr(u,1)];
                       output.rating_pred_weavg_reg01(u,:) = [(nn_sim_score(:)'*nn_ratings(:))/(0.1+sum(nn_sim_score)) new_userIds_tr(u,1)];

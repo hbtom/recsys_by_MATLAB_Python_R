@@ -79,11 +79,11 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 
                    [test_useridx,test_itemidx] = find(urmTest_New ~=0);
                    
-                                   urmPredict_Avg = sparse(zeros(size(urmTest_New)));
-                           urmPredict_weightedAvg = sparse(zeros(size(urmTest_New)));
-                     urmPredict_weightedAvg_skg01 = sparse(zeros(size(urmTest_New)));
-                    urmPredict_weightedAvg_skg001 = sparse(zeros(size(urmTest_New)));
-                   urmPredict_weightedAvg_skg0001 = sparse(zeros(size(urmTest_New)));
+                                   urmPred_Avg = sparse(zeros(size(urmTest_New)));
+                           urmPred_weightedAvg = sparse(zeros(size(urmTest_New)));
+                     urmPred_weightedAvg_skg01 = sparse(zeros(size(urmTest_New)));
+                    urmPred_weightedAvg_skg001 = sparse(zeros(size(urmTest_New)));
+                   urmPred_weightedAvg_skg0001 = sparse(zeros(size(urmTest_New)));
 
 
              % Inititate the class properties and object
@@ -97,7 +97,7 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 % Since the module is an item-wise operation (i.e., item-item KNN), for "computaional efficieny" we do the processing of
 % rating prediction "item-wise".
 tic
-for item_no = 1 : 20 %size(urmTest_New,2)
+for item_no = 1 : size(urmTest_New,2)
     
        int_ind = (test_itemidx == item_no) ;
     
@@ -119,20 +119,23 @@ for item_no = 1 : 20 %size(urmTest_New,2)
          output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te));
          
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_avg(:,2));
-         urmPredict_Avg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_avg(:,1);
+         urmPred_Avg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_avg(:,1);
          
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg(:,2));
-         urmPredict_weightedAvg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg(:,1);
+         urmPred_weightedAvg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg(:,1);
          
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg01(:,2));
-         urmPredict_weightedAvg_skg01(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg01(:,1);
+         urmPred_weightedAvg_skg01(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg01(:,1);
          
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg001(:,2));
-         urmPredict_weightedAvg_skg001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg001(:,1);
+         urmPred_weightedAvg_skg001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg001(:,1);
          
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg0001(:,2));
-         urmPredict_weightedAvg_skg0001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg0001(:,1);
+         urmPred_weightedAvg_skg0001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg0001(:,1);
          
+         if mod(item_no,250) == 1
+             fprintf('Movie %d \n',item_no)
+         end
 %     if length(table2array(userIds_te)) ~= length(output.rating_pred_avg)
 %         disp('Opps!')
 %     end
@@ -140,5 +143,7 @@ end
 
 toc
 
+save(['RecSys_Result_fold_no' num2str(fold_no) '.mat'],'urmTest_New','urmPred_Avg', ...
+    'urmPred_weightedAvg','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001','urmPred_weightedAvg_skg0001');
 
     
