@@ -60,7 +60,7 @@ item_Id2Idx = [itemId_unq';1:length(itemId_unq)]';
 inputRating_New = [user_Id2idx(ind1,2) item_Id2Idx(ind2,2) ratings(:)];
 
 inputRating_New = array2table(inputRating_New);
-inputRating_New.Properties.VariableNames = {['new_' col1_name],['new_' col2_name],['new_' col3_name]};
+inputRating_New.Properties.VariableNames = {['new_' col1_name],['new_' col2_name],[col3_name]};
 
 output.inputRating_New = inputRating_New;
 output.user_Id2idx = user_Id2idx ;

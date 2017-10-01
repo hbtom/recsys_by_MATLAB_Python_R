@@ -21,11 +21,22 @@ close all
 
 %% PATHs 
 
-addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/rec');
-addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/recommenders/metrics');
-rootAddr = '/Users/yashar/OneDrive - Politecnico di Milano/data/';
- outAddr = '';
-
+if ismac
+    
+    addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/rec');
+    addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/recommenders/metrics');
+    rootAddr = '/Users/yashar/OneDrive - Politecnico di Milano/data/';
+    outAddr = '';
+    
+elseif ispc
+    addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\utils\rec');
+    addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\recommenders\metrics');
+    rootAddr = 'C:\Users\Yas\Documents\data';
+    outAddr = 'C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\recommenders\algorithms\rec_results';
+    
+    
+end
+ 
 %% LOAD URMs and ICMs
 
 % Global Variables
@@ -33,7 +44,8 @@ rootAddr = '/Users/yashar/OneDrive - Politecnico di Milano/data/';
 col1_name = 'userId' ; 
 col2_name = 'movieId';
 col3_name = 'rating' ;
-sim_type  = 'cosine' ;
+ sim_type = 'cosine' ;
+      nn  = 10       ;
 
 % feature specific params
 feature_name = 'audio_ivec' ;
@@ -60,25 +72,25 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 
     load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
                 ICM = IVecTable_with_genre_label(:,1:tvDim+1);
-
-The function 'prepare_distance_3tuple' prepares a similarity array of form [item_i,item_j,sim_score] which contains the
-pairwise similarities between each pair of items for item in ICM. The first column of the matrix is assumed to contain
-item ids.
-
-        distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
+% 
+% The function 'prepare_distance_3tuple' prepares a similarity array of form [item_i,item_j,sim_score] which contains the
+% pairwise similarities between each pair of items for item in ICM. The first column of the matrix is assumed to contain
+% item ids.
+% 
+%         distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
           distArray = prepare_distance_3tuple(ICM,sim_type,col2_name);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          
-user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
+% user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
 
-Note 1:
-The "userIds" in both 'user_Id2idx_tr' and 'user_Id2idx_te' are the same. The same applies for "itemIds" in both 
-'item_Id2idx_tr' and 'item_Id2idx_tr'. These Ids can be used for finding similar items and users in both dataset.
-
-Note 2:
-The row and column indices in 'urmTrain_New' after applying the function "prepare_ratingMat_Id2ind" are similar to 
-'new_userIds' and 'new_itemIds' in 'user_Id2idx_tr' and 'item_Id2idx_tr'. In a similar manner, the row and column 
-indices in "urmTest_New" match with 'new_userIds' and 'new_itemIds' in 'user_Id2idx_te' and 'item_Id2idx_te.'
+% Note 1:
+% The "userIds" in both 'user_Id2idx_tr' and 'user_Id2idx_te' are the same. The same applies for "itemIds" in both 
+% 'item_Id2idx_tr' and 'item_Id2idx_tr'. These Ids can be used for finding similar items and users in both dataset.
+% 
+% Note 2:
+% The row and column indices in 'urmTrain_New' after applying the function "prepare_ratingMat_Id2ind" are similar to 
+% 'new_userIds' and 'new_itemIds' in 'user_Id2idx_tr' and 'item_Id2idx_tr'. In a similar manner, the row and column 
+% indices in "urmTest_New" match with 'new_userIds' and 'new_itemIds' in 'user_Id2idx_te' and 'item_Id2idx_te.'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          
 
@@ -93,30 +105,30 @@ indices in "urmTest_New" match with 'new_userIds' and 'new_itemIds' in 'user_Id2
                    urmPred_weightedAvg_skg0001 = sparse(zeros(size(urmTest_New)));
 
 
-             Inititate the class properties and object
+%              Inititate the class properties and object
              recommender_Object                = CBF_ItemItem_Knn  ;
              recommender_Object.urmTrain_New   = urmTrain_New      ;
              recommender_Object.distArray      = distArray         ;
              recommender_Object.user_Id2idx_tr = user_Id2idx_tr    ;
              recommender_Object.item_Id2idx_tr = item_Id2idx_tr    ;
-             recommender_Object.nn             = 10                ;
+             recommender_Object.nn             = nn                ;
              
-Since the module is an item-wise operation (i.e., item-item KNN), for "computaional efficieny" we do the processing of
-rating prediction "item-wise".
+% Since the module is an item-wise operation (i.e., item-item KNN), for "computaional efficieny" we do the processing of
+% rating prediction "item-wise".
 tic
 for item_no = 1 : size(urmTest_New,2)
     
        int_ind = (test_itemidx == item_no) ;
     
-    Note 3:
-    'test_useridx' and 'test_itemidx' contain internal indices of 'urmTest_New' which is equivalent to 'new_userIds' and 
-    'new_itemIds' which can be found in 'user_Id2idx_te' and 'item_Id2idx_te.'
-    
-    For us, we need to use the true 'userIds' and 'itemIds' which are the same in both train and test datasets. Whenver 'new'
-    is not mentioned, it mean they refer to "true" user and item Ids. In addition, 'userId_te' and 'itemId_te' contains both 
-    true user and item Ids.
-    
-    user_Id2idx_te = [userId, new_userId], item_Id2idx_te = [itemId, new_itemId]
+%     Note 3:
+%     'test_useridx' and 'test_itemidx' contain internal indices of 'urmTest_New' which is equivalent to 'new_userIds' and 
+%     'new_itemIds' which can be found in 'user_Id2idx_te' and 'item_Id2idx_te.'
+%     
+%     For us, we need to use the true 'userIds' and 'itemIds' which are the same in both train and test datasets. Whenver 'new'
+%     is not mentioned, it mean they refer to "true" user and item Ids. In addition, 'userId_te' and 'itemId_te' contains both 
+%     true user and item Ids.
+%     
+%     user_Id2idx_te = [userId, new_userId], item_Id2idx_te = [itemId, new_itemId]
     
        
         Find the true userIds and itemIds to path it to the recommender
@@ -151,15 +163,15 @@ end
 toc
 
 if strcmp(feature_name,'audio_ivec')
-    save(['RecSys_results_feature_name' feature_name '_gmm_size_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat'],'urmTest_New','urmPred_Avg', ...
+    save(fullfile(outAddr,['RecSys_results_nn_' numstr(nn) '_feature_name' feature_name '_gmm_size_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001','urmPred_weightedAvg_skg0001');  
 end
 
-       load('RecSys_Result_fold_no1.mat')
+%        load('RecSys_Result_fold_no1.mat')
 output = evaluate_urms(urmTest_New, urmPred_Avg);
 outputRandom_rec = evaluate_urms_random(urmTest_New, urmPred_Avg);
 
 if strcmp(feature_name,'audio_ivec')
     % for i-vec
-    save(['Evaluation_results_feature_name' feature_name '_gmm_size_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat'],'output');    
+    save(fullfile(outAddr,['RecSys_results_nn_' numstr(nn) '_feature_name' feature_name '_gmm_size_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),'output');    
 end
