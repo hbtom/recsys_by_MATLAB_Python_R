@@ -15,9 +15,9 @@
 % Politecnico di Milano, Italy
 % Johannes Kepler University Linz, Austria
 
-clear
-clc
-close all
+% clear
+% clc
+% close all
 
 %% PATHs 
 
@@ -45,12 +45,12 @@ col1_name = 'userId' ;
 col2_name = 'movieId';
 col3_name = 'rating' ;
  sim_type = 'cosine' ;
-      nn  = 10       ;
+%       nn  = 10       ;
 
 % feature specific params
 feature_name = 'audio_ivec' ;
-    gmm_size = 128;       % small = [128,256]  big = [16,32,64,128,256,512]
-       tvDim = 40 ;       % small = [40,100, 200];
+%     gmm_size = 128;       % small = [128,256]  big = [16,32,64,128,256,512]
+%        tvDim = 40 ;       % small = [40,100, 200];
 
 trainRatings = readtable(fullfile(rootAddr,'urms',['urm_train_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
 
@@ -116,7 +116,7 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 % Since the module is an item-wise operation (i.e., item-item KNN), for "computaional efficieny" we do the processing of
 % rating prediction "item-wise".
 tic
-for item_no = 1 : size(urmTest_New,2)
+for item_no = 1 : 100 %size(urmTest_New,2)
     
        int_ind = (test_itemidx == item_no) ;
     
@@ -131,7 +131,7 @@ for item_no = 1 : size(urmTest_New,2)
 %     user_Id2idx_te = [userId, new_userId], item_Id2idx_te = [itemId, new_itemId]
     
        
-        Find the true userIds and itemIds to path it to the recommender
+%         Find the true userIds and itemIds to path it to the recommender
          itemId_te = item_Id2idx_te(table2array(item_Id2idx_te(:,2)) == item_no,1);
         userIds_te = user_Id2idx_te(ismember(table2array(user_Id2idx_te(:,2)),test_useridx(int_ind)),1);
    
@@ -152,20 +152,20 @@ for item_no = 1 : size(urmTest_New,2)
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg0001(:,2));
          urmPred_weightedAvg_skg0001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg0001(:,1);
          
-         if mod(item_no,250) == 1
+         if mod(item_no,25) == 1
              fprintf('Movie %d \n',item_no)
          end
-    if length(table2array(userIds_te)) ~= length(output.rating_pred_avg)
-        disp('Opps!')
-    end
+
 end
 
 toc
 
 if strcmp(feature_name,'audio_ivec')
-    save(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_name' feature_name '_gmm_size_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
+    save(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001','urmPred_weightedAvg_skg0001');  
 end
+
+% load(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']);
 
 %        load('RecSys_Result_fold_no1.mat')
 output = evaluate_urms(urmTest_New, urmPred_Avg);
@@ -173,5 +173,5 @@ outputRandom_rec = evaluate_urms_random(urmTest_New, urmPred_Avg);
 
 if strcmp(feature_name,'audio_ivec')
     % for i-vec
-    save(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_name' feature_name '_gmm_size_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),'output');    
+    save(fullfile(outAddr,['Eval_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),'output','outputRandom_rec');    
 end
