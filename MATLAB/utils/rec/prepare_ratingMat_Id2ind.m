@@ -51,19 +51,25 @@ userId_unq = userId_unq(:);
 itemId_unq = itemId_unq(:);
 
 user_Id2idx = [userId_unq';1:length(userId_unq)]';
-item_Id2Idx = [itemId_unq';1:length(itemId_unq)]';
+item_Id2idx = [itemId_unq';1:length(itemId_unq)]';
 
 [~, ind1] = ismember(userId,user_Id2idx(:,1));
-[~, ind2] = ismember(itemId,item_Id2Idx(:,1));
+[~, ind2] = ismember(itemId,item_Id2idx(:,1));
   ratings = inputRating.rating               ;
 
-inputRating_New = [user_Id2idx(ind1,2) item_Id2Idx(ind2,2) ratings(:)];
+inputRating_New = [user_Id2idx(ind1,2) item_Id2idx(ind2,2) ratings(:)];
 
 inputRating_New = array2table(inputRating_New);
-inputRating_New.Properties.VariableNames = {['new_' col1_name],['new_' col2_name],['new_' col3_name]};
+inputRating_New.Properties.VariableNames = {['new_' col1_name],['new_' col2_name],col3_name};
 
 output.inputRating_New = inputRating_New;
-output.user_Id2idx = user_Id2idx ;
-output.item_Id2Idx = item_Id2Idx ;
+    
+    user_Id2idx = array2table(user_Id2idx);
+  user_Id2idx.Properties.VariableNames = {col1_name,['new_' col1_name]};
+    output.user_Id2idx = user_Id2idx ;
+       
+       item_Id2idx = array2table(item_Id2idx);
+       item_Id2idx.Properties.VariableNames = {col2_name,['new_' col2_name]};
+       output.item_Id2Idx = item_Id2idx ;
 
 
