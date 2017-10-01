@@ -3,7 +3,7 @@ function outputRandom_rec = evaluate_urms_random(urmTest, urmPred)
 fprintf('Evaluation strtated ...  \n');
 
 p = 0;
-for u = 1 : 1000 % size(urmTest,1)
+for u = 1 : size(urmTest,1)
     if nnz(urmPred(u,:)) == nnz(urmTest(u,:))
                 
         [rp_u,ranked_list] = sort(urmPred(u,:)-0.1+0.2*rand(1,size(urmTest,2)),'descend');

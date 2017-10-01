@@ -116,7 +116,7 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 % Since the module is an item-wise operation (i.e., item-item KNN), for "computaional efficieny" we do the processing of
 % rating prediction "item-wise".
 tic
-for item_no = 1 : 100 %size(urmTest_New,2)
+for item_no = 1 : size(urmTest_New,2)
     
        int_ind = (test_itemidx == item_no) ;
     
@@ -152,7 +152,7 @@ for item_no = 1 : 100 %size(urmTest_New,2)
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg0001(:,2));
          urmPred_weightedAvg_skg0001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg0001(:,1);
          
-         if mod(item_no,25) == 1
+         if mod(item_no,1000) == 1
              fprintf('Movie %d \n',item_no)
          end
 
@@ -168,10 +168,22 @@ end
 % load(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']);
 
 %        load('RecSys_Result_fold_no1.mat')
-output = evaluate_urms(urmTest_New, urmPred_Avg);
+output_urmPred_Avg = evaluate_urms(urmTest_New, urmPred_Avg);
+output_urmPred_weightedAvg = evaluate_urms(urmTest_New, urmPred_weightedAvg);
+output_urmPred_weightedAvg_skg01 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg01);
+output_urmPred_weightedAvg_skg001 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg001);
+output_urmPred_weightedAvg_skg0001 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg0001);
+
 outputRandom_rec = evaluate_urms_random(urmTest_New, urmPred_Avg);
 
 if strcmp(feature_name,'audio_ivec')
     % for i-vec
-    save(fullfile(outAddr,['Eval_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),'output','outputRandom_rec');    
+    save(fullfile(outAddr,['Eval_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),...
+        'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001',...
+        'output_urmPred_weightedAvg_skg0001','outputRandom_rec');    
 end
+
+
+
+
+
