@@ -49,6 +49,7 @@ col3_name = 'rating' ;
 
 % feature specific params
 feature_name = 'audio_ivec' ;
+feature_name = 'genre'      ;
  rand_rec_ON = 'YES';
 %     gmm_size = 128;       % small = [128,256]  big = [16,32,64,128,256,512]
 %        tvDim = 40 ;       % small = [40,100, 200];
@@ -72,7 +73,14 @@ trainRatings_New_tr = output_tr.inputRating_New ;
                       stats_about_URm(inputRating_New_te,'testRatings',['new_' col1_name],['new_' col2_name],col3_name);
 
     load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
-                ICM = IVecTable_with_genre_label(:,1:tvDim+1);
+    
+    if strcmp(feature_name,'audio_ivec')
+        ICM = IVecTable_with_genre_label(:,1:tvDim+1);
+        
+    elseif strcmp(feature_name,'genre')
+        ICM = IVecTable_with_genre_label(:,[1,tvDim+2:end-1]);
+        
+    end
 
 % The function 'prepare_distance_3tuple' prepares a similarity array of form [item_i,item_j,sim_score] which contains the
 % pairwise similarities between each pair of items for item in ICM. The first column of the matrix is assumed to contain
@@ -179,8 +187,9 @@ end
 toc
 
 if strcmp(feature_name,'audio_ivec')
-    save(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
-        'urmPred_weightedAvg','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001','urmPred_weightedAvg_skg0001');  
+    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
+        'urmPred_weightedAvg','urmPred_weightedAvg_skg10','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
+        'urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001');  
 end
 
 % load(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']);
@@ -205,10 +214,15 @@ end
 
 if strcmp(feature_name,'audio_ivec')
     % for i-vec
-    save(fullfile(outAddr,['Eval_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']),...
+    save(fullfile(outAddr,['Eval_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5' '_rand_rec_ON_' rand_rec_ON '.mat']),...
         'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg10','output_urmPred_weightedAvg_skg1',...
         'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg10','output_SIMpow_urmPred_weightedAvg_skg1',...
-        'output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec');    
+        'output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
+elseif strcmp(feature_name,'genre')
+      save(fullfile(outAddr,['Eval_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5' '_rand_rec_ON_' rand_rec_ON '.mat']),...
+        'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg10','output_urmPred_weightedAvg_skg1',...
+        'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg10','output_SIMpow_urmPred_weightedAvg_skg1',...
+        'output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
 end
 
 
