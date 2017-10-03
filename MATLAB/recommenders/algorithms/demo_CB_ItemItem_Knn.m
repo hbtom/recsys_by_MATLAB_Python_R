@@ -48,9 +48,9 @@ col3_name = 'rating' ;
 %       nn  = 10       ;
 
 % feature specific params
-feature_name = 'audio_ivec' ;
-feature_name = 'genre'      ;
- rand_rec_ON = 'YES';
+% feature_name = 'audio_ivec' ;
+% feature_name = 'genre'      ;
+%  rand_rec_ON = 'YES';
 %     gmm_size = 128;       % small = [128,256]  big = [16,32,64,128,256,512]
 %        tvDim = 40 ;       % small = [40,100, 200];
 
@@ -78,7 +78,7 @@ trainRatings_New_tr = output_tr.inputRating_New ;
         ICM = IVecTable_with_genre_label(:,1:tvDim+1);
         
     elseif strcmp(feature_name,'genre')
-        ICM = IVecTable_with_genre_label(:,[1,tvDim+2:end-1]);
+        ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
         
     end
 
@@ -189,7 +189,12 @@ toc
 if strcmp(feature_name,'audio_ivec')
     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg10','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
-        'urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001');  
+        'urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001');
+    
+elseif strcmp(feature_name,'genre')
+    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
+        'urmPred_weightedAvg','urmPred_weightedAvg_skg10','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
+        'urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001');
 end
 
 % load(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']);
@@ -206,7 +211,7 @@ output_urmPred_weightedAvg_skg001 = evaluate_urms(urmTest_New, urmPred_weightedA
  output_SIMpow_urmPred_weightedAvg_skg01 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg01);
 output_SIMpow_urmPred_weightedAvg_skg001 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg001);
 
-if strcmp(rand_rec_ON,1)
+if strcmp(rand_rec_ON,'YES')
     outputRandom_rec = evaluate_urms_random(urmTest_New, urmPred_Avg);
 else
     outputRandom_rec = [];
