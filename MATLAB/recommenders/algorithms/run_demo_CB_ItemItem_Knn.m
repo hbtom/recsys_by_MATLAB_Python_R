@@ -1,6 +1,6 @@
 function []=run_demo_CB_ItemItem_Knn(nn_ind)
 
-nnList = [5,10,20,50];
+nnList = [5,10,20];
 nn = nnList(nn_ind);
 for gmm_size = [128,256]
     for tvDim = [40,100,200]
