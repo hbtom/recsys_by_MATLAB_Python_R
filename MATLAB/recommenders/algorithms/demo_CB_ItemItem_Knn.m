@@ -26,7 +26,7 @@ if ismac
     addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/rec');
     addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/recommenders/metrics');
     rootAddr = '/Users/yashar/OneDrive - Politecnico di Milano/data/';
-    outAddr = '';
+    outAddr = '/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/recommenders/algorithms/rec_results';
     
 elseif ispc
     addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\utils\rec');
