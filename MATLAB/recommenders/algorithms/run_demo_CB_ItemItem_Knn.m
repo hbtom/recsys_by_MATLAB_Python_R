@@ -1,14 +1,17 @@
-function []=run_demo_CB_ItemItem_Knn(nn_ind)
+function []=run_demo_CB_ItemItem_Knn(feature_name,rand_rec_ON,nn)
 
-feature_name = 'genre' ;
- rand_rec_ON = 'NO';   
+% feature_name = 'genre'; 'audio_ivec'
+% rand_rec_ON = 'YES';
 
-nnList = [5,10,20];
-nn = nnList(nn_ind);
-for gmm_size = [128]
-    for tvDim = [40]
-        [gmm_size,tvDim,nn]
-        demo_CB_ItemItem_Knn
+
+for fold_no = 1 : 5
+    for gmm_size = [128]
+        for tvDim = [40]
+            feature_name
+            rand_rec_ON
+            [gmm_size,tvDim,nn]
+            demo_CB_ItemItem_Knn
+        end
     end
 end
 

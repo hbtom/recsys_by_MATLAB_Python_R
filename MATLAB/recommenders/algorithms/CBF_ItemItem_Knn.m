@@ -61,6 +61,12 @@ classdef CBF_ItemItem_Knn
               % In this section, we would like to predict rating of a target user to a target item ('itemId_te').
               for u = 1 : size(new_userIds_tr,1)
                   
+                     if u>1 && (~isempty(find(isnan(output.rating_pred_weavg), 1)))
+                         u
+                         itemId_te
+                         error('CHECK!') 
+                     end
+                        
                   % This is the target user for which we would like to make a prediction. Target item has the true Id of
                   % 'itemId_te'
                   new_userIds_tr_trg = new_userIds_tr(u,2);
@@ -77,8 +83,9 @@ classdef CBF_ItemItem_Knn
                         nn_itemIdx = item_Id2idx_tr_ob(ismember(item_Id2idx_tr_ob(:,1),nn_itemIds),2);
                         nn_ratings = full(urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx))            ;
                         
-                               SIM = 1- nn_sim_score(:)' + eps;
-                               SIM = abs(SIM);
+                    
+                               SIM = 1- nn_sim_score(:)' ;
+                               SIM = abs(SIM) +eps;
 
                         
                                 output.rating_pred_avg(u,:) = [mean(nn_ratings) new_userIds_tr(u,1)];
@@ -87,9 +94,11 @@ classdef CBF_ItemItem_Knn
                          output.rating_pred_weavg_reg1(u,:) = [(SIM*nn_ratings(:))/(1+sum(SIM)) new_userIds_tr(u,1)];
                         output.rating_pred_weavg_reg01(u,:) = [(SIM*nn_ratings(:))/(0.1+sum(SIM)) new_userIds_tr(u,1)];
                        output.rating_pred_weavg_reg001(u,:) = [(SIM*nn_ratings(:))/(0.01+sum(SIM)) new_userIds_tr(u,1)];
-                       
-                       SIM = 1-nn_sim_score(:)';
-                       SIMpow = SIM.^2 ;
+                      
+                   
+                        
+                       SIM = 1-nn_sim_score(:)' ;
+                       SIMpow = SIM.^2 + eps;
                         
                               output.SIMpow_rating_pred_weavg(u,:) = [(SIMpow*nn_ratings(:))/(sum(SIMpow)) new_userIds_tr(u,1)];
                         output.SIMpow_rating_pred_weavg_reg10(u,:) = [(SIMpow*nn_ratings(:))/(10+sum(SIMpow)) new_userIds_tr(u,1)];
@@ -103,8 +112,8 @@ classdef CBF_ItemItem_Knn
                         nn_itemIdx = item_Id2idx_tr_ob(ismember(item_Id2idx_tr_ob(:,1),nn_itemIds),2);
                         nn_ratings = urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx);
                         
-                               SIM = 1- nn_sim_score(:)';
-                               SIM = abs(SIM);
+                               SIM = 1- nn_sim_score(:)' ;
+                               SIM = abs(SIM) +eps;
                         
                               output.rating_pred_avg(u,:) = [mean(nn_ratings) new_userIds_tr(u,1)];
                             output.rating_pred_weavg(u,:) = [(SIM*nn_ratings(:))/(sum(SIM)) new_userIds_tr(u,1)];
@@ -114,8 +123,8 @@ classdef CBF_ItemItem_Knn
                      output.rating_pred_weavg_reg001(u,:) = [(SIM*nn_ratings(:))/(0.01+sum(SIM)) new_userIds_tr(u,1)];
                      
                             
-                       SIM = nn_sim_score(:)';
-                       SIMpow = SIM.^2 ;
+                       SIM = 1 - nn_sim_score(:)' ;
+                       SIMpow = SIM.^2 +eps ;
                         
                               output.SIMpow_rating_pred_weavg(u,:) = [(SIMpow*nn_ratings(:))/(sum(SIMpow)) new_userIds_tr(u,1)];
                         output.SIMpow_rating_pred_weavg_reg10(u,:) = [(SIMpow*nn_ratings(:))/(10+sum(SIMpow)) new_userIds_tr(u,1)];

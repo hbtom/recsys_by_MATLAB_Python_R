@@ -36,11 +36,11 @@ elseif ispc
     
     
 end
- 
+
 %% LOAD URMs and ICMs
 
 % Global Variables
-  fold_no = 1 ;
+%   fold_no = 1 ;
 col1_name = 'userId' ; 
 col2_name = 'movieId';
 col3_name = 'rating' ;
@@ -107,11 +107,19 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 
                    [test_useridx,test_itemidx] = find(urmTest_New ~=0);
                    
-                                   urmPred_Avg = sparse(zeros(size(urmTest_New)));
-                           urmPred_weightedAvg = sparse(zeros(size(urmTest_New)));
-                     urmPred_weightedAvg_skg01 = sparse(zeros(size(urmTest_New)));
-                    urmPred_weightedAvg_skg001 = sparse(zeros(size(urmTest_New)));
-                   urmPred_weightedAvg_skg0001 = sparse(zeros(size(urmTest_New)));
+                                   urmPred_Avg = (zeros(size(urmTest_New)));
+                                   
+                           urmPred_weightedAvg = (zeros(size(urmTest_New)));
+                     urmPred_weightedAvg_skg10 = (zeros(size(urmTest_New)));
+                      urmPred_weightedAvg_skg1 = (zeros(size(urmTest_New)));
+                     urmPred_weightedAvg_skg01 = (zeros(size(urmTest_New)));
+                    urmPred_weightedAvg_skg001 = (zeros(size(urmTest_New)));
+                    
+                    urmPred_SIMpow_weightedAvg = (zeros(size(urmTest_New)));
+              urmPred_SIMpow_weightedAvg_skg10 = (zeros(size(urmTest_New)));
+               urmPred_SIMpow_weightedAvg_skg1 = (zeros(size(urmTest_New)));
+              urmPred_SIMpow_weightedAvg_skg01 = (zeros(size(urmTest_New)));
+             urmPred_SIMpow_weightedAvg_skg001 = (zeros(size(urmTest_New)));
 
 
 %              Inititate the class properties and object
@@ -164,6 +172,8 @@ for item_no = 1 : size(urmTest_New,2)
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg001(:,2));
          urmPred_weightedAvg_skg001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg001(:,1);
      
+          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg(:,2));
+         urmPred_SIMpow_weightedAvg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg(:,1);
          
               int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg10(:,2));
          urmPred_SIMpow_weightedAvg_skg10(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg10(:,1);
@@ -186,26 +196,44 @@ end
 
 toc
 
+               urmPred_Avg = sparse(urmPred_Avg);
+               
+       urmPred_weightedAvg = sparse(urmPred_weightedAvg);
+ urmPred_weightedAvg_skg10 = sparse(urmPred_weightedAvg_skg10);
+  urmPred_weightedAvg_skg1 = sparse(urmPred_weightedAvg_skg1);
+ urmPred_weightedAvg_skg01 = sparse(urmPred_weightedAvg_skg01);
+urmPred_weightedAvg_skg001 = sparse(urmPred_weightedAvg_skg001);
+
+       urmPred_SIMpow_weightedAvg = sparse(urmPred_SIMpow_weightedAvg);
+ urmPred_SIMpow_weightedAvg_skg10 = sparse(urmPred_SIMpow_weightedAvg_skg10);
+  urmPred_SIMpow_weightedAvg_skg1 = sparse(urmPred_SIMpow_weightedAvg_skg1);
+ urmPred_SIMpow_weightedAvg_skg01 = sparse(urmPred_SIMpow_weightedAvg_skg01);
+urmPred_SIMpow_weightedAvg_skg001 = sparse(urmPred_SIMpow_weightedAvg_skg001);
+             
+             
 if strcmp(feature_name,'audio_ivec')
     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg10','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
-        'urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001');
+        'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
     
 elseif strcmp(feature_name,'genre')
     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg10','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
-        'urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001');
+        'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
 end
 
-% load(fullfile(outAddr,['RecSys_results_nn_' num2str(nn) '_feature_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fold_' num2str(fold_no) 'of5.mat']);
+
+ 
+% load(fullfile(outAddr,['RecSys_res_nn_10_feat_genre_fld_1of5']));
 
 %        load('RecSys_Result_fold_no1.mat')
-               output_urmPred_Avg = evaluate_urms(urmTest_New, urmPred_Avg);
-       output_urmPred_weightedAvg = evaluate_urms(urmTest_New, urmPred_weightedAvg);
- output_urmPred_weightedAvg_skg10 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg10);
-  output_urmPred_weightedAvg_skg1 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg1);
- output_urmPred_weightedAvg_skg01 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg01);
-output_urmPred_weightedAvg_skg001 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg001);
+                      output_urmPred_Avg = evaluate_urms(urmTest_New, urmPred_Avg);
+              output_urmPred_weightedAvg = evaluate_urms(urmTest_New, urmPred_weightedAvg);
+        output_urmPred_weightedAvg_skg10 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg10);
+         output_urmPred_weightedAvg_skg1 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg1);
+        output_urmPred_weightedAvg_skg01 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg01);
+       output_urmPred_weightedAvg_skg001 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg001);
+       output_SIMpow_urmPred_weightedAvg = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg);
  output_SIMpow_urmPred_weightedAvg_skg10 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg10);
   output_SIMpow_urmPred_weightedAvg_skg1 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg1);
  output_SIMpow_urmPred_weightedAvg_skg01 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg01);
@@ -222,12 +250,12 @@ if strcmp(feature_name,'audio_ivec')
     save(fullfile(outAddr,['Eval_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5' '_rand_rec_ON_' rand_rec_ON '.mat']),...
         'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg10','output_urmPred_weightedAvg_skg1',...
         'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg10','output_SIMpow_urmPred_weightedAvg_skg1',...
-        'output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
+        'output_SIMpow_urmPred_weightedAvg','output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
 elseif strcmp(feature_name,'genre')
       save(fullfile(outAddr,['Eval_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5' '_rand_rec_ON_' rand_rec_ON '.mat']),...
         'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg10','output_urmPred_weightedAvg_skg1',...
         'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg10','output_SIMpow_urmPred_weightedAvg_skg1',...
-        'output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
+        'output_SIMpow_urmPred_weightedAvg','output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
 end
 
 
