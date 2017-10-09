@@ -14,7 +14,7 @@ for u = 1 : size(urmTest,1)
                 continue
              end
 
-             if mod(p,2500)==1
+             if mod(p,25000)==1
                 fprintf('%d true users evaluated \n',p)
              end
 
