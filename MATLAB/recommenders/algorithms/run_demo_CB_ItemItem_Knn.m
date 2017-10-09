@@ -7,10 +7,11 @@ function []=run_demo_CB_ItemItem_Knn(feature_name,rand_rec_ON,nn,gmm_size,tvDim)
 for gmm_size = gmm_size
     for tvDim = tvDim
         for fold_no = 1 : 5
+            fold_no
             feature_name
             rand_rec_ON
             [gmm_size,tvDim,nn]
-            demo_CB_ItemItem_Knn
+            demo_CBF_ItemItem_Knn
         end
     end
 end
