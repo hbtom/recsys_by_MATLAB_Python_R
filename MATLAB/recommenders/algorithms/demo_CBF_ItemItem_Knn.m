@@ -79,15 +79,13 @@ trainRatings_New_tr = output_tr.inputRating_New ;
         
     elseif strcmp(feature_name,'genre')
         ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
-        
-    end
+    elseif strcmp(feature_name,'genre_semantic_learning')
+        ICM1 = IVecTable_with_genre_label(:,1:tvDim+1);
+        ICM2 = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
+         ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
 
-% The function 'prepare_distance_3tuple' prepares a similarity array of form [item_i,item_j,sim_score] which contains the
-% pairwise similarities between each pair of items for item in ICM. The first column of the matrix is assumed to contain
-% item ids.
-% 
-%         distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
-          distArray = prepare_distance_3tuple(ICM,sim_type,col2_name);
+    end
+    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          
 % user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
@@ -110,25 +108,42 @@ trainRatings_New_tr = output_tr.inputRating_New ;
                                    urmPred_Avg = (zeros(size(urmTest_New)));
                                    
                            urmPred_weightedAvg = (zeros(size(urmTest_New)));
-                     urmPred_weightedAvg_skg10 = (zeros(size(urmTest_New)));
                       urmPred_weightedAvg_skg1 = (zeros(size(urmTest_New)));
                      urmPred_weightedAvg_skg01 = (zeros(size(urmTest_New)));
                     urmPred_weightedAvg_skg001 = (zeros(size(urmTest_New)));
                     
                     urmPred_SIMpow_weightedAvg = (zeros(size(urmTest_New)));
-              urmPred_SIMpow_weightedAvg_skg10 = (zeros(size(urmTest_New)));
                urmPred_SIMpow_weightedAvg_skg1 = (zeros(size(urmTest_New)));
               urmPred_SIMpow_weightedAvg_skg01 = (zeros(size(urmTest_New)));
              urmPred_SIMpow_weightedAvg_skg001 = (zeros(size(urmTest_New)));
 
 
-%              Inititate the class properties and object
-             recommender_Object                = CBF_ItemItem_Knn  ;
-             recommender_Object.urmTrain_New   = urmTrain_New      ;
-             recommender_Object.distArray      = distArray         ;
-             recommender_Object.user_Id2idx_tr = user_Id2idx_tr    ;
-             recommender_Object.item_Id2idx_tr = item_Id2idx_tr    ;
-             recommender_Object.nn             = nn                ;
+             
+% This part is written for genre_semantic_learning based on a shallow ANN
+if strcmp(feature_name,'genre_semantic_learning')
+    
+    genre_semantic_learning_ANN
+    
+end
+
+% The function 'prepare_distance_3tuple' prepares a similarity array of form [item_i,item_j,sim_score] which contains the
+% pairwise similarities between each pair of items for item in ICM. The first column of the matrix is assumed to contain
+% item ids.
+%   distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
+    distArray = prepare_distance_3tuple(ICM,sim_type,col2_name);
+   
+    % Set NaN similarity score to a predefined value (e.g. 0 or random)
+    sim_sc = distArray.cosine_dist_score;
+    sim_sc(isnan(sim_sc)) = 0;
+    distArray.cosine_dist_score = sim_sc;
+
+    %  Inititate the class properties and object
+       recommender_Object                = CBF_ItemItem_Knn  ;
+       recommender_Object.urmTrain_New   = urmTrain_New      ;
+       recommender_Object.distArray      = distArray         ;
+       recommender_Object.user_Id2idx_tr = user_Id2idx_tr    ;
+       recommender_Object.item_Id2idx_tr = item_Id2idx_tr    ;
+       recommender_Object.nn             = nn                ;
              
 % Since the module is an item-wise operation (i.e., item-item KNN), for "computaional efficieny" we do the processing of
 % rating prediction "item-wise".
@@ -159,9 +174,6 @@ for item_no = 1 : size(urmTest_New,2)
          
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg(:,2));
          urmPred_weightedAvg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg(:,1);
-
-                  int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg10(:,2));
-         urmPred_weightedAvg_skg10(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg10(:,1);
          
                   int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg1(:,2));
          urmPred_weightedAvg_skg1(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg1(:,1);
@@ -175,9 +187,6 @@ for item_no = 1 : size(urmTest_New,2)
           int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg(:,2));
          urmPred_SIMpow_weightedAvg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg(:,1);
          
-              int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg10(:,2));
-         urmPred_SIMpow_weightedAvg_skg10(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg10(:,1);
-         
                   int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg1(:,2));
          urmPred_SIMpow_weightedAvg_skg1(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg1(:,1);
          
@@ -188,7 +197,7 @@ for item_no = 1 : size(urmTest_New,2)
          urmPred_SIMpow_weightedAvg_skg001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg001(:,1);
          
          
-         if mod(item_no,1000) == 1
+         if mod(item_no,500) == 1
              fprintf('Movie %d \n',item_no)
          end
 
@@ -199,13 +208,11 @@ toc
                urmPred_Avg = sparse(urmPred_Avg);
                
        urmPred_weightedAvg = sparse(urmPred_weightedAvg);
- urmPred_weightedAvg_skg10 = sparse(urmPred_weightedAvg_skg10);
   urmPred_weightedAvg_skg1 = sparse(urmPred_weightedAvg_skg1);
  urmPred_weightedAvg_skg01 = sparse(urmPred_weightedAvg_skg01);
 urmPred_weightedAvg_skg001 = sparse(urmPred_weightedAvg_skg001);
 
        urmPred_SIMpow_weightedAvg = sparse(urmPred_SIMpow_weightedAvg);
- urmPred_SIMpow_weightedAvg_skg10 = sparse(urmPred_SIMpow_weightedAvg_skg10);
   urmPred_SIMpow_weightedAvg_skg1 = sparse(urmPred_SIMpow_weightedAvg_skg1);
  urmPred_SIMpow_weightedAvg_skg01 = sparse(urmPred_SIMpow_weightedAvg_skg01);
 urmPred_SIMpow_weightedAvg_skg001 = sparse(urmPred_SIMpow_weightedAvg_skg001);
@@ -213,13 +220,17 @@ urmPred_SIMpow_weightedAvg_skg001 = sparse(urmPred_SIMpow_weightedAvg_skg001);
              
 if strcmp(feature_name,'audio_ivec')
     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
-        'urmPred_weightedAvg','urmPred_weightedAvg_skg10','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
-        'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
+        'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
+        'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
     
 elseif strcmp(feature_name,'genre')
     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
-        'urmPred_weightedAvg','urmPred_weightedAvg_skg10','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
-        'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg10','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
+        'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
+        'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
+else
+     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
+        'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
+        'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
 end
 
 
@@ -229,12 +240,10 @@ end
 %        load('RecSys_Result_fold_no1.mat')
                       output_urmPred_Avg = evaluate_urms(urmTest_New, urmPred_Avg);
               output_urmPred_weightedAvg = evaluate_urms(urmTest_New, urmPred_weightedAvg);
-        output_urmPred_weightedAvg_skg10 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg10);
          output_urmPred_weightedAvg_skg1 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg1);
         output_urmPred_weightedAvg_skg01 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg01);
        output_urmPred_weightedAvg_skg001 = evaluate_urms(urmTest_New, urmPred_weightedAvg_skg001);
        output_SIMpow_urmPred_weightedAvg = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg);
- output_SIMpow_urmPred_weightedAvg_skg10 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg10);
   output_SIMpow_urmPred_weightedAvg_skg1 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg1);
  output_SIMpow_urmPred_weightedAvg_skg01 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg01);
 output_SIMpow_urmPred_weightedAvg_skg001 = evaluate_urms(urmTest_New, urmPred_SIMpow_weightedAvg_skg001);
@@ -248,14 +257,20 @@ end
 if strcmp(feature_name,'audio_ivec')
     % for i-vec
     save(fullfile(outAddr,['Eval_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5' '_rand_rec_ON_' rand_rec_ON '.mat']),...
-        'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg10','output_urmPred_weightedAvg_skg1',...
-        'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg10','output_SIMpow_urmPred_weightedAvg_skg1',...
+        'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg1',...
+        'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg1',...
         'output_SIMpow_urmPred_weightedAvg','output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
 elseif strcmp(feature_name,'genre')
       save(fullfile(outAddr,['Eval_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5' '_rand_rec_ON_' rand_rec_ON '.mat']),...
-        'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg10','output_urmPred_weightedAvg_skg1',...
-        'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg10','output_SIMpow_urmPred_weightedAvg_skg1',...
+        'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg1',...
+        'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg1',...
         'output_SIMpow_urmPred_weightedAvg','output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
+else
+    save(fullfile(outAddr,['Eval_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5' '_rand_rec_ON_' rand_rec_ON '.mat']),...
+        'output_urmPred_Avg','output_urmPred_weightedAvg','output_urmPred_weightedAvg_skg1',...
+        'output_urmPred_weightedAvg_skg01','output_urmPred_weightedAvg_skg001','output_SIMpow_urmPred_weightedAvg_skg1',...
+        'output_SIMpow_urmPred_weightedAvg','output_SIMpow_urmPred_weightedAvg_skg01','output_SIMpow_urmPred_weightedAvg_skg001','outputRandom_rec'); 
+    
 end
 
 

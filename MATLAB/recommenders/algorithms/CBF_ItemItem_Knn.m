@@ -85,12 +85,11 @@ classdef CBF_ItemItem_Knn
                         
                     
                                SIM = 1- nn_sim_score(:)' ;
-                               SIM = abs(SIM) +eps;
+                               SIM = abs(SIM) ;
 
                         
                                 output.rating_pred_avg(u,:) = [mean(nn_ratings) new_userIds_tr(u,1)];
-                              output.rating_pred_weavg(u,:) = [(SIM*nn_ratings(:))/(sum(SIM)) new_userIds_tr(u,1)];
-                        output.rating_pred_weavg_reg10(u,:) = [(SIM*nn_ratings(:))/(10+sum(SIM)) new_userIds_tr(u,1)];
+                              output.rating_pred_weavg(u,:) = [(SIM*nn_ratings(:))/(sum(SIM)+eps) new_userIds_tr(u,1)];
                          output.rating_pred_weavg_reg1(u,:) = [(SIM*nn_ratings(:))/(1+sum(SIM)) new_userIds_tr(u,1)];
                         output.rating_pred_weavg_reg01(u,:) = [(SIM*nn_ratings(:))/(0.1+sum(SIM)) new_userIds_tr(u,1)];
                        output.rating_pred_weavg_reg001(u,:) = [(SIM*nn_ratings(:))/(0.01+sum(SIM)) new_userIds_tr(u,1)];
@@ -98,10 +97,9 @@ classdef CBF_ItemItem_Knn
                    
                         
                        SIM = 1-nn_sim_score(:)' ;
-                       SIMpow = SIM.^2 + eps;
+                       SIMpow = SIM.^2 ;
                         
-                              output.SIMpow_rating_pred_weavg(u,:) = [(SIMpow*nn_ratings(:))/(sum(SIMpow)) new_userIds_tr(u,1)];
-                        output.SIMpow_rating_pred_weavg_reg10(u,:) = [(SIMpow*nn_ratings(:))/(10+sum(SIMpow)) new_userIds_tr(u,1)];
+                              output.SIMpow_rating_pred_weavg(u,:) = [(SIMpow*nn_ratings(:))/(sum(SIMpow) + eps) new_userIds_tr(u,1)];
                          output.SIMpow_rating_pred_weavg_reg1(u,:) = [(SIMpow*nn_ratings(:))/(1+sum(SIMpow)) new_userIds_tr(u,1)];
                         output.SIMpow_rating_pred_weavg_reg01(u,:) = [(SIMpow*nn_ratings(:))/(0.1+sum(SIMpow)) new_userIds_tr(u,1)];
                        output.SIMpow_rating_pred_weavg_reg001(u,:) = [(SIMpow*nn_ratings(:))/(0.01+sum(SIMpow)) new_userIds_tr(u,1)];
@@ -113,21 +111,19 @@ classdef CBF_ItemItem_Knn
                         nn_ratings = urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx);
                         
                                SIM = 1- nn_sim_score(:)' ;
-                               SIM = abs(SIM) +eps;
+                               SIM = abs(SIM) ;
                         
                               output.rating_pred_avg(u,:) = [mean(nn_ratings) new_userIds_tr(u,1)];
-                            output.rating_pred_weavg(u,:) = [(SIM*nn_ratings(:))/(sum(SIM)) new_userIds_tr(u,1)];
-                      output.rating_pred_weavg_reg10(u,:) = [(SIM*nn_ratings(:))/(10+sum(SIM)) new_userIds_tr(u,1)];
+                            output.rating_pred_weavg(u,:) = [(SIM*nn_ratings(:))/(sum(SIM) + eps) new_userIds_tr(u,1)];
                        output.rating_pred_weavg_reg1(u,:) = [(SIM*nn_ratings(:))/(1+sum(SIM)) new_userIds_tr(u,1)];
                       output.rating_pred_weavg_reg01(u,:) = [(SIM*nn_ratings(:))/(0.1+sum(SIM)) new_userIds_tr(u,1)];
                      output.rating_pred_weavg_reg001(u,:) = [(SIM*nn_ratings(:))/(0.01+sum(SIM)) new_userIds_tr(u,1)];
                      
                             
                        SIM = 1 - nn_sim_score(:)' ;
-                       SIMpow = SIM.^2 +eps ;
+                       SIMpow = SIM.^2  ;
                         
-                              output.SIMpow_rating_pred_weavg(u,:) = [(SIMpow*nn_ratings(:))/(sum(SIMpow)) new_userIds_tr(u,1)];
-                        output.SIMpow_rating_pred_weavg_reg10(u,:) = [(SIMpow*nn_ratings(:))/(10+sum(SIMpow)) new_userIds_tr(u,1)];
+                              output.SIMpow_rating_pred_weavg(u,:) = [(SIMpow*nn_ratings(:))/(sum(SIMpow) + eps) new_userIds_tr(u,1)];
                          output.SIMpow_rating_pred_weavg_reg1(u,:) = [(SIMpow*nn_ratings(:))/(1+sum(SIMpow)) new_userIds_tr(u,1)];
                         output.SIMpow_rating_pred_weavg_reg01(u,:) = [(SIMpow*nn_ratings(:))/(0.1+sum(SIMpow)) new_userIds_tr(u,1)];
                        output.SIMpow_rating_pred_weavg_reg001(u,:) = [(SIMpow*nn_ratings(:))/(0.01+sum(SIMpow)) new_userIds_tr(u,1)];
