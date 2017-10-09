@@ -1,4 +1,4 @@
-function []=run_demo_CB_ItemItem_Knn(feature_name,rand_rec_ON,nn,gmm_size,tvDim)
+function []=run_demo_CBF_ItemItem_Knn(feature_name,rand_rec_ON,nn,gmm_size,tvDim)
 
 % feature_name = 'genre'; 'audio_ivec'
 % rand_rec_ON = 'YES';
