@@ -5,7 +5,7 @@ fprintf('Evaluation strtated ...  \n');
 
 p = 0;
 for u = 1 : size(urmTest,1)
-    if nnz(urmPred1(u,:)) == nnz(urmTest(u,:))
+    if nnz(urmPred1(u,:)) == nnz(urmTest(u,:)) && nnz(urmPred2(u,:)) == nnz(urmTest(u,:))
 
         [rp_u,ranked_list] = sort(urmPred1(u,:)-0.1+0.2*rand(1,size(urmTest,2)),'descend');
              pos_items_ids = find(urmTest(u,:)>3);
@@ -17,9 +17,8 @@ for u = 1 : size(urmTest,1)
              if mod(p,25000)==1
                 fprintf('%d true users evaluated \n',p)
              end
-
+                
               p = p + 1;
-
               PR1_u(p) = precision_at_k(ranked_list,pos_items_ids,1) ;
               PR3_u(p) = precision_at_k(ranked_list,pos_items_ids,3) ;
               PR4_u(p) = precision_at_k(ranked_list,pos_items_ids,4) ;
