@@ -60,7 +60,7 @@ classdef CBF_ItemItem_Knn
           
               % In this section, we would like to predict rating of a target user to a target item ('itemId_te').
               for u = 1 : size(new_userIds_tr,1)
-                  
+          
                      if u>1 && (~isempty(find(isnan(output.rating_pred_weavg), 1)))
                          u
                          itemId_te
@@ -108,7 +108,7 @@ classdef CBF_ItemItem_Knn
                       nn_sim_score = dist_corated_itemIds(:,3);
                         nn_itemIds = corated_itemIds;
                         nn_itemIdx = item_Id2idx_tr_ob(ismember(item_Id2idx_tr_ob(:,1),nn_itemIds),2);
-                        nn_ratings = urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx);
+                        nn_ratings = full(urmTrain_New_ob(new_userIds_tr_trg,nn_itemIdx));
                         
                                SIM = 1- nn_sim_score(:)' ;
                                SIM = abs(SIM) ;

@@ -11,7 +11,7 @@
 
 %
 % Yashar Deldjoo
-% Septmeber 2017 
+% Septmeber-October 2017 
 % Politecnico di Milano, Italy
 % Johannes Kepler University Linz, Austria
 
