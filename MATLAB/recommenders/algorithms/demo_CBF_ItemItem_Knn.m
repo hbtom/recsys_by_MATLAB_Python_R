@@ -105,6 +105,12 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 
                    [test_useridx,test_itemidx] = find(urmTest_New ~=0);
                    
+                   if ismac
+   % As sparse indexing is slow, we use normal matrices. However, we do
+   % this only in MAC since in memory these matrices produce low-memory
+   % problem, therefor we use a switch option.
+                       
+                   
                                    urmPred_Avg = (zeros(size(urmTest_New)));
                                    
                            urmPred_weightedAvg = (zeros(size(urmTest_New)));
@@ -116,7 +122,20 @@ trainRatings_New_tr = output_tr.inputRating_New ;
                urmPred_SIMpow_weightedAvg_skg1 = (zeros(size(urmTest_New)));
               urmPred_SIMpow_weightedAvg_skg01 = (zeros(size(urmTest_New)));
              urmPred_SIMpow_weightedAvg_skg001 = (zeros(size(urmTest_New)));
-
+                   elseif ispc
+                                   urmPred_Avg = sparse(zeros(size(urmTest_New)));
+                                   
+                           urmPred_weightedAvg = sparse(zeros(size(urmTest_New)));
+                      urmPred_weightedAvg_skg1 = sparse(zeros(size(urmTest_New)));
+                     urmPred_weightedAvg_skg01 = sparse(zeros(size(urmTest_New)));
+                    urmPred_weightedAvg_skg001 = sparse(zeros(size(urmTest_New)));
+                    
+                    urmPred_SIMpow_weightedAvg = sparse(zeros(size(urmTest_New)));
+               urmPred_SIMpow_weightedAvg_skg1 = sparse(zeros(size(urmTest_New)));
+              urmPred_SIMpow_weightedAvg_skg01 = sparse(zeros(size(urmTest_New)));
+             urmPred_SIMpow_weightedAvg_skg001 = sparse(zeros(size(urmTest_New)));
+                       
+                   end
 
              
 % This part is written for genre_semantic_learning based on a shallow ANN
@@ -203,8 +222,22 @@ for item_no = 1 : size(urmTest_New,2)
 
 end
 
-toc            
-             
+toc      
+if ismac
+    
+    urmPred_Avg = sparse(urmPred_Avg);
+    
+    urmPred_weightedAvg  = sparse(urmPred_weightedAvg);
+    urmPred_weightedAvg_skg1  = sparse(urmPred_weightedAvg_skg1);
+    urmPred_weightedAvg_skg01 = sparse(urmPred_weightedAvg_skg01);
+    urmPred_weightedAvg_skg001 = sparse(urmPred_weightedAvg_skg001);
+    
+    urmPred_SIMpow_weightedAvg = sparse(urmPred_SIMpow_weightedAvg);
+    urmPred_SIMpow_weightedAvg_skg1 = sparse(urmPred_SIMpow_weightedAvg_skg1);
+    urmPred_SIMpow_weightedAvg_skg01 = sparse(urmPred_SIMpow_weightedAvg_skg01);
+    urmPred_SIMpow_weightedAvg_skg001 = sparse(urmPred_SIMpow_weightedAvg_skg001);
+    
+end
 if strcmp(feature_name,'audio_ivec')
     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
