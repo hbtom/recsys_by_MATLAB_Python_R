@@ -149,8 +149,14 @@ end
 % pairwise similarities between each pair of items for item in ICM. The first column of the matrix is assumed to contain
 % item ids.
 %   distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
+    if strcmp(feature_name,'BLF')
+        load(fullfile('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/BLF_sim_parse','simArray_BLF.mat'));
+       
+
+    else
     distArray = prepare_distance_3tuple(ICM,sim_type,col2_name);
    
+    end
     % Set NaN similarity score to a predefined value (e.g. 0 or random)
     sim_sc = distArray.cosine_dist_score;
     sim_sc(isnan(sim_sc)) = 0;
