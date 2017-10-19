@@ -32,8 +32,9 @@ if ismac
 elseif ispc
     addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\utils\rec');
     addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\recommenders\metrics');
-    rootAddr = 'C:\Users\Yas\Documents\data';
-    outAddr = 'C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\recommenders\algorithms\rec_results';
+    rootAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\dataset';
+    outAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\ECIR2018\Rec_Results';
+    metaDataAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\dataset\metadata';
     
     
 end
