@@ -17,10 +17,10 @@ elseif ispc
 end
 
 if strcmp(feature_name,'audio_ivec')
-load(fullfile(outAddr,['RecSys_res_nn_10_feat_audio_ivec_gmm_' num2str(gmm) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5.mat']));
-else
-  load(fullfile(outAddr,['RecSys_res_nn_10_feat_BLF_fld_' num2str(fold_no) 'of5.mat']));
-  
+    load(fullfile(outAddr,['RecSys_res_nn_10_feat_audio_ivec_gmm_' num2str(gmm) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5.mat']));
+elseif strcmp(feature_name,'BLF')
+    load(fullfile(outAddr,['RecSys_res_nn_10_feat_BLF_fld_' num2str(fold_no) 'of5.mat']));
+    
 end
  urmPred1_str.urm1 = urmPred_Avg;
  urmPred1_str.urm2 = urmPred_weightedAvg;

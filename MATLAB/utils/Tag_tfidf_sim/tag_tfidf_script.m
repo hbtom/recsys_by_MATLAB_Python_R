@@ -5,7 +5,7 @@ warning off
 
 saveAddr = '/Volumes/SP PHD U3/OneDrivePolimi/OneDrive - Politecnico di Milano/dataset/metadata';
 
-tags = readtable('tags.csv');
+tags = readtable('tags2.csv');
 
 movieIds_all = tags.movieId        ;
 movieIds_unq = unique(tags.movieId);
@@ -40,13 +40,13 @@ cleanDocuments = removeLongWords(cleanDocuments,15);
 cleanDocuments = normalizeWords(cleanDocuments);
       cleanBag = bagOfWords(cleanDocuments);
       cleanBag = removeInfrequentWords(cleanBag,2);
-   tag_ML20M_tfidf = tfidf(cleanBag);
-   tag_ML20M_tfidf(isnan(tag_ML20M_tfidf))= 0;
+   tag_MLlastest_tfidf = tfidf(cleanBag);
+   tag_MLlastest_tfidf(isnan(tag_MLlastest_tfidf))= 0;
    
-   tag_ML20M_tfidf = [movieIds_unq tag_ML20M_tfidf];
-   tag_ML20M_tfidf_table = array2table(tag_ML20M_tfidf);
-   tag_ML20M_tfidf_table.Properties.VariableNames = ['movieId' sprintfc('tfid%d',1:size(tag_ML20M_tfidf,2)-1)];
+   tag_MLlastest_tfidf = [movieIds_unq tag_MLlastest_tfidf];
+   tag_MLlastest_tfidf_table = array2table(tag_MLlastest_tfidf);
+   tag_MLlastest_tfidf_table.Properties.VariableNames = ['movieId' sprintfc('tfid%d',1:size(tag_MLlastest_tfidf,2)-1)];
    
    
-   save(fullfile(saveAddr,'tag_ML20M_tfidf.mat'),'tag_ML20M_tfidf_table');
-   writetable(tag_ML20M_tfidf_table,fullfile(saveAddr,'tag_ML20M_tfidf.csv'));
+   save(fullfile(saveAddr,'tag_MLlastest_tfidf.mat'),'tag_MLlastest_tfidf_table');
+   writetable(tag_MLlastest_tfidf_table,fullfile(saveAddr,'tag_MLlastest_tfidf.csv'));

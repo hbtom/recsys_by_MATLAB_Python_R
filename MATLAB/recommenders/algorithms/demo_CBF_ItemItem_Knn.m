@@ -25,8 +25,9 @@ if ismac
     
     addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/rec');
     addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/recommenders/metrics');
-    rootAddr = '/Users/yashar/OneDrive - Politecnico di Milano/data/';
-    outAddr = '/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/recommenders/algorithms/rec_results';
+        rootAddr = '/Users/yashar/OneDrive - Politecnico di Milano/data/';
+         outAddr = '/Volumes/SP PHD U3/OneDrivePolimi/OneDrive - Politecnico di Milano/ECIR2018/Rec_Results';
+    metaDataAddr = '/Volumes/SP PHD U3/OneDrivePolimi/OneDrive - Politecnico di Milano/dataset/metadata';
     
 elseif ispc
     addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\utils\rec');
@@ -72,18 +73,34 @@ trainRatings_New_tr = output_tr.inputRating_New ;
        urmTest_New  = sparse(inputRating_New_te.new_userId,inputRating_New_te.new_movieId,inputRating_New_te.rating);  % urmTest = [n_u2,n_i2]
                       stats_about_URm(inputRating_New_te,'testRatings',['new_' col1_name],['new_' col2_name],col3_name);
 
-    load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
+         load movieIds_unique.mat
+         
     
     if strcmp(feature_name,'audio_ivec')
+        load(fullfile(rootAddr,'ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
         ICM = IVecTable_with_genre_label(:,1:tvDim+1);
         
     elseif strcmp(feature_name,'genre')
         ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
+    elseif strcmp(feature_name,'tag')
+        load(fullfile(metaDataAddr,'tag_ML20M_tfidf.mat'));
+        ICM = tag_ML20M_tfidf_table;
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+        
+        movie_diff = setdiff(movieId_unique,ICM.movieId);
+        zeros_diff = eps*ones(length(movie_diff),size(ICM,2)-1); 
+        zeros_diff = [movie_diff(:) zeros_diff];
+        
+        ICM = table2array(ICM);
+        ICM = [ICM;zeros_diff];
+        ICM = array2table(ICM);
+        ICM.Properties.VariableNames = ['movieId',sprintfc('tfid%d',1:size(ICM,2)-1)];
+        
     elseif strcmp(feature_name,'genre_semantic_learning')
         ICM1 = IVecTable_with_genre_label(:,1:tvDim+1);
         ICM2 = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
-         ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
-
+        ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
+        
     end
     
 
@@ -149,14 +166,18 @@ end
 % pairwise similarities between each pair of items for item in ICM. The first column of the matrix is assumed to contain
 % item ids.
 %   distArray = prepare_distance_3tuple(feature_table,sim_type,col1_name)
-    if strcmp(feature_name,'BLF')
-        load(fullfile('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/BLF_sim_parse','simArray_BLF.mat'));
-       
+if strcmp(feature_name,'BLF')
+    load(fullfile('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/BLF_sim_parse','simArray_BLF.mat'));
+    
 
-    else
+        
+
+else
     distArray = prepare_distance_3tuple(ICM,sim_type,col2_name);
-   
-    end
+    
+end
+    
+    
     % Set NaN similarity score to a predefined value (e.g. 0 or random)
     sim_sc = distArray.cosine_dist_score;
     sim_sc(isnan(sim_sc)) = 0;

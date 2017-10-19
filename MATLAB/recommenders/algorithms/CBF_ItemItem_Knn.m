@@ -60,7 +60,6 @@ classdef CBF_ItemItem_Knn
           
               % In this section, we would like to predict rating of a target user to a target item ('itemId_te').
               for u = 1 : size(new_userIds_tr,1)
-          
                      if u>1 && (~isempty(find(isnan(output.rating_pred_weavg), 1)))
                          u
                          itemId_te
