@@ -287,7 +287,7 @@ fprintf('Evaluation completed! %d evaluated out of %d \n',p,size(urmTest,1))
         output.Re_ranked_list_aggr_blf_tag_thr64_all = mean(Re_ranked_list_aggr_blf_tag_thr64) ;
         output.Re_ranked_list_aggr_blf_tag_thr73_all = mean(Re_ranked_list_aggr_blf_tag_thr73) ;
         output.Re_ranked_list_aggr_blf_tag_thr82_all = mean(Re_ranked_list_aggr_blf_tag_thr82) ;
-        output.Re_ranked_list_aggr_blf_tag_thr91_all = mean(PR_ranked_list_aggr_blf_tag_thr91) ;
+        output.Re_ranked_list_aggr_blf_tag_thr91_all = mean(Re_ranked_list_aggr_blf_tag_thr91) ;
 
 
 
