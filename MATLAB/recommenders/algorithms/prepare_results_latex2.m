@@ -19,13 +19,239 @@ elseif ispc
     
 end
 
+ nn = 10;
+tvd = 0;
+for tvDim = [40 100]
+            tvd = tvd + 1 ;
+            gms = 0;
+
+    for gmm_size = [128 256 512] 
+        gms = gms + 1 ;
+alg = 1;
+
+
+metric = 'PR';
+
+for nn = nn
+    for tvDim = tvDim
+        for gmm_size = gmm_size
+            for alg = alg
+                for fld = 1 : 5
+                file = ['Eval_res_nn_' num2str(nn) '_feat_audio_ivec_BLF_genre_tag_features_gmm_' num2str(gmm_size) '_tv_' num2str(tvDim) '_fld_' num2str(fld) 'of5_cutoff_10_' metric '_rec' num2str(alg) '.mat'];
+                load(fullfile(outAddr,file));
+                
+                 metric_blf(fld) = output.PR_ranked_list_blf_all;
+                metric_ivec(fld) = output.PR_ranked_list_ivec_all;
+               metric_genre(fld) = output.PR_ranked_list_genre_all;
+                 metric_tag(fld) = output.PR_ranked_list_tag_all;
+                 
+                 metric_ivec_blf(fld,1) = output.PR_ranked_list_aggr_ivec_blf_thr19_all;
+                 metric_ivec_blf(fld,2) = output.PR_ranked_list_aggr_ivec_blf_thr28_all;
+                 metric_ivec_blf(fld,3) = output.PR_ranked_list_aggr_ivec_blf_thr37_all;
+                 metric_ivec_blf(fld,4) = output.PR_ranked_list_aggr_ivec_blf_thr46_all;
+                 metric_ivec_blf(fld,5) = output.PR_ranked_list_aggr_ivec_blf_thr55_all;
+                 metric_ivec_blf(fld,6) = output.PR_ranked_list_aggr_ivec_blf_thr64_all;
+                 metric_ivec_blf(fld,7) = output.PR_ranked_list_aggr_ivec_blf_thr73_all;
+                 metric_ivec_blf(fld,8) = output.PR_ranked_list_aggr_ivec_blf_thr82_all;
+                 metric_ivec_blf(fld,9) = output.PR_ranked_list_aggr_ivec_blf_thr91_all;
+                 
+            
+                 metric_blf_genre(fld,1) = output.PR_ranked_list_aggr_blf_genre_thr19_all;
+                 metric_blf_genre(fld,2) = output.PR_ranked_list_aggr_blf_genre_thr28_all;
+                 metric_blf_genre(fld,3) = output.PR_ranked_list_aggr_blf_genre_thr37_all;
+                 metric_blf_genre(fld,4) = output.PR_ranked_list_aggr_blf_genre_thr46_all;
+                 metric_blf_genre(fld,5) = output.PR_ranked_list_aggr_blf_genre_thr55_all;
+                 metric_blf_genre(fld,6) = output.PR_ranked_list_aggr_blf_genre_thr64_all;
+                 metric_blf_genre(fld,7) = output.PR_ranked_list_aggr_blf_genre_thr73_all;
+                 metric_blf_genre(fld,8) = output.PR_ranked_list_aggr_blf_genre_thr82_all;
+                 metric_blf_genre(fld,9) = output.PR_ranked_list_aggr_blf_genre_thr91_all;
+                 
+                 metric_blf_tag(fld,1) = output.PR_ranked_list_aggr_blf_tag_thr19_all;
+                 metric_blf_tag(fld,2) = output.PR_ranked_list_aggr_blf_tag_thr28_all;
+                 metric_blf_tag(fld,3) = output.PR_ranked_list_aggr_blf_tag_thr37_all;
+                 metric_blf_tag(fld,4) = output.PR_ranked_list_aggr_blf_tag_thr46_all;
+                 metric_blf_tag(fld,5) = output.PR_ranked_list_aggr_blf_tag_thr55_all;
+                 metric_blf_tag(fld,6) = output.PR_ranked_list_aggr_blf_tag_thr64_all;
+                 metric_blf_tag(fld,7) = output.PR_ranked_list_aggr_blf_tag_thr73_all;
+                 metric_blf_tag(fld,8) = output.PR_ranked_list_aggr_blf_tag_thr82_all;
+                 metric_blf_tag(fld,9) = output.PR_ranked_list_aggr_blf_tag_thr91_all;
+                 
+                 
+                 metric_ivec_genre(fld,1) = output.PR_ranked_list_aggr_ivec_genre_thr19_all;
+                 metric_ivec_genre(fld,2) = output.PR_ranked_list_aggr_ivec_genre_thr28_all;
+                 metric_ivec_genre(fld,3) = output.PR_ranked_list_aggr_ivec_genre_thr37_all;
+                 metric_ivec_genre(fld,4) = output.PR_ranked_list_aggr_ivec_genre_thr46_all;
+                 metric_ivec_genre(fld,5) = output.PR_ranked_list_aggr_ivec_genre_thr55_all;
+                 metric_ivec_genre(fld,6) = output.PR_ranked_list_aggr_ivec_genre_thr64_all;
+                 metric_ivec_genre(fld,7) = output.PR_ranked_list_aggr_ivec_genre_thr73_all;
+                 metric_ivec_genre(fld,8) = output.PR_ranked_list_aggr_ivec_genre_thr82_all;
+                 metric_ivec_genre(fld,9) = output.PR_ranked_list_aggr_ivec_genre_thr91_all;
+                 
+                 metric_ivec_tag(fld,1) = output.PR_ranked_list_aggr_ivec_tag_thr19_all;
+                 metric_ivec_tag(fld,2) = output.PR_ranked_list_aggr_ivec_tag_thr28_all;
+                 metric_ivec_tag(fld,3) = output.PR_ranked_list_aggr_ivec_tag_thr37_all;
+                 metric_ivec_tag(fld,4) = output.PR_ranked_list_aggr_ivec_tag_thr46_all;
+                 metric_ivec_tag(fld,5) = output.PR_ranked_list_aggr_ivec_tag_thr55_all;
+                 metric_ivec_tag(fld,6) = output.PR_ranked_list_aggr_ivec_tag_thr64_all;
+                 metric_ivec_tag(fld,7) = output.PR_ranked_list_aggr_ivec_tag_thr73_all;
+                 metric_ivec_tag(fld,8) = output.PR_ranked_list_aggr_ivec_tag_thr82_all;
+                 metric_ivec_tag(fld,9) = output.PR_ranked_list_aggr_ivec_tag_thr91_all;
+                 
+                 
+                end
+            end
+        end
+    end
+end
+
+pairs = [0.1 0.9;
+         0.2 0.8;
+         0.3 0.7;
+         0.4 0.6;
+         0.5 0.5;
+         0.6 0.4;
+         0.7 0.3;
+         0.8 0.2;
+         0.9 0.1];
+
+  mean_metric_blf_PR = mean(metric_blf);
+ mean_metric_ivec_PR = mean(metric_ivec);
+mean_metric_genre_PR = mean(metric_genre);
+  mean_metric_tag_PR = mean(metric_tag);
+[mean_metric_ivec_blf_PR,ind1_PR] = max(mean(metric_ivec_blf));
+[mean_metric_blf_genre_PR,ind2_PR] = max(mean(metric_blf_genre));
+[mean_metric_blf_tag_PR,ind3_PR] = max(mean(metric_blf_tag));
+[mean_metric_ivec_genre_PR,ind4_PR] = max(mean(metric_ivec_genre));
+[mean_metric_ivec_tag_PR,ind5_PR] = max(mean(metric_ivec_tag));
+
+% Data = [metric_blf(:) metric_ivec(:) metric_genre(:) metric_tag(:) metric_blf_genre(:,1) metric_blf_tag(:,1) metric_ivec_genre(:,3) metric_ivec_tag(:,2)];
+% Algs_cell = {'blf' 'ivec' 'genre' 'tag' 'blf-genre' 'blf-tag' 'ivec-genre' 'ivec-tag'};
+% [p,t,stats] = anova1(Data,Algs_cell);
+% xlabel('Algorithms','FontSize',11,'FontWeight','bold');
+% ylabel('Distribution of Precision values','FontSize',11,'FontWeight','bold')
+% 
+% [c,m,h,nms] = multcompare(stats);
+% 
+% ylabel('Algorithms','FontSize',11,'FontWeight','bold');
+% xlabel('Mean of groups Precision Values','FontSize',11,'FontWeight','bold');
+% 
+%
+
+
+metric = 'Re';
+
+for nn = nn
+    for tvDim = tvDim
+        for gmm_size = gmm_size
+            for alg = alg
+                for fld = 1 : 5
+                file = ['Eval_res_nn_' num2str(nn) '_feat_audio_ivec_BLF_genre_tag_features_gmm_' num2str(gmm_size) '_tv_' num2str(tvDim) '_fld_' num2str(fld) 'of5_cutoff_10_' metric '_rec' num2str(alg) '.mat'];
+                load(fullfile(outAddr,file));
+                
+                 metric_blf(fld) = output.Re_ranked_list_blf_all;
+                metric_ivec(fld) = output.Re_ranked_list_ivec_all;
+               metric_genre(fld) = output.Re_ranked_list_genre_all;
+                 metric_tag(fld) = output.Re_ranked_list_tag_all;
+                 
+                 metric_ivec_blf(fld,1) = output.Re_ranked_list_aggr_ivec_blf_thr19_all;
+                 metric_ivec_blf(fld,2) = output.Re_ranked_list_aggr_ivec_blf_thr28_all;
+                 metric_ivec_blf(fld,3) = output.Re_ranked_list_aggr_ivec_blf_thr37_all;
+                 metric_ivec_blf(fld,4) = output.Re_ranked_list_aggr_ivec_blf_thr46_all;
+                 metric_ivec_blf(fld,5) = output.Re_ranked_list_aggr_ivec_blf_thr55_all;
+                 metric_ivec_blf(fld,6) = output.Re_ranked_list_aggr_ivec_blf_thr64_all;
+                 metric_ivec_blf(fld,7) = output.Re_ranked_list_aggr_ivec_blf_thr73_all;
+                 metric_ivec_blf(fld,8) = output.Re_ranked_list_aggr_ivec_blf_thr82_all;
+                 metric_ivec_blf(fld,9) = output.Re_ranked_list_aggr_ivec_blf_thr91_all;
+                 
+            
+                 metric_blf_genre(fld,1) = output.Re_ranked_list_aggr_blf_genre_thr19_all;
+                 metric_blf_genre(fld,2) = output.Re_ranked_list_aggr_blf_genre_thr28_all;
+                 metric_blf_genre(fld,3) = output.Re_ranked_list_aggr_blf_genre_thr37_all;
+                 metric_blf_genre(fld,4) = output.Re_ranked_list_aggr_blf_genre_thr46_all;
+                 metric_blf_genre(fld,5) = output.Re_ranked_list_aggr_blf_genre_thr55_all;
+                 metric_blf_genre(fld,6) = output.Re_ranked_list_aggr_blf_genre_thr64_all;
+                 metric_blf_genre(fld,7) = output.Re_ranked_list_aggr_blf_genre_thr73_all;
+                 metric_blf_genre(fld,8) = output.Re_ranked_list_aggr_blf_genre_thr82_all;
+                 metric_blf_genre(fld,9) = output.Re_ranked_list_aggr_blf_genre_thr91_all;
+                 
+                 metric_blf_tag(fld,1) = output.Re_ranked_list_aggr_blf_tag_thr19_all;
+                 metric_blf_tag(fld,2) = output.Re_ranked_list_aggr_blf_tag_thr28_all;
+                 metric_blf_tag(fld,3) = output.Re_ranked_list_aggr_blf_tag_thr37_all;
+                 metric_blf_tag(fld,4) = output.Re_ranked_list_aggr_blf_tag_thr46_all;
+                 metric_blf_tag(fld,5) = output.Re_ranked_list_aggr_blf_tag_thr55_all;
+                 metric_blf_tag(fld,6) = output.Re_ranked_list_aggr_blf_tag_thr64_all;
+                 metric_blf_tag(fld,7) = output.Re_ranked_list_aggr_blf_tag_thr73_all;
+                 metric_blf_tag(fld,8) = output.Re_ranked_list_aggr_blf_tag_thr82_all;
+                 metric_blf_tag(fld,9) = output.Re_ranked_list_aggr_blf_tag_thr91_all;
+                 
+                 
+                 metric_ivec_genre(fld,1) = output.Re_ranked_list_aggr_ivec_genre_thr19_all;
+                 metric_ivec_genre(fld,2) = output.Re_ranked_list_aggr_ivec_genre_thr28_all;
+                 metric_ivec_genre(fld,3) = output.Re_ranked_list_aggr_ivec_genre_thr37_all;
+                 metric_ivec_genre(fld,4) = output.Re_ranked_list_aggr_ivec_genre_thr46_all;
+                 metric_ivec_genre(fld,5) = output.Re_ranked_list_aggr_ivec_genre_thr55_all;
+                 metric_ivec_genre(fld,6) = output.Re_ranked_list_aggr_ivec_genre_thr64_all;
+                 metric_ivec_genre(fld,7) = output.Re_ranked_list_aggr_ivec_genre_thr73_all;
+                 metric_ivec_genre(fld,8) = output.Re_ranked_list_aggr_ivec_genre_thr82_all;
+                 metric_ivec_genre(fld,9) = output.Re_ranked_list_aggr_ivec_genre_thr91_all;
+                 
+                 metric_ivec_tag(fld,1) = output.Re_ranked_list_aggr_ivec_tag_thr19_all;
+                 metric_ivec_tag(fld,2) = output.Re_ranked_list_aggr_ivec_tag_thr28_all;
+                 metric_ivec_tag(fld,3) = output.Re_ranked_list_aggr_ivec_tag_thr37_all;
+                 metric_ivec_tag(fld,4) = output.Re_ranked_list_aggr_ivec_tag_thr46_all;
+                 metric_ivec_tag(fld,5) = output.Re_ranked_list_aggr_ivec_tag_thr55_all;
+                 metric_ivec_tag(fld,6) = output.Re_ranked_list_aggr_ivec_tag_thr64_all;
+                 metric_ivec_tag(fld,7) = output.Re_ranked_list_aggr_ivec_tag_thr73_all;
+                 metric_ivec_tag(fld,8) = output.Re_ranked_list_aggr_ivec_tag_thr82_all;
+                 metric_ivec_tag(fld,9) = output.Re_ranked_list_aggr_ivec_tag_thr91_all;
+                 
+                 
+                end
+            end
+        end
+    end
+end
+
+pairs = [0.1 0.9;
+         0.2 0.8;
+         0.3 0.7;
+         0.4 0.6;
+         0.5 0.5;
+         0.6 0.4;
+         0.7 0.3;
+         0.8 0.2;
+         0.9 0.1];
+
+  mean_metric_blf_Re = mean(metric_blf);
+ mean_metric_ivec_Re  = mean(metric_ivec);
+mean_metric_genre_Re  = mean(metric_genre);
+  mean_metric_tag_Re  = mean(metric_tag);
+[mean_metric_ivec_blf_Re ,ind1_Re ] = max(mean(metric_ivec_blf));
+[mean_metric_blf_genre_Re ,ind2_Re ] = max(mean(metric_blf_genre));
+[mean_metric_blf_tag_Re ,ind3_Re ] = max(mean(metric_blf_tag));
+[mean_metric_ivec_genre_Re ,ind4_Re ] = max(mean(metric_ivec_genre));
+[mean_metric_ivec_tag_Re ,ind5_Re ] = max(mean(metric_ivec_tag));
+%}
+
+% Data = [metric_blf(:) metric_ivec(:) metric_genre(:) metric_tag(:) metric_blf_genre(:,1) metric_blf_tag(:,1) metric_ivec_genre(:,3) metric_ivec_tag(:,2)];
+% Algs_cell = {'blf' 'ivec' 'genre' 'tag' 'blf-genre' 'blf-tag' 'ivec-genre' 'ivec-tag'};
+% [p,t,stats] = anova1(Data,Algs_cell);
+% xlabel('Algorithms','FontSize',11,'FontWeight','bold');
+% ylabel('Distribution of Recall values','FontSize',11,'FontWeight','bold')
+% 
+% [c,m,h,nms] = multcompare(stats);
+% 
+% ylabel('Algorithms','FontSize',11,'FontWeight','bold');
+% xlabel('Mean of groups Recall Values','FontSize',11,'FontWeight','bold');
+% 
+%      
 metric = 'MAP';
 
-for nn = [10]
-    for tvDim = [100]
-        for gmm_size = [128]
-            for alg = 1
-                for fld = 2 : 5
+for nn = nn
+    for tvDim = tvDim
+        for gmm_size = gmm_size
+            for alg = alg
+                for fld = 1 : 5
                 file = ['Eval_res_nn_' num2str(nn) '_feat_audio_ivec_BLF_genre_tag_features_gmm_' num2str(gmm_size) '_tv_' num2str(tvDim) '_fld_' num2str(fld) 'of5_cutoff_10_' metric '_rec' num2str(alg) '.mat'];
                 load(fullfile(outAddr,file));
                 
@@ -102,19 +328,172 @@ pairs = [0.1 0.9;
          0.7 0.3;
          0.8 0.2;
          0.9 0.1];
+close all
+  mean_metric_blf_map = mean(metric_blf);
+ mean_metric_ivec_map  = mean(metric_ivec);
+mean_metric_genre_map  = mean(metric_genre);
+  mean_metric_tag_map  = mean(metric_tag);
+[mean_metric_ivec_blf_map ,ind1_map ] = max(mean(metric_ivec_blf));
+[mean_metric_blf_genre_map ,ind2_map ] = max(mean(metric_blf_genre));
+[mean_metric_blf_tag_map ,ind3_map ] = max(mean(metric_blf_tag));
+[mean_metric_ivec_genre_map ,ind4_map ] = max(mean(metric_ivec_genre));
+[mean_metric_ivec_tag_map ,ind5_map ] = max(mean(metric_ivec_tag));
+Data = [metric_blf(:) metric_ivec(:) metric_genre(:) metric_tag(:) metric_blf_genre(:,1) metric_blf_tag(:,1) metric_ivec_genre(:,3) metric_ivec_tag(:,2)];
+% Algs_cell = {'blf' 'ivec' 'genre' 'tag' 'blf-genre' 'blf-tag' 'ivec-genre' 'ivec-tag'};
+% [p,t,stats] = anova1(Data,Algs_cell);
+% xlabel('Algorithms','FontSize',11,'FontWeight','bold');
+% ylabel('Distribution of MAP values','FontSize',11,'FontWeight','bold')
+% 
+% [c,m,h,nms] = multcompare(stats);
+% 
+% ylabel('Algorithms','FontSize',11,'FontWeight','bold');
+% xlabel('Mean of groups MAP Values','FontSize',11,'FontWeight','bold');
+% 
+metric = 'MRR';
 
-  mean_metric_blf = mean(metric_blf)
- mean_metric_ivec = mean(metric_ivec)
-mean_metric_genre = mean(metric_genre)
-  mean_metric_tag = mean(metric_tag)
-[mean_metric_ivec_blf,ind1] = max(mean(metric_ivec_blf))
-[mean_metric_blf_genre,ind2] = max(mean(metric_blf_genre))
-[mean_metric_blf_tag,ind3] = max(mean(metric_blf_tag))
-[mean_metric_ivec_genre,ind4] = max(mean(metric_ivec_genre))
-[mean_metric_ivec_tag,ind5] = max(mean(metric_ivec_tag))
+for nn = nn
+    for tvDim = tvDim
+        for gmm_size = gmm_size
+            for alg = alg
+                for fld = 1 : 5
+                file = ['Eval_res_nn_' num2str(nn) '_feat_audio_ivec_BLF_genre_tag_features_gmm_' num2str(gmm_size) '_tv_' num2str(tvDim) '_fld_' num2str(fld) 'of5_cutoff_10_' metric '_rec' num2str(alg) '.mat'];
+                load(fullfile(outAddr,file));
+                
+                 metric_blf(fld) = output.mrr_ranked_list_blf_all;
+                metric_ivec(fld) = output.mrr_ranked_list_ivec_all;
+               metric_genre(fld) = output.mrr_ranked_list_genre_all;
+                 metric_tag(fld) = output.mrr_ranked_list_tag_all;
+                 
+                 metric_ivec_blf(fld,1) = output.mrr_ranked_list_aggr_ivec_blf_thr19_all;
+                 metric_ivec_blf(fld,2) = output.mrr_ranked_list_aggr_ivec_blf_thr28_all;
+                 metric_ivec_blf(fld,3) = output.mrr_ranked_list_aggr_ivec_blf_thr37_all;
+                 metric_ivec_blf(fld,4) = output.mrr_ranked_list_aggr_ivec_blf_thr46_all;
+                 metric_ivec_blf(fld,5) = output.mrr_ranked_list_aggr_ivec_blf_thr55_all;
+                 metric_ivec_blf(fld,6) = output.mrr_ranked_list_aggr_ivec_blf_thr64_all;
+                 metric_ivec_blf(fld,7) = output.mrr_ranked_list_aggr_ivec_blf_thr73_all;
+                 metric_ivec_blf(fld,8) = output.mrr_ranked_list_aggr_ivec_blf_thr82_all;
+                 metric_ivec_blf(fld,9) = output.mrr_ranked_list_aggr_ivec_blf_thr91_all;
+                 
+            
+                 metric_blf_genre(fld,1) = output.mrr_ranked_list_aggr_blf_genre_thr19_all;
+                 metric_blf_genre(fld,2) = output.mrr_ranked_list_aggr_blf_genre_thr28_all;
+                 metric_blf_genre(fld,3) = output.mrr_ranked_list_aggr_blf_genre_thr37_all;
+                 metric_blf_genre(fld,4) = output.mrr_ranked_list_aggr_blf_genre_thr46_all;
+                 metric_blf_genre(fld,5) = output.mrr_ranked_list_aggr_blf_genre_thr55_all;
+                 metric_blf_genre(fld,6) = output.mrr_ranked_list_aggr_blf_genre_thr64_all;
+                 metric_blf_genre(fld,7) = output.mrr_ranked_list_aggr_blf_genre_thr73_all;
+                 metric_blf_genre(fld,8) = output.mrr_ranked_list_aggr_blf_genre_thr82_all;
+                 metric_blf_genre(fld,9) = output.mrr_ranked_list_aggr_blf_genre_thr91_all;
+                 
+                 metric_blf_tag(fld,1) = output.mrr_ranked_list_aggr_blf_tag_thr19_all;
+                 metric_blf_tag(fld,2) = output.mrr_ranked_list_aggr_blf_tag_thr28_all;
+                 metric_blf_tag(fld,3) = output.mrr_ranked_list_aggr_blf_tag_thr37_all;
+                 metric_blf_tag(fld,4) = output.mrr_ranked_list_aggr_blf_tag_thr46_all;
+                 metric_blf_tag(fld,5) = output.mrr_ranked_list_aggr_blf_tag_thr55_all;
+                 metric_blf_tag(fld,6) = output.mrr_ranked_list_aggr_blf_tag_thr64_all;
+                 metric_blf_tag(fld,7) = output.mrr_ranked_list_aggr_blf_tag_thr73_all;
+                 metric_blf_tag(fld,8) = output.mrr_ranked_list_aggr_blf_tag_thr82_all;
+                 metric_blf_tag(fld,9) = output.mrr_ranked_list_aggr_blf_tag_thr91_all;
+                 
+                 
+                 metric_ivec_genre(fld,1) = output.mrr_ranked_list_aggr_ivec_genre_thr19_all;
+                 metric_ivec_genre(fld,2) = output.mrr_ranked_list_aggr_ivec_genre_thr28_all;
+                 metric_ivec_genre(fld,3) = output.mrr_ranked_list_aggr_ivec_genre_thr37_all;
+                 metric_ivec_genre(fld,4) = output.mrr_ranked_list_aggr_ivec_genre_thr46_all;
+                 metric_ivec_genre(fld,5) = output.mrr_ranked_list_aggr_ivec_genre_thr55_all;
+                 metric_ivec_genre(fld,6) = output.mrr_ranked_list_aggr_ivec_genre_thr64_all;
+                 metric_ivec_genre(fld,7) = output.mrr_ranked_list_aggr_ivec_genre_thr73_all;
+                 metric_ivec_genre(fld,8) = output.mrr_ranked_list_aggr_ivec_genre_thr82_all;
+                 metric_ivec_genre(fld,9) = output.mrr_ranked_list_aggr_ivec_genre_thr91_all;
+                 
+                 metric_ivec_tag(fld,1) = output.mrr_ranked_list_aggr_ivec_tag_thr19_all;
+                 metric_ivec_tag(fld,2) = output.mrr_ranked_list_aggr_ivec_tag_thr28_all;
+                 metric_ivec_tag(fld,3) = output.mrr_ranked_list_aggr_ivec_tag_thr37_all;
+                 metric_ivec_tag(fld,4) = output.mrr_ranked_list_aggr_ivec_tag_thr46_all;
+                 metric_ivec_tag(fld,5) = output.mrr_ranked_list_aggr_ivec_tag_thr55_all;
+                 metric_ivec_tag(fld,6) = output.mrr_ranked_list_aggr_ivec_tag_thr64_all;
+                 metric_ivec_tag(fld,7) = output.mrr_ranked_list_aggr_ivec_tag_thr73_all;
+                 metric_ivec_tag(fld,8) = output.mrr_ranked_list_aggr_ivec_tag_thr82_all;
+                 metric_ivec_tag(fld,9) = output.mrr_ranked_list_aggr_ivec_tag_thr91_all;
+                 
+                 
+                end
+            end
+        end
+    end
+end
+
+pairs = [0.1 0.9;
+         0.2 0.8;
+         0.3 0.7;
+         0.4 0.6;
+         0.5 0.5;
+         0.6 0.4;
+         0.7 0.3;
+         0.8 0.2;
+         0.9 0.1];
+
+  mean_metric_blf_mrr = mean(metric_blf);
+ mean_metric_ivec_mrr  = mean(metric_ivec);
+mean_metric_genre_mrr  = mean(metric_genre);
+  mean_metric_tag_mrr  = mean(metric_tag);
+[mean_metric_ivec_blf_mrr ,ind1_mrr ] = max(mean(metric_ivec_blf));
+[mean_metric_blf_genre_mrr ,ind2_mrr ] = max(mean(metric_blf_genre));
+[mean_metric_blf_tag_mrr ,ind3_mrr ] = max(mean(metric_blf_tag));
+[mean_metric_ivec_genre_mrr ,ind4_mrr ] = max(mean(metric_ivec_genre));
+[mean_metric_ivec_tag_mrr ,ind5_mrr ] = max(mean(metric_ivec_tag));
+
+ivec_mrr(tvd,gms) = mean_metric_ivec_mrr;
+ivec_map(tvd,gms) = mean_metric_ivec_map;
+
+    end
+end
+
+figure()
+yvals = {'40','100'};
+xvals = {'128','256','512'};
+h = heatmap(xvals,yvals,ivec_mrr);
+
+h.Title = 'Ivectors - Mean Reciprocal Rank (MRR)';
+h.XLabel = 'tvDim';
+h.YLabel = 'GMMs';
+
+figure()
+yvals = {'40','100'};
+xvals = {'128','256','512'};
+h = heatmap(xvals,yvals,ivec_map);
+
+h.Title = 'Ivectors - Mean Average Precision (MAP)';
+h.XLabel = 'tvDim';
+h.YLabel = 'GMMs';
 
 
-          
+
+fprintf('\\multirow{9}{*}{wAvg} & audio signal (traditional) & BLF          &-  &-   &-   &%0.4f &%0.4f &%0.4f &%0.4f \\\\ \n ',mean_metric_blf_mrr,mean_metric_blf_map,mean_metric_blf_PR,mean_metric_blf_Re);
+fprintf('                      & audio signal \\textbf{(proposed)} & i-vector   &%d &%d &%d &%0.4f &%0.4f &%0.4f &%0.4f \\\\ \\cline{2-10} \n',nn,tvDim,gmm_size,mean_metric_ivec_mrr,mean_metric_ivec_map,mean_metric_ivec_PR,mean_metric_ivec_Re);
+fprintf('                      & rich expert-generated & genre        &- &- &- &{\\color{red} \\textbf{%0.4f}} &{\\color{red} \\textbf{%0.4f}} &{\\color{red} \\textbf{%0.4f}} &{\\color{red} \\textbf{%0.4f}} \\\\ \n',mean_metric_genre_mrr,mean_metric_genre_map,mean_metric_genre_PR,mean_metric_genre_Re);
+fprintf('                      & rich user-generated & tag          &- &- &- &{\\color{blue} \\textbf{%0.4f}} &{\\color{blue} \\textbf{%0.4f}} &{\\color{blue} \\textbf{%0.4f}} &{\\color{blue} \\textbf{%0.4f}} \\\\ \n',mean_metric_tag_mrr,mean_metric_tag_map,mean_metric_tag_PR,mean_metric_tag_Re);
+fprintf('                      & audio (traditional) + rich expert & BLF+genre    &- &- &- &%0.4f &%0.4f &%0.4f &%0.4f \\\\ \n',mean_metric_blf_genre_mrr,mean_metric_blf_genre_map,mean_metric_blf_genre_PR,mean_metric_blf_genre_Re);
+fprintf('                      & audio (traditional) + rich user & BLF+tag    &- &- &- &%0.4f &%0.4f &%0.4f &%0.4f \\\\ \n',mean_metric_blf_tag_mrr,mean_metric_blf_tag_map,mean_metric_blf_tag_PR,mean_metric_blf_tag_Re);
+fprintf('                      & audio \\textbf{(proposed)} + rich expert & i-vector+genre    &- &- &- &{\\color{magenta} \\textbf{%0.4f}} &{\\color{magenta} \\textbf{%0.4f}} &{\\color{magenta} \\textbf{%0.4f}} &{\\color{magenta} \\textbf{%0.4f}} \\\\ \n',mean_metric_ivec_genre_mrr,mean_metric_ivec_genre_map,mean_metric_ivec_genre_PR,mean_metric_ivec_genre_Re);
+fprintf('                      & audio \\textbf{(proposed)} + rich user & i-vector+tag    &- &- &- &{\\color{cyan} \\textbf{%0.4f}} &{\\color{cyan} \\textbf{%0.4f}} &{\\color{cyan} \\textbf{%0.4f}} &{\\color{cyan} \\textbf{%0.4f}} \\\\ \\hline \n',mean_metric_ivec_tag_mrr,mean_metric_ivec_tag_map,mean_metric_ivec_tag_PR,mean_metric_ivec_tag_Re);
+
+% 
+% Data = [metric_blf(:) metric_ivec(:) metric_genre(:) metric_tag(:) metric_blf_genre(:,1) metric_blf_tag(:,1) metric_ivec_genre(:,3) metric_ivec_tag(:,2)];
+% Algs_cell = {'blf' 'ivec' 'genre' 'tag' 'blf-genre' 'blf-tag' 'ivec-genre' 'ivec-tag'};
+% 
+% [p,t,stats] = anova1(Data,Algs_cell);
+% xlabel('Algorithms','FontSize',11,'FontWeight','bold');
+% ylabel('Distribution of MRR values','FontSize',11,'FontWeight','bold')
+% 
+% [c,m,h,nms] = multcompare(stats)
+% 
+% ylabel('Algorithms','FontSize',11,'FontWeight','bold');
+% xlabel('Mean of groups MRR Values','FontSize',11,'FontWeight','bold');
+
+
+
+
 
 % for nn = [10]
 %     for tvDim = [100]

@@ -72,7 +72,7 @@ load(fullfile(outAddr,['RecSys_res_nn_10_feat_tag_fld_' num2str(fold_no) 'of5.ma
 fold_no
  output = evaluate_urms_custom_mrr(urmTest_New,urmPred1_str,urmPred2_str,urmPred_base1_str,urmPred_base2_str,cut_off,flag_rec) ;
  save(fullfile(outAddr,['Eval_res_nn_10_feat_audio_ivec_BLF_genre_tag_features_gmm_' num2str(gmm) '_tv_' num2str(tvDim) '_fld_' ...
-         num2str(fold_no) 'of5_cutoff_' num2str(cut_off) '_MRR.mat']),'output','gmm','tvDim','fold_no','cut_off','-v7.3');
+         num2str(fold_no) 'of5_cutoff_' num2str(cut_off) '_MRR_rec' num2str(flag_rec) '.mat']),'output','gmm','tvDim','fold_no','cut_off','-v7.3');
  
  
 %                       output_urmPred_Avg = evaluate_urms(urmTest_New, urmPred_Avg);
