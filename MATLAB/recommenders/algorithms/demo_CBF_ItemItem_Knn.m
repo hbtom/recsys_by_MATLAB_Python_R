@@ -30,8 +30,8 @@ if ismac
     metaDataAddr = '/Volumes/SP PHD U3/OneDrive_Polimi/OneDrive - Politecnico di Milano/dataset/metadata';
     
 elseif ispc
-    addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\utils\rec');
-    addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\recommenders\metrics');
+    addpath('C:\Users\Yas\Documents\GitHub\MATLAB\utils\rec');
+    addpath('C:\Users\Yas\Documents\GitHub\MATLAB\recommenders\metrics');
     rootAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\dataset';
     outAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\ECIR2018\Rec_Results';
     metaDataAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\dataset\metadata';
@@ -101,6 +101,96 @@ trainRatings_New_tr = output_tr.inputRating_New ;
         ICM1 = IVecTable_with_genre_label(:,1:tvDim+1);
         ICM2 = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
         ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_All_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_1_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_1_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_2_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_2_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_3_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_3_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_4_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_4_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_5_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_5_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_6_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_6_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_7_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_7_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_8_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_8_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_9_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_9_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_10_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_10_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_11_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_11_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_12_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_12_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_13_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_13_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_14_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_14_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_15_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_15_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_16_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_16_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_17_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_17_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_18_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_18_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_19_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_19_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_20_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_20_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_21_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_21_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_22_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_22_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_23_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_23_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_24_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_24_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_25_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_25_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_26_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_26_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_AVG_featComb_Type3_part_1_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Type3_part_1_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_AVG_featComb_Type3_part_2_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Type3_part_2_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_AVG_featComb_Type3_part_3_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Type3_part_3_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
         
     end
     
@@ -196,7 +286,6 @@ end
 % rating prediction "item-wise".
 tic
 for item_no = 1 : size(urmTest_New,2)
-    
        int_ind = (test_itemidx == item_no) ;
     
 %     Note 3:
