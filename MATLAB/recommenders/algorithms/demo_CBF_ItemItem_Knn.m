@@ -191,9 +191,38 @@ trainRatings_New_tr = output_tr.inputRating_New ;
     elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_AVG_featComb_Type3_part_3_Norm_2')
         ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Type3_part_3_featNorm_2.csv'));
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
-        
+    elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVGVAR_featComb_All_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVGVAR_featComb_All_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_AVGVAR_featComb_Type3_part_1_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVGVAR_featComb_Type3_part_1_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_AVGVAR_featComb_Type3_part_2_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVGVAR_featComb_Type3_part_2_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_AVGVAR_featComb_Type3_part_3_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVGVAR_featComb_Type3_part_3_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+     elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_MED_featComb_Type3_part_1_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_MED_featComb_Type3_part_1_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_MED_featComb_Type3_part_2_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_MED_featComb_Type3_part_2_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_MED_featComb_Type3_part_3_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_MED_featComb_Type3_part_3_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:); 
+         elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_MEDMAD_featComb_Type3_part_1_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_MEDMAD_featComb_Type3_part_1_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_MEDMAD_featComb_Type3_part_2_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_MEDMAD_featComb_Type3_part_2_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_MEDMAD_featComb_Type3_part_3_Norm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_MEDMAD_featComb_Type3_part_3_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);    
     end
-    
+    movieId_unique(~ismember(movieId_unique,ICM.movieId))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          
 % user_Id2idx_tr = [userId, new_userId], item_Id2idx_tr = [itemId, new_itemId]
@@ -311,26 +340,26 @@ for item_no = 1 : size(urmTest_New,2)
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg(:,2));
          urmPred_weightedAvg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg(:,1);
          
-                  int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg1(:,2));
-         urmPred_weightedAvg_skg1(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg1(:,1);
-         
-         int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg01(:,2));
-         urmPred_weightedAvg_skg01(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg01(:,1);
-         
-         int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg001(:,2));
-         urmPred_weightedAvg_skg001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg001(:,1);
+%                   int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg1(:,2));
+%          urmPred_weightedAvg_skg1(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg1(:,1);
+%          
+%          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg01(:,2));
+%          urmPred_weightedAvg_skg01(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg01(:,1);
+%          
+%          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg_reg001(:,2));
+%          urmPred_weightedAvg_skg001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_weavg_reg001(:,1);
      
           int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg(:,2));
          urmPred_SIMpow_weightedAvg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg(:,1);
          
-                  int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg1(:,2));
-         urmPred_SIMpow_weightedAvg_skg1(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg1(:,1);
-         
-         int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg01(:,2));
-         urmPred_SIMpow_weightedAvg_skg01(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg01(:,1);
-         
-         int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg001(:,2));
-         urmPred_SIMpow_weightedAvg_skg001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg001(:,1);
+%                   int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg1(:,2));
+%          urmPred_SIMpow_weightedAvg_skg1(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg1(:,1);
+%          
+%          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg01(:,2));
+%          urmPred_SIMpow_weightedAvg_skg01(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg01(:,1);
+%          
+%          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.SIMpow_rating_pred_weavg_reg001(:,2));
+%          urmPred_SIMpow_weightedAvg_skg001(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.SIMpow_rating_pred_weavg_reg001(:,1);
          
          
          if mod(item_no,500) == 1
