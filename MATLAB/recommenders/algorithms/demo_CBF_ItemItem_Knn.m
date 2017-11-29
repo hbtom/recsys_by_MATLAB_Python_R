@@ -48,10 +48,10 @@ col1_name = 'userId'  ;
 col2_name = 'movieId' ;
 col3_name = 'rating'  ;
  sim_type = 'cosine'  ;
- samp_rating = 1      ;
+ samp_rating = 2      ;
              nn  = 10 ;
           min_ur = 50 ; % min number of ratings for each user
-          max_ur = 100 ; % max number of ratings for each user
+          max_ur = 150 ; % max number of ratings for each user
           
 % feature specific params
 % feature_name = 'audio_ivec' ;
@@ -75,7 +75,7 @@ col3_name = 'rating'  ;
     [counts,uIds] = hist(originalRating.userId,unique(originalRating.userId));
              uIds = uIds(counts>=min_ur & counts<=max_ur);
              
-             uIds = uIds(randperm(length(uIds),500));
+% %              uIds = uIds(randperm(length(uIds),500));
         trainRatings = trainRatings(ismember(trainRatings.userId,uIds),:);
          testRatings = testRatings(ismember(testRatings.userId,uIds),:);
          
@@ -398,7 +398,9 @@ for item_no = 1 : size(urmTest_New,2)
          itemId_te = item_Id2idx_te(table2array(item_Id2idx_te(:,2)) == item_no,1);
    
          userIds_te = user_Id2idx_te(ismember(table2array(user_Id2idx_te(:,2)),test_useridx),1);
+         tic
              output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te));
+         toc
              int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_avg(:,2));
          urmPred_Avg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_avg(:,1);
          
