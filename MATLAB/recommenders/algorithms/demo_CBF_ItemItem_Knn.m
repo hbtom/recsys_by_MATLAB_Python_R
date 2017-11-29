@@ -52,6 +52,7 @@ col3_name = 'rating'  ;
              nn  = 10 ;
           min_ur = 50 ; % min number of ratings for each user
           max_ur = 100 ; % max number of ratings for each user
+          n_users = 3000;
           
 % feature specific params
 % feature_name = 'audio_ivec' ;
@@ -75,7 +76,7 @@ col3_name = 'rating'  ;
     [counts,uIds] = hist(originalRating.userId,unique(originalRating.userId));
              uIds = uIds(counts>=min_ur & counts<=max_ur);
              
-             uIds = uIds(randperm(length(uIds),500));
+           uIds = uIds(randperm(length(uIds),n_users));
         trainRatings = trainRatings(ismember(trainRatings.userId,uIds),:);
          testRatings = testRatings(ismember(testRatings.userId,uIds),:);
          
@@ -398,7 +399,9 @@ for item_no = 1 : size(urmTest_New,2)
          itemId_te = item_Id2idx_te(table2array(item_Id2idx_te(:,2)) == item_no,1);
    
          userIds_te = user_Id2idx_te(ismember(table2array(user_Id2idx_te(:,2)),test_useridx),1);
+         tic
              output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te));
+          toc  
              int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_avg(:,2));
          urmPred_Avg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_avg(:,1);
          
@@ -450,16 +453,16 @@ if ismac
     
 end
 if strcmp(feature_name,'audio_ivec')
-    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '.mat']),'urmTest_New','urmPred_Avg', ...
+    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
     
 elseif strcmp(feature_name,'genre')
-    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '.mat']),'urmTest_New','urmPred_Avg', ...
+    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
 else
-     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_cold_per_' num2str(cold_per) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '.mat']),'urmTest_New','urmPred_Avg', ...
+     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_cold_per_' num2str(cold_per) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
 end
