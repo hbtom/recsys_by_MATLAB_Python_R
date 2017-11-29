@@ -2,13 +2,19 @@ clear
 clc
 close all
 
-for rec = 1 : 1
+gmm_no = 512;
+tvDim = 100;
+
+for rec = 1 : 3
     
     for fold_no = 1:1
+        % Tag 100
         fileName = ['RecSys_res_nn_10_feat_tag_cold_per_100_fld_' num2str(fold_no) 'of5_NEW.mat'];
-        function_evaluation_script(fileName,fold_no,10,rec,'MAP','MRR','Precision','Recall',[])
+        % i-vec
+        fileName = ['RecSys_res_nn_10_feat_audio_ivec_gmm_' num2str(gmm_no) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5_NEW.mat'];
+          function_evaluation_script(fileName,fold_no,10,rec,'MAP','MRR','Precision','Recall',[])
 
-        function_evaluation_script(fileName,fold_no,10,rec,'MAP','MRR','Precision','Recall','Random')
+%         function_evaluation_script(fileName,fold_no,10,rec,'MAP','MRR','Precision','Recall','Random')
     end
 
 end
