@@ -20,16 +20,16 @@ elseif ispc
 end
 
  nn = 10;
-tvd = 0;
-for tvDim = [40 100]
+ tvd = 0;
+for tvDim = [20 40 100]
             tvd = tvd + 1 ;
             gms = 0;
 
     for gmm_size = [128 256 512] 
         gms = gms + 1 ;
-alg = 1;
+alg = 2;
 
-
+%{
 metric = 'PR';
 
 for nn = nn
@@ -231,7 +231,7 @@ mean_metric_genre_Re  = mean(metric_genre);
 [mean_metric_blf_tag_Re ,ind3_Re ] = max(mean(metric_blf_tag));
 [mean_metric_ivec_genre_Re ,ind4_Re ] = max(mean(metric_ivec_genre));
 [mean_metric_ivec_tag_Re ,ind5_Re ] = max(mean(metric_ivec_tag));
-%}
+
 
 % Data = [metric_blf(:) metric_ivec(:) metric_genre(:) metric_tag(:) metric_blf_genre(:,1) metric_blf_tag(:,1) metric_ivec_genre(:,3) metric_ivec_tag(:,2)];
 % Algs_cell = {'blf' 'ivec' 'genre' 'tag' 'blf-genre' 'blf-tag' 'ivec-genre' 'ivec-tag'};
@@ -244,9 +244,10 @@ mean_metric_genre_Re  = mean(metric_genre);
 % ylabel('Algorithms','FontSize',11,'FontWeight','bold');
 % xlabel('Mean of groups Recall Values','FontSize',11,'FontWeight','bold');
 % 
-%      
+%}
+      
 metric = 'MAP';
-
+ 
 for nn = nn
     for tvDim = tvDim
         for gmm_size = gmm_size
@@ -443,14 +444,14 @@ mean_metric_genre_mrr  = mean(metric_genre);
 [mean_metric_ivec_genre_mrr ,ind4_mrr ] = max(mean(metric_ivec_genre));
 [mean_metric_ivec_tag_mrr ,ind5_mrr ] = max(mean(metric_ivec_tag));
 
-ivec_mrr(tvd,gms) = mean_metric_ivec_mrr;
-ivec_map(tvd,gms) = mean_metric_ivec_map;
+ivec_mrr(tvd,gms) = mean_metric_ivec_blf_mrr;
+ivec_map(tvd,gms) = mean_metric_ivec_blf_map;
 
     end
 end
 
 figure()
-yvals = {'40','100'};
+yvals = {'20','40','100'};
 xvals = {'128','256','512'};
 h = heatmap(xvals,yvals,ivec_mrr);
 
@@ -459,7 +460,7 @@ h.XLabel = 'tvDim';
 h.YLabel = 'GMMs';
 
 figure()
-yvals = {'40','100'};
+yvals = {'20','40','100'};
 xvals = {'128','256','512'};
 h = heatmap(xvals,yvals,ivec_map);
 

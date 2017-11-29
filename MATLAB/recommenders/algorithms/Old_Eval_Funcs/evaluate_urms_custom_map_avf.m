@@ -38,7 +38,8 @@ for u = 1 : size(urmTest,1)
     if (nz1 == nzref && nz3 == nzref && nz4 == nzref)
     
 
-         [rp_ivec,ranked_list_avf] = sort(urmPred1_f(u,:)-0.1+0.2*rand(1,size(urmTest,2)),'descend');
+        [rp_ivec,ranked_list_avf1] = sort(urmPred1_f(u,:)-0.1+0.2*rand(1,size(urmTest,2)),'descend');
+         ranked_list_avf            = randperm(size(urmTest,2));
        [rp_genre,ranked_list_genre] = sort(urmPred_base1_f(u,:)-0.1+0.2*rand(1,size(urmTest,2)),'descend');
            [rp_tag,ranked_list_tag] = sort(urmPred_base2_f(u,:)-0.1+0.2*rand(1,size(urmTest,2)),'descend');
            

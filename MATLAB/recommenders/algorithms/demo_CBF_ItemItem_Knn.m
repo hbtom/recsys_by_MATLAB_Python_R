@@ -39,16 +39,20 @@ elseif ispc
     
 end
 
+rng(12345)
 %% LOAD URMs and ICMs
 
 % Global Variables
 %   fold_no = 1 ;
-col1_name = 'userId' ; 
-col2_name = 'movieId';
-col3_name = 'rating' ;
- sim_type = 'cosine' ;
-%       nn  = 10       ;
-
+col1_name = 'userId'  ; 
+col2_name = 'movieId' ;
+col3_name = 'rating'  ;
+ sim_type = 'cosine'  ;
+ samp_rating = 40     ;
+             nn  = 10 ;
+          min_ur = 10 ; % min number of ratings for each user
+          max_ur = 30 ; % max number of ratings for each user
+          
 % feature specific params
 % feature_name = 'audio_ivec' ;
 % feature_name = 'genre'      ;
@@ -56,7 +60,32 @@ col3_name = 'rating' ;
 %     gmm_size = 128;       % small = [128,256]  big = [16,32,64,128,256,512]
 %        tvDim = 40 ;       % small = [40,100, 200];
 
-trainRatings = readtable(fullfile(rootAddr,'urms',['urm_train_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
+       trainRatings = readtable(fullfile(rootAddr,'urms',['urm_train_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
+        testRatings = readtable(fullfile(rootAddr,'urms',['urm_test_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
+    
+        % Subsample the original URm
+     originalRating = [trainRatings;testRatings];
+                n_r = size(originalRating,1);
+     originalRating = originalRating(randperm(n_r,floor(n_r/samp_rating)),:);    
+     
+       trainRatings = originalRating(ismember(originalRating.movieId,trainRatings.movieId),:);
+        testRatings = originalRating(ismember(originalRating.movieId,testRatings.movieId),:);
+     
+    % Filter users with cerain number of ratings e.g. min_ur = 10, max_ur =50 
+    [counts,uIds] = hist(originalRating.userId,unique(originalRating.userId));
+             uIds = uIds(counts>=min_ur & counts<=max_ur);
+             
+        trainRatings = trainRatings(ismember(trainRatings.userId,uIds),:);
+         testRatings = testRatings(ismember(testRatings.userId,uIds),:);
+         
+      movieIdSimilar = intersect(unique(trainRatings.movieId),unique(testRatings.movieId));      
+      userIdSimilar = intersect(unique(trainRatings.userId),unique(testRatings.userId));
+      fprintf('Urms loaded ... \n');
+      fprintf('# of items similar in train and test = %d \n',length(movieIdSimilar));
+      fprintf('# of users similar in train and test = %d \n',length(userIdSimilar));
+
+        trainRatings = trainRatings(ismember(trainRatings.userId,userIdSimilar),:);
+         testRatings = testRatings(ismember(testRatings.userId,userIdSimilar),:);
 
           output_tr = prepare_ratingMat_Id2ind(trainRatings,col1_name,col2_name,col3_name);
 trainRatings_New_tr = output_tr.inputRating_New ;
@@ -65,7 +94,9 @@ trainRatings_New_tr = output_tr.inputRating_New ;
       urmTrain_New  = sparse(trainRatings_New_tr.new_userId,trainRatings_New_tr.new_movieId,trainRatings_New_tr.rating);  % urmTrain = [n_u1,n_i1]
                       stats_about_URm(trainRatings_New_tr,'trainRatings',['new_' col1_name],['new_' col2_name],col3_name);
 
-        testRatings = readtable(fullfile(rootAddr,'urms',['urm_test_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
+%         testRatings = readtable(fullfile(rootAddr,'urms',['urm_test_split_type_item_fold' num2str(fold_no) 'of5_pop_removed_0.csv']));
+  
+ 
           output_te = prepare_ratingMat_Id2ind(testRatings,col1_name,col2_name,col3_name);
 
  inputRating_New_te = output_te.inputRating_New ;
@@ -74,13 +105,18 @@ trainRatings_New_tr = output_tr.inputRating_New ;
        urmTest_New  = sparse(inputRating_New_te.new_userId,inputRating_New_te.new_movieId,inputRating_New_te.rating);  % urmTest = [n_u2,n_i2]
                       stats_about_URm(inputRating_New_te,'testRatings',['new_' col1_name],['new_' col2_name],col3_name);
 
+  
+           allRatings = [trainRatings;testRatings];              
+
+                      
          load movieIds_unique.mat
          
     
     if strcmp(feature_name,'audio_ivec')
         load(fullfile(rootAddr,'audio','ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
         ICM = IVecTable_with_genre_label(:,1:tvDim+1);
-        
+%         writetable(ICM,'table_audio_ivec_40_512.csv');
+
     elseif strcmp(feature_name,'genre')
         ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
     elseif strcmp(feature_name,'tag')
@@ -89,11 +125,23 @@ trainRatings_New_tr = output_tr.inputRating_New ;
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
         
         movie_diff = setdiff(movieId_unique,ICM.movieId);
-        zeros_diff = eps*ones(length(movie_diff),size(ICM,2)-1); 
+        zeros_diff = zeros(length(movie_diff),size(ICM,2)-1); 
         zeros_diff = [movie_diff(:) zeros_diff];
+        movieIds_zero = zeros_diff(:,1);
         
         ICM = table2array(ICM);
         ICM = [ICM;zeros_diff];
+  
+        
+        test_movieIds = unique(testRatings.movieId);
+        test_movieIds_nonzero = setdiff(test_movieIds,movieIds_zero);
+        samp_no = floor(length(test_movieIds_nonzero)*0.01*cold_per);
+        
+        
+        movieIds_excl = test_movieIds_nonzero(randperm(length(test_movieIds_nonzero),samp_no));
+        
+        ICM(ismember(movieId_unique,movieIds_excl),2:end) = zeros(length(movieIds_excl),size(ICM,2)-1);
+      
         ICM = array2table(ICM);
         ICM.Properties.VariableNames = ['movieId',sprintfc('tfid%d',1:size(ICM,2)-1)];
         
@@ -220,7 +268,20 @@ trainRatings_New_tr = output_tr.inputRating_New ;
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
     elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_MEDMAD_featComb_Type3_part_3_Norm_2')
         ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_MEDMAD_featComb_Type3_part_3_featNorm_2.csv'));
-        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);    
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);   
+    elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_SSR2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_SSR2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+   elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_AVGVAR_featComb_All_featNorm_SSR2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_AVGVAR_featComb_All_featNorm_SSR2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+   elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_MED_featComb_All_featNorm_SSR2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_MED_featComb_All_featNorm_SSR2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_MEDMAD_featComb_All_featNorm_SSR2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_MEDMAD_featComb_All_featNorm_SSR2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+        
     end
     movieId_unique(~ismember(movieId_unique,ICM.movieId))
 
@@ -240,7 +301,9 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 
 %
 
-                   [test_useridx,test_itemidx] = find(urmTest_New ~=0);
+%                    [test_useridx,test_itemidx] = find(urmTest_New ~=0);
+                   
+                   test_useridx = 1 : size(urmTest_New,1);
                    
                    if ismac
    % As sparse indexing is slow, we use normal matrices. However, we do
@@ -296,7 +359,7 @@ else
     distArray = prepare_distance_3tuple(ICM,sim_type,col2_name);
     
 end
-    
+    clear ICM
     
     % Set NaN similarity score to a predefined value (e.g. 0 or random)
     sim_sc = distArray.cosine_dist_score;
@@ -315,7 +378,7 @@ end
 % rating prediction "item-wise".
 tic
 for item_no = 1 : size(urmTest_New,2)
-       int_ind = (test_itemidx == item_no) ;
+%        int_ind = (test_itemidx == item_no) ;
     
 %     Note 3:
 %     'test_useridx' and 'test_itemidx' contain internal indices of 'urmTest_New' which is equivalent to 'new_userIds' and 
@@ -330,11 +393,10 @@ for item_no = 1 : size(urmTest_New,2)
        
 %         Find the true userIds and itemIds to path it to the recommender
          itemId_te = item_Id2idx_te(table2array(item_Id2idx_te(:,2)) == item_no,1);
-        userIds_te = user_Id2idx_te(ismember(table2array(user_Id2idx_te(:,2)),test_useridx(int_ind)),1);
    
-         output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te));
-         
-         int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_avg(:,2));
+         userIds_te = user_Id2idx_te(ismember(table2array(user_Id2idx_te(:,2)),test_useridx),1);
+             output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te));
+             int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_avg(:,2));
          urmPred_Avg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_avg(:,1);
          
          int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_weavg(:,2));
@@ -385,16 +447,16 @@ if ismac
     
 end
 if strcmp(feature_name,'audio_ivec')
-    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
+    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5_NEW.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
     
 elseif strcmp(feature_name,'genre')
-    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
+    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5_NEW.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
 else
-     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5.mat']),'urmTest_New','urmPred_Avg', ...
+     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_cold_per_' num2str(cold_per) '_fld_' num2str(fold_no) 'of5_NEW.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
 end
