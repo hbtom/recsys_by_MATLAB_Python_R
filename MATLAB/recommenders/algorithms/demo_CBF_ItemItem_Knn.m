@@ -118,6 +118,7 @@ trainRatings_New_tr = output_tr.inputRating_New ;
 %         writetable(ICM,'table_audio_ivec_40_512.csv');
 
     elseif strcmp(feature_name,'genre')
+        load(fullfile(rootAddr,'audio','ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
         ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
     elseif strcmp(feature_name,'tag')
         load(fullfile(metaDataAddr,'tag_ML20M_tfidf.mat'));
