@@ -48,10 +48,10 @@ col1_name = 'userId'  ;
 col2_name = 'movieId' ;
 col3_name = 'rating'  ;
  sim_type = 'cosine'  ;
- samp_rating = 1      ;
-             nn  = 10 ;
-          min_ur = 50 ; % min number of ratings for each user
-          max_ur = 100 ; % max number of ratings for each user
+%  samp_rating = 1      ;
+              nn  = 10 ;
+%           min_ur = 50 ; % min number of ratings for each user
+%           max_ur = 100 ; % max number of ratings for each user
           n_users = 3000;
           
 % feature specific params
