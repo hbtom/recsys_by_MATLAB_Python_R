@@ -48,15 +48,11 @@ col1_name = 'userId'  ;
 col2_name = 'movieId' ;
 col3_name = 'rating'  ;
  sim_type = 'cosine'  ;
- samp_rating = 2      ;
+ samp_rating = 1      ;
              nn  = 10 ;
           min_ur = 50 ; % min number of ratings for each user
-<<<<<<< HEAD
-          max_ur = 150 ; % max number of ratings for each user
-=======
           max_ur = 100 ; % max number of ratings for each user
           n_users = 3000;
->>>>>>> a752e9f91229037e4c818ada2723059dee44f683
           
 % feature specific params
 % feature_name = 'audio_ivec' ;
@@ -80,11 +76,8 @@ col3_name = 'rating'  ;
     [counts,uIds] = hist(originalRating.userId,unique(originalRating.userId));
              uIds = uIds(counts>=min_ur & counts<=max_ur);
              
-<<<<<<< HEAD
 % %              uIds = uIds(randperm(length(uIds),500));
-=======
            uIds = uIds(randperm(length(uIds),n_users));
->>>>>>> a752e9f91229037e4c818ada2723059dee44f683
         trainRatings = trainRatings(ismember(trainRatings.userId,uIds),:);
          testRatings = testRatings(ismember(testRatings.userId,uIds),:);
          
@@ -292,7 +285,18 @@ trainRatings_New_tr = output_tr.inputRating_New ;
     elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_MEDMAD_featComb_All_featNorm_SSR2')
         ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_MEDMAD_featComb_All_featNorm_SSR2.csv'));
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
-        
+        elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+   elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_AVGVAR_featComb_All_featNorm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_AVGVAR_featComb_All_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+   elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_MED_featComb_All_featNorm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_MED_featComb_All_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_MEDMAD_featComb_All_featNorm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_MEDMAD_featComb_All_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);    
     end
     movieId_unique(~ismember(movieId_unique,ICM.movieId))
 
@@ -407,13 +411,8 @@ for item_no = 1 : size(urmTest_New,2)
          itemId_te = item_Id2idx_te(table2array(item_Id2idx_te(:,2)) == item_no,1);
    
          userIds_te = user_Id2idx_te(ismember(table2array(user_Id2idx_te(:,2)),test_useridx),1);
-         tic
-             output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te));
-<<<<<<< HEAD
-         toc
-=======
-          toc  
->>>>>>> a752e9f91229037e4c818ada2723059dee44f683
+         
+             output = recommender_Object.predictRating(table2array(userIds_te),table2array(itemId_te)); 
              int_ind_u = ismember(table2array(user_Id2idx_te(:,1)),output.rating_pred_avg(:,2));
          urmPred_Avg(table2array(user_Id2idx_te(int_ind_u,2)),item_no) = output.rating_pred_avg(:,1);
          
