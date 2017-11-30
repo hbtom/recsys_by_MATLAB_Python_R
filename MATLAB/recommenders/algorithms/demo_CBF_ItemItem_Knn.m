@@ -30,8 +30,8 @@ if ismac
     metaDataAddr = '/Volumes/SP PHD U3/OneDrive_Polimi/OneDrive - Politecnico di Milano/dataset/metadata';
     
 elseif ispc
-    addpath('C:\Users\Yas\Documents\GitHub\MATLAB\utils\rec');
-    addpath('C:\Users\Yas\Documents\GitHub\MATLAB\recommenders\metrics');
+    addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\utils\rec');
+    addpath('C:\Users\Yas\Documents\GitHub\recsys_by_MATLAB_Python_R\MATLAB\recommenders\metrics');
     rootAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\dataset';
     outAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\ECIR2018\Rec_Results';
     metaDataAddr = 'F:\OneDrive_Polimi\OneDrive - Politecnico di Milano\dataset\metadata';

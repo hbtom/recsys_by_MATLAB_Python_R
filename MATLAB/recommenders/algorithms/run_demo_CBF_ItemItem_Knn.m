@@ -10,7 +10,7 @@ for gmm_size = gmm_size
             for samp_rating = [1]
                 for min_ur = [50]
                     for max_ur = [100] % max number of ratings for each user
-                        for n_users = [1000 2000 5000 10000]
+                        for n_users = [3000]
                         samp_rating
                         min_ur
                         max_ur
