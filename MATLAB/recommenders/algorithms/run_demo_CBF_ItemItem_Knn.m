@@ -7,9 +7,10 @@ function []=run_demo_CBF_ItemItem_Knn(feature_name,rand_rec_ON,nn,gmm_size,tvDim
 for gmm_size = gmm_size
     for tvDim = tvDim
         for fold_no = fold_no
-            for samp_rating = [1 5]
-                for min_ur = [30 50]
-                    for max_ur = [100 150 200] % max number of ratings for each user
+            for samp_rating = [1]
+                for min_ur = [50]
+                    for max_ur = [100] % max number of ratings for each user
+                        for n_users = [1000 2000 5000 10000]
                         samp_rating
                         min_ur
                         max_ur
@@ -19,6 +20,7 @@ for gmm_size = gmm_size
                         cold_per
                         [gmm_size,tvDim,nn]
                         demo_CBF_ItemItem_Knn
+                        end
                     end
                 end
             end
