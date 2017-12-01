@@ -47,7 +47,8 @@ rng(12345)
 col1_name = 'userId'  ; 
 col2_name = 'movieId' ;
 col3_name = 'rating'  ;
- sim_type = 'cosine'  ;
+
+ sim_type = 'mahalanobis'  ;
 %  samp_rating = 1      ;
               nn  = 10 ;
 %           min_ur = 50 ; % min number of ratings for each user
@@ -378,9 +379,9 @@ end
     clear ICM
     
     % Set NaN similarity score to a predefined value (e.g. 0 or random)
-    sim_sc = distArray.cosine_dist_score;
+    eval(['sim_sc = distArray.' sim_type '_dist_score;'])
     sim_sc(isnan(sim_sc)) = 0;
-    distArray.cosine_dist_score = sim_sc;
+    eval(['distArray.' sim_type '_dist_score = sim_sc;'])
 
     %  Inititate the class properties and object
        recommender_Object                = CBF_ItemItem_Knn  ;
@@ -464,16 +465,16 @@ if ismac
     
 end
 if strcmp(feature_name,'audio_ivec')
-    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
+    save(fullfile(outAddr,['Rec_res_nn_' num2str(nn) '_sim_type' sim_type '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
     
 elseif strcmp(feature_name,'tag')
-     save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_cold_per_' num2str(cold_per) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
+     save(fullfile(outAddr,['Rec_res_nn_' num2str(nn) '_sim_type' sim_type '_feat_' feature_name '_cold_per_' num2str(cold_per) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
 else
-    save(fullfile(outAddr,['RecSys_res_nn_' num2str(nn) '_feat_' feature_name '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
+    save(fullfile(outAddr,['Rec_res_nn_' num2str(nn) '_sim_type' sim_type '_feat_' feature_name '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');
     
