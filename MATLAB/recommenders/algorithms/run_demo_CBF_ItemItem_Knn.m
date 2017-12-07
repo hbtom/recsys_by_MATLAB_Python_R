@@ -1,11 +1,11 @@
-function []=run_demo_CBF_ItemItem_Knn(feature_name,rand_rec_ON,nn,gmm_size,tvDim,fold_no,cold_per)
+function []=run_demo_CBF_ItemItem_Knn(feature_name,rand_rec_ON,nn,gmm_sizeA,tvDimA,fold_no,cold_per)
 
 % feature_name = 'genre'; 'audio_ivec'
 % rand_rec_ON = 'YES';
 
 
-for gmm_size = gmm_size
-    for tvDim = tvDim
+for gmm_size = gmm_sizeA
+    for tvDim = tvDimA
         for fold_no = fold_no
             for samp_rating = [1]
                 for min_ur = [50]

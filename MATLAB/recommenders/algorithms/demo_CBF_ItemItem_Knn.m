@@ -25,6 +25,7 @@ if ismac
     
     addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/utils/rec');
     addpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/recommenders/metrics');
+    addpath(genpath('/Users/yashar/Documents/GitHub/recsys_by_MATLAB_Python_R/MATLAB/recommenders/algorithms'));
         rootAddr = '/Volumes/SP PHD U3/OneDrive_Polimi/OneDrive - Politecnico di Milano/dataset/';
          outAddr = '/Volumes/SP PHD U3/OneDrive_Polimi/OneDrive - Politecnico di Milano/ECIR2018/Rec_Results';
     metaDataAddr = '/Volumes/SP PHD U3/OneDrive_Polimi/OneDrive - Politecnico di Milano/dataset/metadata';
@@ -48,7 +49,7 @@ col1_name = 'userId'  ;
 col2_name = 'movieId' ;
 col3_name = 'rating'  ;
 
- sim_type = 'mahalanobis'  ;
+ sim_type = 'cosine'  ;
 %  samp_rating = 1      ;
               nn  = 10 ;
 %           min_ur = 50 ; % min number of ratings for each user
@@ -119,11 +120,58 @@ trainRatings_New_tr = output_tr.inputRating_New ;
     if strcmp(feature_name,'audio_ivec')
         load(fullfile(rootAddr,'audio','ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
         ICM = IVecTable_with_genre_label(:,1:tvDim+1);
+        writetable(ICM,'table_audio_ivec_40_256.csv');
+
+    elseif strcmp(feature_name,'audio_ivec_lda_genre') 
+        load(fullfile(rootAddr,'audio','ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
+        ICMf = IVecTable_with_genre_label(:,1:tvDim+1);
+        ICMl = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
+        ICMl = ICMl(:,[1,2,6,9,12]);
+%         if strcmp(feature_name,'audio_ivec_lda_genre_Action')
+%             ICMl = ICMl(:,[1,2]);
+%         elseif strcmp(feature_name,'audio_ivec_lda_genre_Comedy')
+%             ICMl = ICMl(:,[1,6]);
+%         elseif strcmp(feature_name,'audio_ivec_lda_genre_Drama')
+%             ICMl = ICMl(:,[1,9]);
+%         elseif strcmp(feature_name,'audio_ivec_lda_genre_Horror')
+%             ICMl = ICMl(:,[1,12]);
+%         end
+
+        ICMf_train = ICMf(ismember(ICMf.movieId,trainRatings.movieId),:);
+        ICMf_test = ICMf(ismember(ICMf.movieId,testRatings.movieId),:);
+
+        ICMl_train = ICMl(ismember(ICMl.movieId,trainRatings.movieId),:);
+         ICMl_test = ICMl(ismember(ICMl.movieId,testRatings.movieId),:);
+         
+         trainSamples = table2array(ICMf_train(:,2:end));
+         trainClasses = num2cell(bi2de(table2array(ICMl_train(:,2:end))));
+
+         testSamples = table2array(ICMf_test(:,2:end));
+         
+         
+         mLDA = LDA(trainSamples, trainClasses);
+         mLDA.Compute();
+         
+         %dimension of a samples is < (mLDA.NumberOfClasses-1) so following line cannot be executed:
+         %transformedSamples = mLDA.Transform(meas, mLDA.NumberOfClasses - 1);
+         
+         transformedTrainSamples = mLDA.Transform(trainSamples, 1);
+         transformedTestSamples = mLDA.Transform(testSamples, 1);
+         
+         transformedTrainSamples_with_movieId = [table2array(ICMf_train(:,1)) transformedTrainSamples];
+         transformedTestSamples_with_movieId = [table2array(ICMf_test(:,1)) transformedTestSamples];
+         
+         ICM =[transformedTrainSamples_with_movieId;transformedTestSamples_with_movieId];
+         ICM = array2table(ICM);
+         ICM.Properties.VariableNames = ['movieId',sprintfc('ivec_lda_g%d',1:size(ICM,2)-1)];
+         disp('Hi')
 %         writetable(ICM,'table_audio_ivec_40_512.csv');
 
     elseif strcmp(feature_name,'genre')
         load(fullfile(rootAddr,'audio','ivec','train_test_seperated','final_ivec_data_with_genre',['IVecTableFinal_with_genre_label_sitem_fold_' num2str(fold_no) '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '.mat']))
         ICM = IVecTable_with_genre_label(:,[1,tvDim+4:end-1]);
+        writetable(ICM,'table_genre.csv');
+
     elseif strcmp(feature_name,'tag')
         load(fullfile(metaDataAddr,'tag_ML20M_tfidf.mat'));
         ICM = tag_ML20M_tfidf_table;
@@ -157,6 +205,7 @@ trainRatings_New_tr = output_tr.inputRating_New ;
     elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_All_Norm_2')
         ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_2.csv'));
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+        save('table_AVF_featComb_All.csv')
     elseif strcmp(feature_name,'AVF_trailers_fps1_featAggr_AVG_featComb_Feat26_part_1_Norm_2')
         ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_AVG_featComb_Feat26_part_1_featNorm_2.csv'));
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
@@ -273,11 +322,22 @@ trainRatings_New_tr = output_tr.inputRating_New ;
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
     elseif strcmp(feature_name,'AVF_trailers_fps_1_featAggr_MEDMAD_featComb_Type3_part_3_Norm_2')
         ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','AVF_trailers_fps_1.0_featAggr_MEDMAD_featComb_Type3_part_3_featNorm_2.csv'));
-        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);   
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);  
+    elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_VLAD PCA32_featNorm_2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_VLAD PCA32_featNorm_2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+    elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_VLAD PCA64_featNorm_SSR2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_VLAD PCA64_featNorm_SSR2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
+ elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_VLAD PCA128_featNorm_SSR2')
+        ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_VLAD PCA128_featNorm_SSR2.csv'));
+        ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
     elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_SSR2')
         ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_SSR2.csv'));
+   
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
-   elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_AVGVAR_featComb_All_featNorm_SSR2')
+        save('table_DeepLayerfp7_featAggr_AVG_SSR2.csv');
+    elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_AVGVAR_featComb_All_featNorm_SSR2')
         ICM =  readtable(fullfile(rootAddr,'visual','trailer','aggr','DeepLayerfp7_trailers_fps_1.0_featAggr_AVGVAR_featComb_All_featNorm_SSR2.csv'));
         ICM = ICM(ismember(ICM.movieId,movieId_unique),:);
    elseif strcmp(feature_name,'DeepLayerfp7_trailers_fps_1.0_featAggr_MED_featComb_All_featNorm_SSR2')
@@ -464,7 +524,7 @@ if ismac
     urmPred_SIMpow_weightedAvg_skg001 = sparse(urmPred_SIMpow_weightedAvg_skg001);
     
 end
-if strcmp(feature_name,'audio_ivec')
+if strcmp(feature_name,'audio_ivec') || strcmp(feature_name,'audio_ivec_lda_genre') 
     save(fullfile(outAddr,['Rec_res_nn_' num2str(nn) '_sim_type_' sim_type '_feat_' feature_name '_gmm_' num2str(gmm_size) '_tvDim_' num2str(tvDim) '_fld_' num2str(fold_no) 'of5_NEW' '_sr_' num2str(samp_rating) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_' num2str(n_users) '.mat']),'urmTest_New','urmPred_Avg', ...
         'urmPred_weightedAvg','urmPred_weightedAvg_skg1','urmPred_weightedAvg_skg01','urmPred_weightedAvg_skg001',...
         'urmPred_SIMpow_weightedAvg','urmPred_SIMpow_weightedAvg_skg1','urmPred_SIMpow_weightedAvg_skg01','urmPred_SIMpow_weightedAvg_skg001','-v7.3');

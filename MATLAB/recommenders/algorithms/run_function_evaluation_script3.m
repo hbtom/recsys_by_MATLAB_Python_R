@@ -297,7 +297,7 @@ for cut_off = [1 2 5 10] % [1 2 3 4 5 10 20 50]
                         %                         output = function_evaluation_script(fileName,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1',[]);
                         %                         output_ivec_lda2(fold_no,at) =  output.mrr_ranked_list;
                         
-                        fileName2 = ['Rec_res_nn_10_sim_type_cosine_feat_tag_cold_per_100_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        fileName2 = ['RecSys_res_nn_10_feat_tag_cold_per_95_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
                         
                         
                         fprintf('***** IVEC 256 40 Tag 100 ****** \n');
@@ -493,7 +493,7 @@ output_ivec6_tag100_mean = mean(output_ivec6_tag100,1);
 output_ivec7_tag100_mean = mean(output_ivec7_tag100,1);
 output_ivec8_tag100_mean = mean(output_ivec8_tag100,1);
 
-save('bodra_aggr_eval_result_small_ivec_tags100.mat');
+save('bodra_aggr_eval_result_small_ivec_tags95.mat');
 fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec1_tag100_mean(1,:)),max(output_ivec1_tag100_mean(2,:)),max(output_ivec1_tag100_mean(3,:)),max(output_ivec1_tag100_mean(4,:)),max(output_ivec1_tag100_mean(5,:)),max(output_ivec1_tag100_mean(6,:)),max(output_ivec1_tag100_mean(7,:)),max(output_ivec1_tag100_mean(8,:)));
 fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec2_tag100_mean(1,:)),max(output_ivec2_tag100_mean(2,:)),max(output_ivec2_tag100_mean(3,:)),max(output_ivec2_tag100_mean(4,:)),max(output_ivec2_tag100_mean(5,:)),max(output_ivec2_tag100_mean(6,:)),max(output_ivec2_tag100_mean(7,:)),max(output_ivec2_tag100_mean(8,:)));
 fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec3_tag100_mean(1,:)),max(output_ivec3_tag100_mean(2,:)),max(output_ivec3_tag100_mean(3,:)),max(output_ivec3_tag100_mean(4,:)),max(output_ivec3_tag100_mean(5,:)),max(output_ivec3_tag100_mean(6,:)),max(output_ivec3_tag100_mean(7,:)),max(output_ivec3_tag100_mean(8,:)));
