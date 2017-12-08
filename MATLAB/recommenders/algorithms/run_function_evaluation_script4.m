@@ -2,9 +2,8 @@ clear
 clc
 close all
 
-
 at = 0;
-for cut_off = [1 2 5 10] % [1 2 3 4 5 10 20 50]
+for cut_off = [1 2 3 4 5 10 20 50]
     at = at + 1;
     for sr = [1]
         
@@ -189,7 +188,7 @@ for cut_off = [1 2 5 10] % [1 2 3 4 5 10 20 50]
                         %                         output_rnd(fold_no,at) =  output.mrr_ranked_list;
                         %                         disp('CHECK')
                         
-                                                %                         fprintf('***** IVEC 256 40 ****** \n');
+                        %                         fprintf('***** IVEC 256 40 ****** \n');
                         %                         fileName = ['RecSys_res_nn_10_feat_audio_ivec_gmm_256_tvDim_40_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
                         %                         output = function_evaluation_script(fileName,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1',[]);
                         %                         output_ivec1(fold_no,at) =  output.mrr_ranked_list;
@@ -243,7 +242,7 @@ for cut_off = [1 2 5 10] % [1 2 3 4 5 10 20 50]
                         %                         output = function_evaluation_script(fileName,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1',[]);
                         %                         output_ivec_lda2(fold_no,at) =  output.mrr_ranked_list;
                         
-                                                %                         fprintf('***** IVEC 256 40 ****** \n');
+                        %                         fprintf('***** IVEC 256 40 ****** \n');
                         %                         fileName = ['RecSys_res_nn_10_feat_audio_ivec_gmm_256_tvDim_40_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
                         %                         output = function_evaluation_script(fileName,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1',[]);
                         %                         output_ivec1(fold_no,at) =  output.mrr_ranked_list;
@@ -297,108 +296,54 @@ for cut_off = [1 2 5 10] % [1 2 3 4 5 10 20 50]
                         %                         output = function_evaluation_script(fileName,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1',[]);
                         %                         output_ivec_lda2(fold_no,at) =  output.mrr_ranked_list;
                         
-                       fileName2 = ['RecSys_res_nn_10_feat_tag_cold_per_10_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        %                         fileName2 = ['RecSys_res_nn_10_feat_tag_cold_per_0_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        %
+                        %
+                        %                         fprintf('***** DeepLayerfp7 Tag 100 ****** \n');
+                        %                         fileName = ['Rec_res_nn_10_sim_type_cosine_feat_DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_SSR2_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        %                         output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
+                        %
+                        %
+                        %                         for i = 1 : 100
+                        %                             tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
+                        %                             output_DeepLayerfp7_tag100(fold_no,at,i) = tmp;
+                        %                         end
+                        %
+                        %
+                        %
+                        %                         fprintf('***** AVF_trailers_featAggr_AVG_Norm_2 Tag 100 ****** \n');
+                        %                         fileName = ['RecSys_res_nn_10_feat_AVF_trailers_fps1_featAggr_AVG_featComb_All_Norm_2_fld_'  num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        %
+                        %                         output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
+                        %
+                        %
+                        %                         for i = 1 : 100
+                        %                             tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
+                        %                             output_AVF_featAggrAVG_Norm_2_tag100(fold_no,at,i) = tmp;
+                        %                         end
                         
-                        
-                        fprintf('***** IVEC 256 40 Tag 100 ****** \n');
-                        fileName = ['RecSys_res_nn_10_feat_audio_ivec_gmm_256_tvDim_40_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
-                        output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
-                        
-                        
-                        for i = 1 : 100
-                            tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
-                            output_ivec1_tag100(fold_no,at,i) = tmp;
-                        end
-                        
-                        
-                        
-                        fprintf('***** IVEC 256 100 Tag 100 ****** \n');
-                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_256_tvDim_100_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
-                        
-                        output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
-                        
-                        
-                        for i = 1 : 100
-                            tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
-                            output_ivec2_tag100(fold_no,at,i) = tmp;
-                        end
-                        
-                        
-                        fprintf('***** IVEC 256 200 Tag 100  ****** \n');
-                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_256_tvDim_200_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
-                        
-                        output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
-                        
-                        
-                        for i = 1 : 100
-                            tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
-                            output_ivec3_tag100(fold_no,at,i) = tmp;
-                        end
-                        
-                        
-                        
-                        fprintf('***** IVEC 256 400 Tag 100 ****** \n');
-                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_256_tvDim_400_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_SSR2_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        fileName2 = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_512_tvDim_200_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
                         
                         output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
                         
-                        
                         for i = 1 : 100
                             tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
-                            output_ivec4_tag100(fold_no,at,i) = tmp;
+                            output_ivec7_DeepLayerfp7_featAggrAVG_SSR2(fold_no,at,i) = tmp;
                         end
                         
                         
-                        fprintf('***** IVEC 512 40 Tag 100  ****** \n');
-                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_512_tvDim_40_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_DeepLayerfp7_trailers_fps_1.0_featAggr_AVG_featComb_All_featNorm_SSR2_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
+                        fileName2 = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_512_tvDim_400_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
                         
                         output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
                         
-                        
                         for i = 1 : 100
                             tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
-                            output_ivec5_tag100(fold_no,at,i) = tmp;
+                            output_ivec8_DeepLayerfp7_featAggrAVG_SSR2(fold_no,at,i) = tmp;
                         end
                         
-                        
-                        fprintf('***** IVEC 512 100 Tag 100 ****** \n');
-                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_512_tvDim_100_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
-                        
-                        output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
-                        
-                        
-                        for i = 1 : 100
-                            tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
-                            output_ivec6_tag100(fold_no,at,i) = tmp;
-                        end
-                        
-                        
-                        fprintf('***** IVEC 512 200 Tag 100  ****** \n');
-                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_512_tvDim_200_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
-                        
-                        output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
-                        
-                        
-                        for i = 1 : 100
-                            tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
-                            output_ivec7_tag100(fold_no,at,i) = tmp;
-                        end
-                        
-                        
-                        fprintf('***** IVEC 512 400 Tag 100 ****** \n');
-                        fileName = ['Rec_res_nn_10_sim_type_cosine_feat_audio_ivec_gmm_512_tvDim_400_fld_' num2str(fold_no) 'of5_NEW_sr_' num2str(sr) '_min_ur_' num2str(min_ur) '_max_ur_' num2str(max_ur) '_nusmall_3000.mat'];
-                        
-                        
-                        output = function_evaluation_script_Borda(fileName,fileName2,fold_no,cut_off,rec,'MAP1','MRR','Precision1','Recall1','');
-                        
-                        
-                        for i = 1 : 100
-                            tmp = eval(['output.mrr_ranked_list' num2str(i) ';']);
-                            output_ivec8_tag100(fold_no,at,i) = tmp;
-                        end
-                        
-                        
-                       
+
                         
                     end
                     
@@ -407,8 +352,9 @@ for cut_off = [1 2 5 10] % [1 2 3 4 5 10 20 50]
         end
     end
 end
+save('output_ivec78_DeepLayerfp7_featAggrAVG_Norm_SSR2.mat');
 
-rec
+
 %{
 output_ivec1_mean = mean(output_ivec1);
 output_ivec2_mean = mean(output_ivec2);
@@ -484,22 +430,32 @@ fprintf('       &visual signal  &AVF &[mean,var] &%0.4f &%0.4f &%0.4f &%0.4f &%0
 % fprintf('       &visual signal  &deep-fc7  &VLAD128SSR &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',output_DEEPVLAD128SSR_mean(1),output_DEEPVLAD128SSR_mean(2),output_DEEPVLAD128SSR_mean(3),output_DEEPVLAD128SSR_mean(4),output_DEEPVLAD128SSR_mean(5),output_DEEPVLAD128SSR_mean(6),output_DEEPVLAD128SSR_mean(7),output_DEEPVLAD128SSR_mean(8));
 
 
-output_ivec1_tag100_mean = mean(output_ivec1_tag100,1);
-output_ivec2_tag100_mean = mean(output_ivec2_tag100,1);
-output_ivec3_tag100_mean = mean(output_ivec3_tag100,1);
-output_ivec4_tag100_mean = mean(output_ivec4_tag100,1);
-output_ivec5_tag100_mean = mean(output_ivec5_tag100,1);
-output_ivec6_tag100_mean = mean(output_ivec6_tag100,1);
-output_ivec7_tag100_mean = mean(output_ivec7_tag100,1);
-output_ivec8_tag100_mean = mean(output_ivec8_tag100,1);
+% load('bodra_aggr_eval_result_big_deep_avf_tags3.mat');
+% load('bodra_aggr_eval_result_big_ivec_tags3.mat');
+%
+% output_ivec1_tag100_mean = mean(output_ivec1_tag100,1);
+% output_ivec2_tag100_mean = mean(output_ivec2_tag100,1);
+% output_ivec3_tag100_mean = mean(output_ivec3_tag100,1);
+% output_ivec4_tag100_mean = mean(output_ivec4_tag100,1);
+% output_ivec5_tag100_mean = mean(output_ivec5_tag100,1);
+% output_ivec6_tag100_mean = mean(output_ivec6_tag100,1);
+% output_ivec7_tag100_mean = mean(output_ivec7_tag100,1);
+% output_ivec8_tag100_mean = mean(output_ivec8_tag100,1);
+%
+% fprintf('&audio+meta  &ivec-Tag3  &(256,40) &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec1_tag100_mean(1,1,2:end-1)),max(output_ivec1_tag100_mean(1,2,2:end-1)),max(output_ivec1_tag100_mean(1,3,2:end-1)),max(output_ivec1_tag100_mean(1,4,2:end-1)),max(output_ivec1_tag100_mean(1,5,2:end-1)),max(output_ivec1_tag100_mean(1,6,2:end-1)),max(output_ivec1_tag100_mean(1,7,2:end-1)),max(output_ivec1_tag100_mean(1,8,2:end-1)));
+% fprintf('&audio+meta  &ivec-Tag3  &(256,100) &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec2_tag100_mean(1,1,2:end-1)),max(output_ivec2_tag100_mean(1,2,2:end-1)),max(output_ivec2_tag100_mean(1,3,2:end-1)),max(output_ivec2_tag100_mean(1,4,2:end-1)),max(output_ivec2_tag100_mean(1,5,2:end-1)),max(output_ivec2_tag100_mean(1,6,2:end-1)),max(output_ivec2_tag100_mean(1,7,2:end-1)),max(output_ivec2_tag100_mean(1,8,2:end-1)));
+% fprintf('&audio+meta  &ivec-Tag3  &(256,200) &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec3_tag100_mean(1,1,2:end-1)),max(output_ivec3_tag100_mean(1,2,2:end-1)),max(output_ivec3_tag100_mean(1,3,2:end-1)),max(output_ivec3_tag100_mean(1,4,2:end-1)),max(output_ivec3_tag100_mean(1,5,2:end-1)),max(output_ivec3_tag100_mean(1,6,2:end-1)),max(output_ivec3_tag100_mean(1,7,2:end-1)),max(output_ivec3_tag100_mean(1,8,2:end-1)));
+% fprintf('&audio+meta  &ivec-Tag3  &(256,400) &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec4_tag100_mean(1,1,2:end-1)),max(output_ivec4_tag100_mean(1,2,2:end-1)),max(output_ivec4_tag100_mean(1,3,2:end-1)),max(output_ivec4_tag100_mean(1,4,2:end-1)),max(output_ivec4_tag100_mean(1,5,2:end-1)),max(output_ivec4_tag100_mean(1,6,2:end-1)),max(output_ivec4_tag100_mean(1,7,2:end-1)),max(output_ivec4_tag100_mean(1,8,2:end-1)));
+% fprintf('&audio+meta  &ivec-Tag3  &(512,40) &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec5_tag100_mean(1,1,2:end-1)),max(output_ivec5_tag100_mean(1,2,2:end-1)),max(output_ivec5_tag100_mean(1,3,2:end-1)),max(output_ivec5_tag100_mean(1,4,2:end-1)),max(output_ivec5_tag100_mean(1,5,2:end-1)),max(output_ivec5_tag100_mean(1,6,2:end-1)),max(output_ivec5_tag100_mean(1,7,2:end-1)),max(output_ivec5_tag100_mean(1,8,2:end-1)));
+% fprintf('&audio+meta  &ivec-Tag3  &(512,100) &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec6_tag100_mean(1,1,2:end-1)),max(output_ivec6_tag100_mean(1,2,2:end-1)),max(output_ivec6_tag100_mean(1,3,2:end-1)),max(output_ivec6_tag100_mean(1,4,2:end-1)),max(output_ivec6_tag100_mean(1,5,2:end-1)),max(output_ivec6_tag100_mean(1,6,2:end-1)),max(output_ivec6_tag100_mean(1,7,2:end-1)),max(output_ivec6_tag100_mean(1,8,2:end-1)));
+% fprintf('&audio+meta  &ivec-Tag3  &(512,200) &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec7_tag100_mean(1,1,2:end-1)),max(output_ivec7_tag100_mean(1,2,2:end-1)),max(output_ivec7_tag100_mean(1,3,2:end-1)),max(output_ivec7_tag100_mean(1,4,2:end-1)),max(output_ivec7_tag100_mean(1,5,2:end-1)),max(output_ivec7_tag100_mean(1,6,2:end-1)),max(output_ivec7_tag100_mean(1,7,2:end-1)),max(output_ivec7_tag100_mean(1,8,2:end-1)));
+% fprintf('&audio+meta  &ivec-Tag3  &(512,400) &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec8_tag100_mean(1,1,2:end-1)),max(output_ivec8_tag100_mean(1,2,2:end-1)),max(output_ivec8_tag100_mean(1,3,2:end-1)),max(output_ivec8_tag100_mean(1,4,2:end-1)),max(output_ivec8_tag100_mean(1,5,2:end-1)),max(output_ivec8_tag100_mean(1,6,2:end-1)),max(output_ivec8_tag100_mean(1,7,2:end-1)),max(output_ivec8_tag100_mean(1,8,2:end-1)));
 
-save('bodra_aggr_eval_result_small_ivec_tags10.mat');
-fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec1_tag100_mean(1,:)),max(output_ivec1_tag100_mean(2,:)),max(output_ivec1_tag100_mean(3,:)),max(output_ivec1_tag100_mean(4,:)),max(output_ivec1_tag100_mean(5,:)),max(output_ivec1_tag100_mean(6,:)),max(output_ivec1_tag100_mean(7,:)),max(output_ivec1_tag100_mean(8,:)));
-fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec2_tag100_mean(1,:)),max(output_ivec2_tag100_mean(2,:)),max(output_ivec2_tag100_mean(3,:)),max(output_ivec2_tag100_mean(4,:)),max(output_ivec2_tag100_mean(5,:)),max(output_ivec2_tag100_mean(6,:)),max(output_ivec2_tag100_mean(7,:)),max(output_ivec2_tag100_mean(8,:)));
-fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec3_tag100_mean(1,:)),max(output_ivec3_tag100_mean(2,:)),max(output_ivec3_tag100_mean(3,:)),max(output_ivec3_tag100_mean(4,:)),max(output_ivec3_tag100_mean(5,:)),max(output_ivec3_tag100_mean(6,:)),max(output_ivec3_tag100_mean(7,:)),max(output_ivec3_tag100_mean(8,:)));
-fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec4_tag100_mean(1,:)),max(output_ivec4_tag100_mean(2,:)),max(output_ivec4_tag100_mean(3,:)),max(output_ivec4_tag100_mean(4,:)),max(output_ivec4_tag100_mean(5,:)),max(output_ivec4_tag100_mean(6,:)),max(output_ivec4_tag100_mean(7,:)),max(output_ivec4_tag100_mean(8,:)));
-fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec5_tag100_mean(1,:)),max(output_ivec5_tag100_mean(2,:)),max(output_ivec5_tag100_mean(3,:)),max(output_ivec5_tag100_mean(4,:)),max(output_ivec5_tag100_mean(5,:)),max(output_ivec5_tag100_mean(6,:)),max(output_ivec5_tag100_mean(7,:)),max(output_ivec5_tag100_mean(8,:)));
-fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec6_tag100_mean(1,:)),max(output_ivec6_tag100_mean(2,:)),max(output_ivec6_tag100_mean(3,:)),max(output_ivec6_tag100_mean(4,:)),max(output_ivec6_tag100_mean(5,:)),max(output_ivec6_tag100_mean(6,:)),max(output_ivec6_tag100_mean(7,:)),max(output_ivec6_tag100_mean(8,:)));
-fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec7_tag100_mean(1,:)),max(output_ivec7_tag100_mean(2,:)),max(output_ivec7_tag100_mean(3,:)),max(output_ivec7_tag100_mean(4,:)),max(output_ivec7_tag100_mean(5,:)),max(output_ivec7_tag100_mean(6,:)),max(output_ivec7_tag100_mean(7,:)),max(output_ivec7_tag100_mean(8,:)));
-fprintf('&visual+meta  &ivec-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_ivec8_tag100_mean(1,:)),max(output_ivec8_tag100_mean(2,:)),max(output_ivec8_tag100_mean(3,:)),max(output_ivec8_tag100_mean(4,:)),max(output_ivec8_tag100_mean(5,:)),max(output_ivec8_tag100_mean(6,:)),max(output_ivec8_tag100_mean(7,:)),max(output_ivec8_tag100_mean(8,:)));
 
+% output_DeepLayerfp7_tag100_mean = mean(output_DeepLayerfp7_tag100,1);
+% output_AVF_featAggrAVG_Norm_2_tag100_mean = mean(output_AVF_featAggrAVG_Norm_2_tag100,1);
+%
+%
+% fprintf('&visual+meta  &Deep-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_DeepLayerfp7_tag100_mean(1,1,2:end-1)),max(output_DeepLayerfp7_tag100_mean(1,2,2:end-1)),max(output_DeepLayerfp7_tag100_mean(1,3,2:end-1)),max(output_DeepLayerfp7_tag100_mean(1,4,2:end-1)),max(output_DeepLayerfp7_tag100_mean(1,5,2:end-1)),max(output_DeepLayerfp7_tag100_mean(1,6,2:end-1)),max(output_DeepLayerfp7_tag100_mean(1,7,2:end-1)),max(output_DeepLayerfp7_tag100_mean(1,8,2:end-1)));
+% fprintf('&visual+meta  &AVF-Tag100  & &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f &%0.4f \\\\  \n',max(output_AVF_featAggrAVG_Norm_2_tag100_mean(1,1,2:end-1)),max(output_AVF_featAggrAVG_Norm_2_tag100_mean(1,2,2:end-1)),max(output_AVF_featAggrAVG_Norm_2_tag100_mean(1,3,2:end-1)),max(output_AVF_featAggrAVG_Norm_2_tag100_mean(1,4,2:end-1)),max(output_AVF_featAggrAVG_Norm_2_tag100_mean(1,5,2:end-1)),max(output_AVF_featAggrAVG_Norm_2_tag100_mean(1,6,2:end-1)),max(output_AVF_featAggrAVG_Norm_2_tag100_mean(1,7,2:end-1)),max(output_AVF_featAggrAVG_Norm_2_tag100_mean(1,8,2:end-1)));
+%
